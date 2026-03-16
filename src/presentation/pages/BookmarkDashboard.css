@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+.search-container {
+  margin-bottom: 24px;
+}
+md-outlined-text-field {
+  width: 100%;
+}

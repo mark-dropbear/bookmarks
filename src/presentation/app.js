@@ -5,8 +5,6 @@ import { ContextProvider } from '@lit/context';
 
 // Material Web Imports
 import '@material/web/button/filled-button.js';
-import '@material/web/labs/card/elevated-card.js';
-import '@material/web/textfield/outlined-text-field.js';
 
 // Internal Imports
 import { InMemoryBookmarkRepository } from '../data/repositories/InMemoryBookmarkRepository.js';
@@ -21,7 +19,8 @@ import {
 } from './context.js';
 
 // Page imports
-import './pages/placeholders.js';
+import './pages/BookmarkDashboard.js';
+import './pages/AddBookmarkPage.js';
 
 /**
  * The main application shell component.
