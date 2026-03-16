@@ -23,10 +23,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Domain & Data Layers' (Protocol in workflow.md) (bf46563)
 
 ## Phase 3: UI Components (Presentation Layer)
-- [~] Task: Core UI & Routing
-    - [ ] Create main entry point `src/presentation/app.js`.
-    - [ ] Setup routing with `@lit-labs/router` for Home (dashboard) and Add Bookmark pages.
-    - [ ] Implement a basic Material 3 layout using `<md-elevated-card>` and `<md-filled-button>`.
+- [x] Task: Core UI & Routing (aebb71b)
+    - [x] Create main entry point `src/presentation/app.js`.
+    - [x] Setup routing with `@lit-labs/router` for Home (dashboard) and Add Bookmark pages.
+    - [x] Implement a basic Material 3 layout using `<md-elevated-card>` and `<md-filled-button>`.
 - [ ] Task: Add Bookmark Component
     - [ ] Create `<add-bookmark-form>` using Material Web text fields.
     - [ ] Consume use cases via `@lit/context`.
