@@ -68,42 +68,6 @@ html[data-theme="light-normal"] {
   /* Typography Reference Tokens */
   --md-ref-typeface-brand: 'Roboto';
   --md-ref-typeface-plain: 'Roboto';
-
-  /* Typescale: Headline Large */
-  --md-sys-typescale-headline-large-font: var(--md-ref-typeface-brand);
-  --md-sys-typescale-headline-large-weight: 400;
-  --md-sys-typescale-headline-large-size: 2rem;
-  --md-sys-typescale-headline-large-line-height: 2.5rem;
-
-  /* Typescale: Title Large */
-  --md-sys-typescale-title-large-font: var(--md-ref-typeface-brand);
-  --md-sys-typescale-title-large-weight: 400;
-  --md-sys-typescale-title-large-size: 1.375rem;
-  --md-sys-typescale-title-large-line-height: 1.75rem;
-
-  /* Typescale: Body Large */
-  --md-sys-typescale-body-large-font: var(--md-ref-typeface-plain);
-  --md-sys-typescale-body-large-weight: 400;
-  --md-sys-typescale-body-large-size: 1rem;
-  --md-sys-typescale-body-large-line-height: 1.5rem;
-
-  /* Typescale: Body Medium */
-  --md-sys-typescale-body-medium-font: var(--md-ref-typeface-plain);
-  --md-sys-typescale-body-medium-weight: 400;
-  --md-sys-typescale-body-medium-size: 0.875rem;
-  --md-sys-typescale-body-medium-line-height: 1.25rem;
-
-  /* Typescale: Label Large */
-  --md-sys-typescale-label-large-font: var(--md-ref-typeface-plain);
-  --md-sys-typescale-label-large-weight: 500;
-  --md-sys-typescale-label-large-size: 0.875rem;
-  --md-sys-typescale-label-large-line-height: 1.25rem;
-
-  /* Typescale: Label Medium */
-  --md-sys-typescale-label-medium-font: var(--md-ref-typeface-plain);
-  --md-sys-typescale-label-medium-weight: 500;
-  --md-sys-typescale-label-medium-size: 0.75rem;
-  --md-sys-typescale-label-medium-line-height: 1rem;
 }
 
 /* Base styles for the page */

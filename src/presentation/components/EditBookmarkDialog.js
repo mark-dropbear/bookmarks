@@ -90,10 +90,16 @@ export class EditBookmarkDialog extends LitElement {
 
   /**
    * Handles the form submission.
-   * @param {Event} e 
+   * @param {SubmitEvent} e 
    */
   async #handleSubmit(e) {
     e.preventDefault();
+    
+    // If user clicked cancel (via form[method="dialog"]), just let it close
+    if (e.submitter && e.submitter.value === 'cancel') {
+      return;
+    }
+
     this._error = null;
     
     const form = this.shadowRoot.querySelector('#edit-form');
