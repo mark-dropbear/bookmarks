@@ -35,7 +35,7 @@ export class InMemoryBookmarkRepository {
 
   /**
    * Searches the in-memory collection for bookmarks matching the provided query.
-   * Case-insensitive matching across name, url, description, and tags.
+   * Case-insensitive matching across name, url, description, and related topic IDs.
    * @param {string} query - The search term to match.
    * @returns {Promise<import('../../domain/entities/Bookmark.js').Bookmark[]>} Resolves to a filtered array of bookmarks.
    */
@@ -45,7 +45,7 @@ export class InMemoryBookmarkRepository {
       b.name.toLowerCase().includes(lowQuery) ||
       b.url.toLowerCase().includes(lowQuery) ||
       b.description.toLowerCase().includes(lowQuery) ||
-      b.tags.some(t => t.toLowerCase().includes(lowQuery))
+      b.about.some(t => t['@id'].toLowerCase().includes(lowQuery))
     );
   }
 }
