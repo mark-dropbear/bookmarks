@@ -28,4 +28,13 @@ export class TopicRepository {
   async getById(id) {
     throw new Error('Not implemented');
   }
+
+  /**
+   * Deletes a topic by its unique identifier.
+   * @param {string} id - The @id of the topic.
+   * @returns {Promise<void>}
+   */
+  async delete(id) {
+    throw new Error('Not implemented');
+  }
 }

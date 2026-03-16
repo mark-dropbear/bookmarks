@@ -34,9 +34,43 @@ describe('DeleteBookmarkUseCase', () => {
       expect(e).to.be.instanceOf(NotFoundError);
     }
 
-    // Verify topic cleanup
-    const updatedTopic = await topicRepository.getById('topic/1');
-    expect(updatedTopic.subjectOf).to.not.deep.include({ '@id': 'b/1' });
+    // Verify topic cleanup (should be deleted because it's orphaned)
+    try {
+      await topicRepository.getById('topic/1');
+      expect.fail('Orphaned topic should have been deleted');
+    } catch (e) {
+      expect(e).to.be.instanceOf(NotFoundError);
+    }
+  });
+
+  it('should preserve shared topics and delete orphaned topics', async () => {
+    // Shared Topic: used by b/1 and b/2
+    // Unique Topic: used only by b/1
+    const b1 = new Bookmark({ id: 'b/1', name: 'B1', url: 'https://b1.com', about: [{ '@id': 'topic/shared' }, { '@id': 'topic/unique' }] });
+    const b2 = new Bookmark({ id: 'b/2', name: 'B2', url: 'https://b2.com', about: [{ '@id': 'topic/shared' }] });
+    
+    const tShared = new Topic({ id: 'topic/shared', name: 'Shared', subjectOf: [{ '@id': 'b/1' }, { '@id': 'b/2' }] });
+    const tUnique = new Topic({ id: 'topic/unique', name: 'Unique', subjectOf: [{ '@id': 'b/1' }] });
+
+    await bookmarkRepository.add(b1);
+    await bookmarkRepository.add(b2);
+    await topicRepository.add(tShared);
+    await topicRepository.add(tUnique);
+
+    await useCase.execute('b/1');
+
+    // Shared topic should still exist and have b/2
+    const updatedShared = await topicRepository.getById('topic/shared');
+    expect(updatedShared).to.exist;
+    expect(updatedShared.subjectOf).to.deep.equal([{ '@id': 'b/2' }]);
+
+    // Unique topic should be DELETED because it's orphaned
+    try {
+      await topicRepository.getById('topic/unique');
+      expect.fail('Orphaned topic should have been deleted');
+    } catch (e) {
+      expect(e).to.be.instanceOf(NotFoundError);
+    }
   });
 
   it('should throw NotFoundError if bookmark does not exist', async () => {

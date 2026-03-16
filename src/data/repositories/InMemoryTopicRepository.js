@@ -53,4 +53,18 @@ export class InMemoryTopicRepository {
     }
     return topic;
   }
+
+  /**
+   * Deletes a topic from the in-memory collection.
+   * @param {string} id - The @id of the topic to delete.
+   * @returns {Promise<void>} Resolves when the topic is successfully deleted.
+   * @throws {NotFoundError} If the topic is not found.
+   */
+  async delete(id) {
+    const index = this.topics.findIndex(t => t['@id'] === id);
+    if (index === -1) {
+      throw new NotFoundError(`Topic with id ${id} not found`);
+    }
+    this.topics.splice(index, 1);
+  }
 }
