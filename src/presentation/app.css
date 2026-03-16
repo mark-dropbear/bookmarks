@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  font-family: Roboto, system-ui, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+main {
+  padding: 8px;
+}

@@ -1,4 +1,5 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
+import styles from './AddBookmarkForm.css' with { type: 'css' };
 import { ContextConsumer } from '@lit/context';
 import { addBookmarkContext } from '../context.js';
 
@@ -10,18 +11,7 @@ import '@material/web/textfield/outlined-text-field.js';
  * Consumes the AddBookmarkUseCase via context.
  */
 export class AddBookmarkForm extends LitElement {
-  static styles = css`
-    :host {
-      display: block;
-      padding: 16px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      max-width: 400px;
-    }
-  `;
+  static styles = styles;
 
   // Consume the use case from context
   #addBookmarkUseCase = new ContextConsumer(this, {
@@ -60,6 +50,9 @@ export class AddBookmarkForm extends LitElement {
     };
 
     try {
+      if (!this.#addBookmarkUseCase.value) {
+        throw new Error('AddBookmarkUseCase not provided');
+      }
       await this.#addBookmarkUseCase.value.execute(data);
       this.dispatchEvent(new CustomEvent('bookmark-added', {
         detail: data,

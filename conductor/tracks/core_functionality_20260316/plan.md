@@ -30,7 +30,7 @@
 - [x] Task: Add Bookmark Component (088652f)
     - [x] Create `<add-bookmark-form>` using Material Web text fields.
     - [x] Consume use cases via `@lit/context`.
-- [ ] Task: Bookmark List Component
+- [~] Task: Bookmark List Component
     - [ ] Create `<bookmark-list>` and `<bookmark-item>` components.
     - [ ] Fetch data using `@lit/task` and display state (loading, error, complete).
 - [ ] Task: Search & Filter

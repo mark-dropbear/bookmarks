@@ -1,4 +1,5 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
+import styles from './app.css' with { type: 'css' };
 import { Router } from '@lit-labs/router';
 import { ContextProvider } from '@lit/context';
 
@@ -27,24 +28,7 @@ import './pages/placeholders.js';
  * Handles top-level routing, dependency injection, and global layout.
  */
 export class BookmarksApp extends LitElement {
-  static styles = css`
-    :host {
-      display: block;
-      font-family: Roboto, system-ui, sans-serif;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    main {
-      padding: 8px;
-    }
-  `;
+  static styles = styles;
 
   // Private state using # fields
   #bookmarkRepo;
