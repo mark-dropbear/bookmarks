@@ -18,8 +18,8 @@ describe('InMemoryBookmarkRepository', () => {
 
     const all = await repository.getAll();
     expect(all).to.have.lengthOf(2);
-    expect(all).to.deep.include(bookmark1);
-    expect(all).to.deep.include(bookmark2);
+    expect(all[0]).to.deep.equal(bookmark1.toJSON());
+    expect(all[1]).to.deep.equal(bookmark2.toJSON());
   });
 
   it('should search bookmarks by name', async () => {

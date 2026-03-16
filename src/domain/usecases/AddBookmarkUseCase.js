@@ -27,22 +27,18 @@ export class AddBookmarkUseCase {
     await this.bookmarkRepository.add(bookmark);
 
     // Maintain bi-directional links with topics
-    if (bookmark.about && bookmark.about.length > 0) {
-      for (const ref of bookmark.about) {
+    const topics = bookmark.about;
+    if (topics.length > 0) {
+      for (const ref of topics) {
         const topicId = ref['@id'];
         let topic = await this.topicRepository.getById(topicId);
         
         if (!topic) {
-          // Create a shell topic if it doesn't exist
           topic = new Topic({ id: topicId, name: 'New Topic' });
         }
 
-        // Add this bookmark to the topic's subjectOf if not already there
-        const alreadyLinked = topic.subjectOf.some(sr => sr['@id'] === bookmark.id);
-        if (!alreadyLinked) {
-          topic.subjectOf.push({ '@id': bookmark.id });
-          await this.topicRepository.add(topic);
-        }
+        topic.addBookmark(bookmark.id);
+        await this.topicRepository.add(topic);
       }
     }
 

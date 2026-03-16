@@ -14,26 +14,58 @@
 
 /**
  * Represents a Topic (Thing) entity in the domain.
- * Aligned with schema.org/Thing as seen in example-data.jsonld.
+ * Uses private fields for encapsulation and toJSON for schema.org compatibility.
  */
 export class Topic {
+  #id;
+  #name;
+  #description;
+  #subjectOf;
+
   /**
    * Creates an instance of a Topic.
    * @param {TopicData} data - The initial data for the topic.
    */
   constructor({ id, name, description, subjectOf }) {
-    this['@type'] = 'Thing';
-    this['@id'] = id || `topic/${crypto.randomUUID()}`;
-    this.name = name || 'Untitled Topic';
-    this.description = description || '';
-    this.subjectOf = subjectOf || [];
+    this.#id = id || `topic/${crypto.randomUUID()}`;
+    this.#name = name || 'Untitled Topic';
+    this.#description = description || '';
+    this.#subjectOf = subjectOf || [];
+  }
+
+  /** @returns {string} */
+  get id() { return this.#id; }
+
+  /** @returns {string} */
+  get name() { return this.#name; }
+
+  /** @returns {string} */
+  get description() { return this.#description; }
+
+  /** @returns {BookmarkReference[]} */
+  get subjectOf() { return [...this.#subjectOf]; }
+
+  /**
+   * Links a bookmark to this topic.
+   * @param {string} bookmarkId 
+   */
+  addBookmark(bookmarkId) {
+    if (!this.#subjectOf.some(b => b['@id'] === bookmarkId)) {
+      this.#subjectOf.push({ '@id': bookmarkId });
+    }
   }
 
   /**
-   * Getter for the ID to simplify access while maintaining JSON-LD compatibility.
-   * @returns {string}
+   * Serializes the entity to a schema.org compliant JSON-LD object.
+   * @returns {Object}
    */
-  get id() {
-    return this['@id'];
+  toJSON() {
+    return {
+      '@type': 'Thing',
+      '@id': this.#id,
+      'name': this.#name,
+      'description': this.#description,
+      'subjectOf': this.#subjectOf
+    };
   }
 }

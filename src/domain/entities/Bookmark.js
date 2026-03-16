@@ -15,9 +15,15 @@
 
 /**
  * Represents a Bookmark (WebPage) entity in the domain.
- * Aligned with schema.org/WebPage as seen in example-data.jsonld.
+ * Uses private fields for encapsulation and toJSON for schema.org compatibility.
  */
 export class Bookmark {
+  #id;
+  #name;
+  #description;
+  #url;
+  #about;
+
   /**
    * Creates an instance of a Bookmark.
    * @param {BookmarkData} data - The initial data for the bookmark.
@@ -28,19 +34,50 @@ export class Bookmark {
       throw new Error('URL is required');
     }
     
-    this['@type'] = 'WebPage';
-    this['@id'] = id || `webpage/${crypto.randomUUID()}`;
-    this.name = name || 'Untitled';
-    this.description = description || '';
-    this.url = url;
-    this.about = about || [];
+    this.#id = id || `webpage/${crypto.randomUUID()}`;
+    this.#name = name || 'Untitled';
+    this.#description = description || '';
+    this.#url = url;
+    this.#about = about || [];
+  }
+
+  /** @returns {string} */
+  get id() { return this.#id; }
+
+  /** @returns {string} */
+  get name() { return this.#name; }
+
+  /** @returns {string} */
+  get description() { return this.#description; }
+
+  /** @returns {string} */
+  get url() { return this.#url; }
+
+  /** @returns {TopicReference[]} */
+  get about() { return [...this.#about]; }
+
+  /**
+   * Adds a topic reference to the bookmark.
+   * @param {string} topicId 
+   */
+  addTopic(topicId) {
+    if (!this.#about.some(t => t['@id'] === topicId)) {
+      this.#about.push({ '@id': topicId });
+    }
   }
 
   /**
-   * Getter for the ID to simplify access while maintaining JSON-LD compatibility.
-   * @returns {string}
+   * Serializes the entity to a schema.org compliant JSON-LD object.
+   * @returns {Object}
    */
-  get id() {
-    return this['@id'];
+  toJSON() {
+    return {
+      '@type': 'WebPage',
+      '@id': this.#id,
+      'name': this.#name,
+      'description': this.#description,
+      'url': this.#url,
+      'about': this.#about
+    };
   }
 }

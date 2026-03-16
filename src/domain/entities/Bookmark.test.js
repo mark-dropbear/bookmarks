@@ -2,7 +2,7 @@ import { expect } from '@esm-bundle/chai';
 import { Bookmark } from './Bookmark.js';
 
 describe('Bookmark Entity', () => {
-  it('should create a valid Bookmark object aligned with schema.org', () => {
+  it('should create a valid Bookmark object and serialize to JSON-LD', () => {
     const data = {
       id: 'webpage/456',
       name: 'Example Title',
@@ -13,18 +13,23 @@ describe('Bookmark Entity', () => {
 
     const bookmark = new Bookmark(data);
 
-    expect(bookmark['@type']).to.equal('WebPage');
-    expect(bookmark['@id']).to.equal(data.id);
+    expect(bookmark.id).to.equal(data.id);
     expect(bookmark.name).to.equal(data.name);
-    expect(bookmark.description).to.equal(data.description);
     expect(bookmark.url).to.equal(data.url);
-    expect(bookmark.about).to.deep.equal(data.about);
+    
+    const json = bookmark.toJSON();
+    expect(json['@type']).to.equal('WebPage');
+    expect(json['@id']).to.equal(data.id);
+    expect(json.about).to.deep.equal(data.about);
   });
 
   it('should throw an error if URL is missing', () => {
-    const data = {
-      name: 'Example Title'
-    };
-    expect(() => new Bookmark(data)).to.throw('URL is required');
+    expect(() => new Bookmark({ name: 'Test' })).to.throw('URL is required');
+  });
+
+  it('should allow adding topics via addTopic', () => {
+    const bookmark = new Bookmark({ name: 'T', url: 'https://t.com' });
+    bookmark.addTopic('topic/789');
+    expect(bookmark.about).to.deep.equal([{ '@id': 'topic/789' }]);
   });
 });

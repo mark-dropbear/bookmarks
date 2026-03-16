@@ -1,43 +1,40 @@
 /**
  * In-memory implementation of the BookmarkRepository.
- * This class provides volatile storage for bookmarks, useful for development, testing, and 
- * initial core implementation without a persistent database dependency.
- * @implements {import('../../domain/repositories/BookmarkRepository.js').BookmarkRepository}
  */
 export class InMemoryBookmarkRepository {
-  /**
-   * Initializes a new instance of the in-memory repository.
-   */
   constructor() {
-    /** 
-     * The internal collection of bookmarks stored in memory.
-     * @type {import('../../domain/entities/Bookmark.js').Bookmark[]} 
-     */
+    /** @type {Object[]} */
     this.bookmarks = [];
   }
 
   /**
-   * Adds a new bookmark to the in-memory collection.
-   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark - The bookmark entity to add.
-   * @returns {Promise<void>} Resolves when the bookmark is successfully added.
+   * Adds a new bookmark.
+   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark
+   * @returns {Promise<void>}
    */
   async add(bookmark) {
-    this.bookmarks.push(bookmark);
+    // Store as plain object for easier search and consistent serialization
+    const data = bookmark.toJSON();
+    const index = this.bookmarks.findIndex(b => b['@id'] === data['@id']);
+    if (index !== -1) {
+      this.bookmarks[index] = data;
+    } else {
+      this.bookmarks.push(data);
+    }
   }
 
   /**
    * Retrieves all currently stored bookmarks.
-   * @returns {Promise<import('../../domain/entities/Bookmark.js').Bookmark[]>} Resolves to a copy of the bookmark array.
+   * @returns {Promise<Object[]>}
    */
   async getAll() {
     return [...this.bookmarks];
   }
 
   /**
-   * Searches the in-memory collection for bookmarks matching the provided query.
-   * Case-insensitive matching across name, url, description, and related topic IDs.
-   * @param {string} query - The search term to match.
-   * @returns {Promise<import('../../domain/entities/Bookmark.js').Bookmark[]>} Resolves to a filtered array of bookmarks.
+   * Searches bookmarks.
+   * @param {string} query
+   * @returns {Promise<Object[]>}
    */
   async search(query) {
     const lowQuery = query.toLowerCase();

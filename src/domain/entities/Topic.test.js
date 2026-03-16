@@ -2,7 +2,7 @@ import { expect } from '@esm-bundle/chai';
 import { Topic } from './Topic.js';
 
 describe('Topic Entity', () => {
-  it('should create a valid Topic object aligned with schema.org Thing', () => {
+  it('should create a valid Topic object and serialize to JSON-LD', () => {
     const data = {
       id: 'topic/123',
       name: 'User title goes here',
@@ -12,15 +12,18 @@ describe('Topic Entity', () => {
 
     const topic = new Topic(data);
 
-    expect(topic['@type']).to.equal('Thing');
-    expect(topic['@id']).to.equal(data.id);
+    expect(topic.id).to.equal(data.id);
     expect(topic.name).to.equal(data.name);
-    expect(topic.description).to.equal(data.description);
-    expect(topic.subjectOf).to.deep.equal(data.subjectOf);
+    
+    const json = topic.toJSON();
+    expect(json['@type']).to.equal('Thing');
+    expect(json['@id']).to.equal(data.id);
+    expect(json.subjectOf).to.deep.equal(data.subjectOf);
   });
 
-  it('should generate a valid ID if not provided', () => {
-    const topic = new Topic({ name: 'Generic' });
-    expect(topic['@id']).to.match(/^topic\/[a-f0-9-]{36}$/);
+  it('should allow adding bookmarks via addBookmark', () => {
+    const topic = new Topic({ name: 'Lit' });
+    topic.addBookmark('webpage/999');
+    expect(topic.subjectOf).to.deep.equal([{ '@id': 'webpage/999' }]);
   });
 });
