@@ -9,8 +9,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Environment Setup' (Protocol in workflow.md) (c335d18)
 
 ## Phase 2: Domain & Data Layers
-- [~] Task: Define Domain Model
-    - [ ] Create `Bookmark` entity in `src/domain/entities/Bookmark.js`.
+- [x] Task: Define Domain Model (17f4a79)
+    - [x] Create Bookmark entity in `src/domain/entities/Bookmark.js`.
 - [ ] Task: Implement Data Layer
     - [ ] Create `InMemoryBookmarkRepository` in `src/data/repositories/InMemoryBookmarkRepository.js`.
     - [ ] Implement `add`, `getAll`, and `search` methods.
