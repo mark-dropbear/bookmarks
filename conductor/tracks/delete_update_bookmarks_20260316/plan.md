@@ -22,10 +22,10 @@
 - [x] Task: Add Actions to Bookmark Item (26ed4d1)
     - [x] Import and integrate Material 3 icon buttons in `src/presentation/components/BookmarkItem.js`. (26ed4d1)
     - [x] Add `delete` and `edit` buttons to the item UI. (26ed4d1)
-- [~] Task: Implementation Confirmation Dialog
-    - [ ] Implement a reusable Material 3 dialog component or use `md-dialog` directly for deletion confirmation.
-    - [ ] Connect the delete button to the confirmation dialog and then to the `DeleteBookmarkUseCase`.
-- [ ] Task: Create Edit Bookmark Dialog
+- [x] Task: Implementation Confirmation Dialog (52ee921)
+    - [x] Implement a reusable Material 3 dialog component or use `md-dialog` directly for deletion confirmation. (52ee921)
+    - [x] Connect the delete button to the confirmation dialog and then to the `DeleteBookmarkUseCase`. (52ee921)
+- [~] Task: Create Edit Bookmark Dialog
     - [ ] Implement `src/presentation/components/EditBookmarkDialog.js`.
     - [ ] Pre-populate the form with current bookmark data.
     - [ ] Connect the form submission to the `UpdateBookmarkUseCase`.
