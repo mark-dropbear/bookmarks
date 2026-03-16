@@ -18,18 +18,18 @@
     - [x] Integrate favicon re-discovery and topic synchronization logic if URL changes. (25fdaab)
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Domain & Data Layer' (Protocol in workflow.md) (35b3738)
 
-## Phase 2: UI Implementation (Actions & Feedback)
+## Phase 2: UI Implementation (Actions & Feedback) [checkpoint: 41997b7]
 - [x] Task: Add Actions to Bookmark Item (26ed4d1)
     - [x] Import and integrate Material 3 icon buttons in `src/presentation/components/BookmarkItem.js`. (26ed4d1)
     - [x] Add `delete` and `edit` buttons to the item UI. (26ed4d1)
-- [x] Task: Implementation Confirmation Dialog (52ee921)
-    - [x] Implement a reusable Material 3 dialog component or use `md-dialog` directly for deletion confirmation. (52ee921)
-    - [x] Connect the delete button to the confirmation dialog and then to the `DeleteBookmarkUseCase`. (52ee921)
-- [~] Task: Create Edit Bookmark Dialog
-    - [ ] Implement `src/presentation/components/EditBookmarkDialog.js`.
-    - [ ] Pre-populate the form with current bookmark data.
-    - [ ] Connect the form submission to the `UpdateBookmarkUseCase`.
-- [ ] Task: UI Feedback with Snackbars
-    - [ ] Implement a simple Snackbar provider or use `md-snackbar` if available.
-    - [ ] Show success notifications after successful deletion and update operations.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation' (Protocol in workflow.md)
+- [x] Task: Implementation Confirmation Dialog (52ee921, 41997b7)
+    - [x] Implement a reusable Material 3 dialog component or use `md-dialog` directly for deletion confirmation. (52ee921, 41997b7)
+    - [x] Connect the delete button to the confirmation dialog and then to the `DeleteBookmarkUseCase`. (52ee921, 41997b7)
+- [x] Task: Create Edit Bookmark Dialog (52ee921, 41997b7)
+    - [x] Implement `src/presentation/components/EditBookmarkDialog.js`. (52ee921, 41997b7)
+    - [x] Pre-populate the form with current bookmark data. (52ee921, 41997b7)
+    - [x] Connect the form submission to the `UpdateBookmarkUseCase`. (52ee921, 41997b7)
+- [x] Task: UI Feedback with Snackbars (Manual verification)
+    - [x] Implement a simple Snackbar provider or use `md-snackbar` if available.
+    - [x] Show success notifications after successful deletion and update operations.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation' (Protocol in workflow.md) (41997b7)
