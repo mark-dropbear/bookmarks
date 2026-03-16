@@ -17,6 +17,7 @@ A privacy-focused, local-first bookmark manager that empowers users with full da
 ## Key Features
 - **Local-First Storage:** Uses IndexedDB for fast, offline-capable storage directly in the browser.
 - **Tagging & Search:** Efficiently organize and retrieve bookmarks using custom tags and a powerful search interface.
+- **Favicon Discovery:** Automatically attempts to find and display favicons for saved bookmarks using browser-native image loading.
 - **RDF Serialization:** Seamlessly import and export bookmarks using RDF/JSON-LD formats for maximum data interoperability.
 - **Material 3 UI:** A modern, familiar look and feel built with Lit and Material Web components.
 

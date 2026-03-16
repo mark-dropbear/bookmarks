@@ -13,9 +13,11 @@
 
 ## Data & Storage
 - **Primary Storage:** In-memory repository (for initial development), eventually migrating to IndexedDB.
+- **Repositories:** BookmarkRepository and TopicRepository interfaces defined in the domain layer.
 - **Data Format:** RDF/JSON-LD for interoperability and portability.
 
 ## Development & Build Tools
 - **Local Server:** [@web/dev-server](https://modern-web.dev/docs/dev-server/overview/) for a modern, fast development experience.
 - **Dependency Management:** Import Maps via [JSPM CLI](https://jspm.org/docs/cli/) for seamless external dependency management without a heavy bundler, using `es-module-shims` for browser support.
 - **Architecture:** Clean Architecture pattern for long-term maintainability.
+- **Reactive Controllers:** Custom controllers (e.g., BookmarksController) to encapsulate async logic and reactive state.
