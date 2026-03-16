@@ -33,7 +33,7 @@
 - [x] Task: Bookmark List Component (9cc305d)
     - [x] Create `<bookmark-list>` and `<bookmark-item>` components.
     - [x] Fetch data using `@lit/task` and display state (loading, error, complete).
-- [~] Task: Search & Filter
-    - [ ] Add an `<md-outlined-text-field>` for real-time searching.
-    - [ ] Implement search logic in the presentation layer.
+- [x] Task: Search & Filter (7597f88)
+    - [x] Add an `<md-outlined-text-field>` for real-time searching.
+    - [x] Implement search logic in the presentation layer.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: UI Components' (Protocol in workflow.md)
