@@ -48,15 +48,17 @@ export class BookmarksController {
 
   /**
    * Returns the current value of the task.
+   * @returns {any[] | undefined}
    */
-  get value() {
+  value() {
     return this.#task.value;
   }
 
   /**
    * Returns the current status of the task.
+   * @returns {import('@lit/task').TaskStatus}
    */
-  get status() {
+  status() {
     return this.#task.status;
   }
 

@@ -30,7 +30,7 @@ describe('Bookmark Use Cases', () => {
       // Verify topic was created/updated
       const topic = await topicRepository.getById('topic/123');
       expect(topic).to.exist;
-      expect(topic.subjectOf).to.deep.include({ '@id': result.id });
+      expect(topic.subjectOf).to.deep.include({ '@id': result.id() });
     });
 
     it('should attempt to discover a favicon using Image loading', async () => {
@@ -51,7 +51,7 @@ describe('Bookmark Use Cases', () => {
       const bookmarkData = { name: 'Fetch Test', url: 'https://lit.dev' };
       const result = await useCase.execute(bookmarkData);
       
-      expect(result.image).to.equal('https://lit.dev/favicon.ico');
+      expect(result.image()).to.equal('https://lit.dev/favicon.ico');
       
       window.Image = originalImage;
     });

@@ -34,7 +34,7 @@ export class AddBookmarkUseCase {
     await this.bookmarkRepository.add(bookmark);
 
     // 3. Maintain bi-directional links with topics
-    const topics = bookmark.about;
+    const topics = bookmark.about();
     if (topics.length > 0) {
       for (const ref of topics) {
         const topicId = ref['@id'];
@@ -44,7 +44,7 @@ export class AddBookmarkUseCase {
           topic = new Topic({ id: topicId, name: 'New Topic' });
         }
 
-        topic.addBookmark(bookmark.id);
+        topic.addBookmark(bookmark.id());
         await this.topicRepository.add(topic);
       }
     }

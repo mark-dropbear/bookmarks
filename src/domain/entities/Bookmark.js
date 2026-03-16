@@ -50,23 +50,41 @@ export class Bookmark {
     this.#about = about || [];
   }
 
-  /** @returns {string} */
-  get id() { return this.#id; }
+  /**
+   * Gets the unique identifier for the bookmark.
+   * @returns {string} 
+   */
+  id() { return this.#id; }
 
-  /** @returns {string} */
-  get name() { return this.#name; }
+  /**
+   * Gets the title of the bookmark.
+   * @returns {string} 
+   */
+  name() { return this.#name; }
 
-  /** @returns {string} */
-  get description() { return this.#description; }
+  /**
+   * Gets the description of the bookmark.
+   * @returns {string} 
+   */
+  description() { return this.#description; }
 
-  /** @returns {string} */
-  get url() { return this.#url; }
+  /**
+   * Gets the URL of the bookmark.
+   * @returns {string} 
+   */
+  url() { return this.#url; }
 
-  /** @returns {string} */
-  get image() { return this.#image; }
+  /**
+   * Gets the image URL associated with the bookmark.
+   * @returns {string} 
+   */
+  image() { return this.#image; }
 
-  /** @returns {TopicReference[]} */
-  get about() { return [...this.#about]; }
+  /**
+   * Gets the list of topics associated with the bookmark.
+   * @returns {TopicReference[]} 
+   */
+  about() { return [...this.#about]; }
 
   /**
    * Adds a topic reference to the bookmark.

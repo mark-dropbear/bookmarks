@@ -33,17 +33,29 @@ export class Topic {
     this.#subjectOf = subjectOf || [];
   }
 
-  /** @returns {string} */
-  get id() { return this.#id; }
+  /**
+   * Gets the unique identifier for the topic.
+   * @returns {string} 
+   */
+  id() { return this.#id; }
 
-  /** @returns {string} */
-  get name() { return this.#name; }
+  /**
+   * Gets the name of the topic.
+   * @returns {string} 
+   */
+  name() { return this.#name; }
 
-  /** @returns {string} */
-  get description() { return this.#description; }
+  /**
+   * Gets the description of the topic.
+   * @returns {string} 
+   */
+  description() { return this.#description; }
 
-  /** @returns {BookmarkReference[]} */
-  get subjectOf() { return [...this.#subjectOf]; }
+  /**
+   * Gets the list of bookmarks associated with this topic.
+   * @returns {BookmarkReference[]} 
+   */
+  subjectOf() { return [...this.#subjectOf]; }
 
   /**
    * Links a bookmark to this topic.

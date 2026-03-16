@@ -12,8 +12,8 @@ describe('Topic Entity', () => {
 
     const topic = new Topic(data);
 
-    expect(topic.id).to.equal(data.id);
-    expect(topic.name).to.equal(data.name);
+    expect(topic.id()).to.equal(data.id);
+    expect(topic.name()).to.equal(data.name);
     
     const json = topic.toJSON();
     expect(json['@type']).to.equal('Thing');
@@ -24,6 +24,6 @@ describe('Topic Entity', () => {
   it('should allow adding bookmarks via addBookmark', () => {
     const topic = new Topic({ name: 'Lit' });
     topic.addBookmark('webpage/999');
-    expect(topic.subjectOf).to.deep.equal([{ '@id': 'webpage/999' }]);
+    expect(topic.subjectOf()).to.deep.equal([{ '@id': 'webpage/999' }]);
   });
 });

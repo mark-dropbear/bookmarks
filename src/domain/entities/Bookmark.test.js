@@ -14,10 +14,10 @@ describe('Bookmark Entity', () => {
 
     const bookmark = new Bookmark(data);
 
-    expect(bookmark.id).to.equal(data.id);
-    expect(bookmark.name).to.equal(data.name);
-    expect(bookmark.url).to.equal(data.url);
-    expect(bookmark.image).to.equal(data.image);
+    expect(bookmark.id()).to.equal(data.id);
+    expect(bookmark.name()).to.equal(data.name);
+    expect(bookmark.url()).to.equal(data.url);
+    expect(bookmark.image()).to.equal(data.image);
     
     const json = bookmark.toJSON();
     expect(json['@type']).to.equal('WebPage');
@@ -37,6 +37,6 @@ describe('Bookmark Entity', () => {
   it('should allow adding topics via addTopic', () => {
     const bookmark = new Bookmark({ name: 'T', url: 'https://t.com' });
     bookmark.addTopic('topic/789');
-    expect(bookmark.about).to.deep.equal([{ '@id': 'topic/789' }]);
+    expect(bookmark.about()).to.deep.equal([{ '@id': 'topic/789' }]);
   });
 });

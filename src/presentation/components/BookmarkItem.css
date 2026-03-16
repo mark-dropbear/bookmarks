@@ -1,49 +1,58 @@
+.desc {
+  color: #444;
+  margin-top: 4px;
+}
+
+.favicon {
+  flex-shrink: 0;
+  height: 24px;
+  object-fit: contain;
+  width: 24px;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
 :host {
   display: block;
   margin-bottom: 8px;
 }
+
 md-elevated-card {
-  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 4px;
+  padding: 16px;
 }
-.header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 4px;
+
+.tag {
+  background: #eee;
+  border-radius: 4px;
+  font-size: 0.8em;
+  padding: 2px 6px;
 }
-.favicon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-.title {
-  font-weight: bold;
-  font-size: 1.1em;
-}
-.url {
-  color: #666;
-  font-size: 0.9em;
-  text-decoration: none;
-}
-.url:hover {
-  text-decoration: underline;
-}
-.desc {
-  margin-top: 4px;
-  color: #444;
-}
+
 .tags {
   display: flex;
   gap: 4px;
   margin-top: 8px;
 }
-.tag {
-  background: #eee;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.8em;
+
+.title {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.url {
+  color: #666;
+  font-size: 0.9em;
+  text-decoration: none;
+}
+
+.url:hover {
+  text-decoration: underline;
 }

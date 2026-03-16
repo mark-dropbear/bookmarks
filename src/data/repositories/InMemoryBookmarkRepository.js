@@ -1,16 +1,24 @@
 /**
  * In-memory implementation of the BookmarkRepository.
+ * Stores and retrieves plain objects representing bookmarks.
+ * @implements {import('../../domain/repositories/BookmarkRepository.js').BookmarkRepository}
  */
 export class InMemoryBookmarkRepository {
+  /**
+   * Initializes a new instance of the InMemoryBookmarkRepository.
+   */
   constructor() {
-    /** @type {Object[]} */
+    /** 
+     * The internal collection of bookmarks stored in memory.
+     * @type {Object[]} 
+     */
     this.bookmarks = [];
   }
 
   /**
-   * Adds a new bookmark.
-   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark
-   * @returns {Promise<void>}
+   * Adds or updates a bookmark in the in-memory collection.
+   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark - The bookmark entity to save.
+   * @returns {Promise<void>} Resolves when the bookmark is successfully added.
    */
   async add(bookmark) {
     // Store as plain object for easier search and consistent serialization
@@ -24,17 +32,18 @@ export class InMemoryBookmarkRepository {
   }
 
   /**
-   * Retrieves all currently stored bookmarks.
-   * @returns {Promise<Object[]>}
+   * Retrieves all currently stored bookmarks as plain data objects.
+   * @returns {Promise<Object[]>} Resolves to a copy of the bookmark array.
    */
   async getAll() {
     return [...this.bookmarks];
   }
 
   /**
-   * Searches bookmarks.
-   * @param {string} query
-   * @returns {Promise<Object[]>}
+   * Searches the in-memory collection for bookmarks matching the provided query.
+   * Case-insensitive matching across name, url, description, and related topic IDs.
+   * @param {string} query - The search term to match.
+   * @returns {Promise<Object[]>} Resolves to a filtered array of bookmark data.
    */
   async search(query) {
     const lowQuery = query.toLowerCase();

@@ -1,16 +1,18 @@
+header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
 :host {
   display: block;
   font-family: Roboto, system-ui, sans-serif;
-  max-width: 1200px;
   margin: 0 auto;
+  max-width: 1200px;
   padding: 16px;
 }
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
+
 main {
   padding: 8px;
 }
