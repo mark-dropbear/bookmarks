@@ -22,7 +22,7 @@
     - [x] Define Lit contexts in `src/presentation/context.js`.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Domain & Data Layers' (Protocol in workflow.md) (bf46563)
 
-## Phase 3: UI Components (Presentation Layer)
+## Phase 3: UI Components (Presentation Layer) [checkpoint: 749a621]
 - [x] Task: Core UI & Routing (aebb71b)
     - [x] Create main entry point `src/presentation/app.js`.
     - [x] Setup routing with `@lit-labs/router` for Home (dashboard) and Add Bookmark pages.
@@ -36,4 +36,4 @@
 - [x] Task: Search & Filter (7597f88)
     - [x] Add an `<md-outlined-text-field>` for real-time searching.
     - [x] Implement search logic in the presentation layer.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: UI Components' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: UI Components' (Protocol in workflow.md) (749a621)
