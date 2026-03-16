@@ -78,13 +78,46 @@ describe('UpdateBookmarkUseCase', () => {
     };
     await useCase.execute(updateData);
 
-    // Verify old topic cleaned up
-    const updatedOldTopic = await topicRepository.getById('topic/old');
-    expect(updatedOldTopic.subjectOf).to.not.deep.include({ '@id': 'b/1' });
+    // Verify old topic cleaned up (and deleted if orphaned)
+    try {
+      await topicRepository.getById('topic/old');
+      expect.fail('Topic should have been deleted');
+    } catch (e) {
+      expect(e).to.be.instanceOf(NotFoundError);
+    }
 
     // Verify new topic linked
     const updatedNewTopic = await topicRepository.getById('topic/new');
     expect(updatedNewTopic.subjectOf).to.deep.include({ '@id': 'b/1' });
+  });
+
+  it('should delete orphaned topics during update', async () => {
+    const bookmark = new Bookmark({ 
+      id: 'b/1', 
+      name: 'Test', 
+      url: 'https://test.com', 
+      about: [{ '@id': 'topic/orphan' }] 
+    });
+    const orphanTopic = new Topic({ id: 'topic/orphan', name: 'Orphan', subjectOf: [{ '@id': 'b/1' }] });
+
+    await bookmarkRepository.add(bookmark);
+    await topicRepository.add(orphanTopic);
+
+    const updateData = { 
+      id: 'b/1', 
+      name: 'Test', 
+      url: 'https://test.com', 
+      about: [] // Remove the topic
+    };
+    await useCase.execute(updateData);
+
+    // Verify orphan topic was deleted
+    try {
+      await topicRepository.getById('topic/orphan');
+      expect.fail('Topic should have been deleted');
+    } catch (e) {
+      expect(e).to.be.instanceOf(NotFoundError);
+    }
   });
 
   it('should throw NotFoundError if bookmark does not exist', async () => {

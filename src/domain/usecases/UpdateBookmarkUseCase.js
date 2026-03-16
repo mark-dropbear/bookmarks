@@ -54,7 +54,13 @@ export class UpdateBookmarkUseCase {
         const topicData = await this.topicRepository.getById(topicId);
         const topic = Topic.fromJSON(topicData);
         topic.removeBookmark(id);
-        await this.topicRepository.add(topic);
+        
+        // If topic is now orphaned (no bookmarks), delete it
+        if (topic.subjectOf().length === 0) {
+          await this.topicRepository.delete(topicId);
+        } else {
+          await this.topicRepository.add(topic);
+        }
       } catch (e) {
         // Topic already gone or broken, skip
       }
