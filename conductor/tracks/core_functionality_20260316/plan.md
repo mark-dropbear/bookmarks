@@ -30,9 +30,9 @@
 - [x] Task: Add Bookmark Component (088652f)
     - [x] Create `<add-bookmark-form>` using Material Web text fields.
     - [x] Consume use cases via `@lit/context`.
-- [~] Task: Bookmark List Component
-    - [ ] Create `<bookmark-list>` and `<bookmark-item>` components.
-    - [ ] Fetch data using `@lit/task` and display state (loading, error, complete).
+- [x] Task: Bookmark List Component (9cc305d)
+    - [x] Create `<bookmark-list>` and `<bookmark-item>` components.
+    - [x] Fetch data using `@lit/task` and display state (loading, error, complete).
 - [ ] Task: Search & Filter
     - [ ] Add an `<md-outlined-text-field>` for real-time searching.
     - [ ] Implement search logic in the presentation layer.
