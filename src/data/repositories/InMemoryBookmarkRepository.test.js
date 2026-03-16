@@ -64,4 +64,49 @@ describe('InMemoryBookmarkRepository', () => {
     expect(results).to.have.lengthOf(1);
     expect(results[0].name).to.equal('T1');
   });
+
+  it('should delete a bookmark by ID', async () => {
+    const bookmark = new Bookmark({ id: 'b/delete-me', name: 'Delete Me', url: 'https://delete.com' });
+    await repository.add(bookmark);
+
+    await repository.delete('b/delete-me');
+    
+    try {
+      await repository.getById('b/delete-me');
+      expect.fail('Should have thrown NotFoundError');
+    } catch (e) {
+      expect(e).to.be.instanceOf(NotFoundError);
+    }
+  });
+
+  it('should throw NotFoundError when deleting non-existent bookmark', async () => {
+    try {
+      await repository.delete('non-existent');
+      expect.fail('Should have thrown NotFoundError');
+    } catch (e) {
+      expect(e).to.be.instanceOf(NotFoundError);
+    }
+  });
+
+  it('should update an existing bookmark', async () => {
+    const bookmark = new Bookmark({ id: 'b/update-me', name: 'Original', url: 'https://original.com' });
+    await repository.add(bookmark);
+
+    const updatedBookmark = new Bookmark({ id: 'b/update-me', name: 'Updated', url: 'https://updated.com' });
+    await repository.update(updatedBookmark);
+
+    const retrieved = await repository.getById('b/update-me');
+    expect(retrieved.name).to.equal('Updated');
+    expect(retrieved.url).to.equal('https://updated.com');
+  });
+
+  it('should throw NotFoundError when updating non-existent bookmark', async () => {
+    const bookmark = new Bookmark({ id: 'non-existent', name: 'Missing', url: 'https://missing.com' });
+    try {
+      await repository.update(bookmark);
+      expect.fail('Should have thrown NotFoundError');
+    } catch (e) {
+      expect(e).to.be.instanceOf(NotFoundError);
+    }
+  });
 });

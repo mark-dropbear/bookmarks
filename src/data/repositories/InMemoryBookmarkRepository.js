@@ -56,6 +56,35 @@ export class InMemoryBookmarkRepository {
   }
 
   /**
+   * Updates an existing bookmark in the in-memory collection.
+   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark - The bookmark entity to update.
+   * @returns {Promise<void>} Resolves when the bookmark is successfully updated.
+   * @throws {NotFoundError} If the bookmark is not found.
+   */
+  async update(bookmark) {
+    const data = bookmark.toJSON();
+    const index = this.bookmarks.findIndex(b => b['@id'] === data['@id']);
+    if (index === -1) {
+      throw new NotFoundError(`Bookmark with id ${data['@id']} not found`);
+    }
+    this.bookmarks[index] = data;
+  }
+
+  /**
+   * Deletes a bookmark from the in-memory collection.
+   * @param {string} id - The unique identifier for the bookmark to delete.
+   * @returns {Promise<void>} Resolves when the bookmark is successfully deleted.
+   * @throws {NotFoundError} If the bookmark is not found.
+   */
+  async delete(id) {
+    const index = this.bookmarks.findIndex(b => b['@id'] === id);
+    if (index === -1) {
+      throw new NotFoundError(`Bookmark with id ${id} not found`);
+    }
+    this.bookmarks.splice(index, 1);
+  }
+
+  /**
    * Searches the in-memory collection for bookmarks matching the provided query.
    * Case-insensitive matching across name, url, description, and related topic IDs.
    * @param {string} query - The search term to match.
