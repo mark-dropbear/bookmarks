@@ -16,8 +16,10 @@
   "scopes": {
     "./": {
       "@lit-labs/router": "https://ga.jspm.io/npm:@lit-labs/router@0.1.4/development/index.js",
+      "@lit/context": "https://ga.jspm.io/npm:@lit/context@1.1.6/development/index.js",
       "@material/web/": "https://ga.jspm.io/npm:@material/web@2.4.1/",
-      "lit": "https://ga.jspm.io/npm:lit@3.3.2/index.js"
+      "lit": "https://ga.jspm.io/npm:lit@3.3.2/index.js",
+      "lit/decorators.js": "https://ga.jspm.io/npm:lit@3.3.2/decorators.js"
     },
     "https://ga.jspm.io/npm:@material/web@2.4.1/": {
       "lit": "https://ga.jspm.io/npm:lit@3.3.2/index.js",
