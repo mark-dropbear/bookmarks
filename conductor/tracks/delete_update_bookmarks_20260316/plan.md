@@ -4,11 +4,11 @@
 - [x] Task: Extend Repositories (abc3592)
     - [x] Write failing tests for `delete` and `update` in `InMemoryBookmarkRepository.test.js`. (abc3592)
     - [x] Implement `delete(id)` and `update(bookmark)` in `InMemoryBookmarkRepository.js`. (abc3592)
-- [ ] Task: Implement Delete Use Case
-    - [ ] Create `src/domain/usecases/DeleteBookmarkUseCase.js`.
-    - [ ] Write failing tests in `src/domain/usecases/DeleteBookmarkUseCase.test.js`.
-    - [ ] Implement `execute(id)` logic in `DeleteBookmarkUseCase.js`.
-    - [ ] Ensure that deleting a bookmark removes its ID from all associated `Topic` entities (cleaning up `subjectOf`).
+- [x] Task: Implement Delete Use Case (000bb3b)
+    - [x] Create `src/domain/usecases/DeleteBookmarkUseCase.js`. (000bb3b)
+    - [x] Write failing tests in `src/domain/usecases/DeleteBookmarkUseCase.test.js`. (000bb3b)
+    - [x] Implement `execute(id)` logic in `DeleteBookmarkUseCase.js`. (000bb3b)
+    - [x] Ensure that deleting a bookmark removes its ID from all associated `Topic` entities (cleaning up `subjectOf`). (000bb3b)
 - [ ] Task: Implement Update Use Case
     - [ ] Create `src/domain/usecases/UpdateBookmarkUseCase.js`.
     - [ ] Write failing tests in `src/domain/usecases/UpdateBookmarkUseCase.test.js`.
