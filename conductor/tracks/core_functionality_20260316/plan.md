@@ -27,9 +27,9 @@
     - [x] Create main entry point `src/presentation/app.js`.
     - [x] Setup routing with `@lit-labs/router` for Home (dashboard) and Add Bookmark pages.
     - [x] Implement a basic Material 3 layout using `<md-elevated-card>` and `<md-filled-button>`.
-- [~] Task: Add Bookmark Component
-    - [ ] Create `<add-bookmark-form>` using Material Web text fields.
-    - [ ] Consume use cases via `@lit/context`.
+- [x] Task: Add Bookmark Component (088652f)
+    - [x] Create `<add-bookmark-form>` using Material Web text fields.
+    - [x] Consume use cases via `@lit/context`.
 - [ ] Task: Bookmark List Component
     - [ ] Create `<bookmark-list>` and `<bookmark-item>` components.
     - [ ] Fetch data using `@lit/task` and display state (loading, error, complete).
