@@ -33,3 +33,6 @@
     - [x] Implement a simple Snackbar provider or use `md-snackbar` if available.
     - [x] Show success notifications after successful deletion and update operations.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation' (Protocol in workflow.md) (41997b7)
+
+## Phase: Review Fixes
+- [x] Task: Apply review suggestions (bd20daa)
