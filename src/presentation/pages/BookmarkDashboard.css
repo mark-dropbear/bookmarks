@@ -9,3 +9,12 @@ md-outlined-text-field {
 .search-container {
   margin-bottom: 24px;
 }
+
+md-dialog {
+  min-width: 320px;
+  max-width: 480px;
+}
+
+form[slot="content"] {
+  padding: 8px 24px 24px 24px;
+}

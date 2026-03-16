@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+md-dialog {
+  min-width: 400px;
+  max-width: 560px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 8px 24px 24px 24px;
+}
+
+md-outlined-text-field {
+  width: 100%;
+}
+
+.error-message {
+  background-color: var(--md-sys-color-error-container);
+  border-radius: 4px;
+  color: var(--md-sys-color-on-error-container);
+  padding: 12px;
+  margin-bottom: 8px;
+}
