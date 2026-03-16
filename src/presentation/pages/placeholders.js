@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import '../components/AddBookmarkForm.js';
 
 /**
  * Placeholder component for the Dashboard page.
@@ -12,11 +13,20 @@ export class BookmarkDashboard extends LitElement {
 customElements.define('bookmark-dashboard', BookmarkDashboard);
 
 /**
- * Placeholder component for the Add Bookmark page.
+ * Component for the Add Bookmark page.
  */
 export class AddBookmarkPage extends LitElement {
   render() {
-    return html`<h2>Add Bookmark</h2><p>Form will go here.</p>`;
+    return html`
+      <h2>Add Bookmark</h2>
+      <add-bookmark-form @bookmark-added=${this.#handleAdded}></add-bookmark-form>
+    `;
+  }
+
+  #handleAdded() {
+    // Optionally navigate back to dashboard
+    window.history.pushState({}, '', '/');
+    window.dispatchEvent(new PopStateEvent('popstate'));
   }
 }
 
