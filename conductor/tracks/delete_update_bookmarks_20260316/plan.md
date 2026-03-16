@@ -19,10 +19,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Domain & Data Layer' (Protocol in workflow.md) (35b3738)
 
 ## Phase 2: UI Implementation (Actions & Feedback)
-- [ ] Task: Add Actions to Bookmark Item
-    - [ ] Import and integrate Material 3 icon buttons in `src/presentation/components/BookmarkItem.js`.
-    - [ ] Add `delete` and `edit` buttons to the item UI.
-- [ ] Task: Implementation Confirmation Dialog
+- [x] Task: Add Actions to Bookmark Item (26ed4d1)
+    - [x] Import and integrate Material 3 icon buttons in `src/presentation/components/BookmarkItem.js`. (26ed4d1)
+    - [x] Add `delete` and `edit` buttons to the item UI. (26ed4d1)
+- [~] Task: Implementation Confirmation Dialog
     - [ ] Implement a reusable Material 3 dialog component or use `md-dialog` directly for deletion confirmation.
     - [ ] Connect the delete button to the confirmation dialog and then to the `DeleteBookmarkUseCase`.
 - [ ] Task: Create Edit Bookmark Dialog
