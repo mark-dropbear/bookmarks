@@ -25,6 +25,11 @@ export class AddBookmarkPage extends LitElement {
    * Handles the bookmark-added event and navigates back to the dashboard.
    */
   #handleAdded() {
+    this.dispatchEvent(new CustomEvent('show-snackbar', {
+      detail: { message: 'Bookmark added successfully' },
+      bubbles: true,
+      composed: true
+    }));
     if (this.router) {
       this.router.goto('/');
     } else {

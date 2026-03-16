@@ -112,7 +112,11 @@ export class BookmarkDashboard extends LitElement {
   #handleUpdated() {
     this._editBookmark = null;
     this.#refreshList();
-    // TODO: Show success snackbar
+    this.dispatchEvent(new CustomEvent('show-snackbar', {
+      detail: { message: 'Bookmark updated successfully' },
+      bubbles: true,
+      composed: true
+    }));
   }
 
   /**
@@ -125,10 +129,18 @@ export class BookmarkDashboard extends LitElement {
       await this.#deleteBookmarkUseCase.value.execute(this._deleteId);
       this._deleteId = null;
       this.#refreshList();
-      // TODO: Show success snackbar
+      this.dispatchEvent(new CustomEvent('show-snackbar', {
+        detail: { message: 'Bookmark deleted successfully' },
+        bubbles: true,
+        composed: true
+      }));
     } catch (err) {
       console.error('Failed to delete bookmark:', err);
-      alert('Failed to delete bookmark. Please try again.');
+      this.dispatchEvent(new CustomEvent('show-snackbar', {
+        detail: { message: 'Failed to delete bookmark. Please try again.' },
+        bubbles: true,
+        composed: true
+      }));
     }
   }
 

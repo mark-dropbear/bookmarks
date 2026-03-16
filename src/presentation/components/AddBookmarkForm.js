@@ -76,7 +76,11 @@ export class AddBookmarkForm extends LitElement {
       }
     } catch (err) {
       console.error('Failed to add bookmark:', err);
-      this._error = err instanceof AppError ? err.message : 'An unexpected error occurred';
+      this.dispatchEvent(new CustomEvent('show-snackbar', {
+        detail: { message: err instanceof AppError ? err.message : 'An unexpected error occurred' },
+        bubbles: true,
+        composed: true
+      }));
     }
   }
 }

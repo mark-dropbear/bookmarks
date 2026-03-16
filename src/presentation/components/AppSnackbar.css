@@ -1,0 +1,36 @@
+:host {
+  bottom: 24px;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  right: 0;
+  z-index: 1000;
+}
+
+.snackbar {
+  align-items: center;
+  background-color: var(--md-sys-color-inverse-surface);
+  border-radius: 4px;
+  box-shadow: var(--md-sys-elevation-level3);
+  color: var(--md-sys-color-inverse-on-surface);
+  display: flex;
+  gap: 8px;
+  min-width: 288px;
+  max-width: 568px;
+  opacity: 0;
+  padding: 14px 16px;
+  pointer-events: auto;
+  transform: translateY(100px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+:host([open]) .snackbar {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.message {
+  flex: 1;
+}

@@ -33,6 +33,7 @@ import {
 // Page imports
 import './pages/BookmarkDashboard.js';
 import './pages/AddBookmarkPage.js';
+import './components/AppSnackbar.js';
 
 /**
  * The main application shell component.
@@ -157,30 +158,43 @@ export class BookmarksApp extends LitElement {
 
   render() {
     return html`
-      <header>
-        <h1 class="md-typescale-headline-large">Bookmarks</h1>
-        <div class="controls">
-          <md-outlined-select 
-            label="Theme"
-            @change=${(e) => this.#themeController.setTheme(e.target.value)} 
-            .value=${this.#themeController.theme}
-          >
-            ${this.#themes.map(t => html`
-              <md-select-option value=${t.value}>
-                <div slot="headline">${t.label}</div>
-              </md-select-option>
-            `)}
-          </md-outlined-select>
-          <nav>
-            <md-filled-button @click=${() => this.#router.goto('/')}>Dashboard</md-filled-button>
-            <md-filled-button @click=${() => this.#router.goto('/add')}>Add New</md-filled-button>
-          </nav>
-        </div>
-      </header>
-      <main>
-        ${this.#router.outlet()}
-      </main>
+      <div @show-snackbar=${this.#handleShowSnackbar}>
+        <header>
+          <h1 class="md-typescale-headline-large">Bookmarks</h1>
+          <div class="controls">
+            <md-outlined-select 
+              label="Theme"
+              @change=${(e) => this.#themeController.setTheme(e.target.value)} 
+              .value=${this.#themeController.theme}
+            >
+              ${this.#themes.map(t => html`
+                <md-select-option value=${t.value}>
+                  <div slot="headline">${t.label}</div>
+                </md-select-option>
+              `)}
+            </md-outlined-select>
+            <nav>
+              <md-filled-button @click=${() => this.#router.goto('/')}>Dashboard</md-filled-button>
+              <md-filled-button @click=${() => this.#router.goto('/add')}>Add New</md-filled-button>
+            </nav>
+          </div>
+        </header>
+        <main>
+          ${this.#router.outlet()}
+        </main>
+        <app-snackbar></app-snackbar>
+      </div>
     `;
+  }
+
+  /**
+   * @param {CustomEvent} e 
+   */
+  #handleShowSnackbar(e) {
+    const snackbar = this.shadowRoot.querySelector('app-snackbar');
+    if (snackbar) {
+      snackbar.show(e.detail.message);
+    }
   }
 }
 
