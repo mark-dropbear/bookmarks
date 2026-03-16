@@ -1,56 +1,129 @@
 import { expect } from '@esm-bundle/chai';
+import { fixture, html, waitUntil } from '@open-wc/testing-helpers';
 import { BookmarkDashboard } from './BookmarkDashboard.js';
-import { getBookmarksContext } from '../context.js';
+import { Bookmark } from '../../domain/entities/Bookmark.js';
+import { getBookmarksContext, deleteBookmarkContext, updateBookmarkContext } from '../context.js';
 import { ContextProvider } from '@lit/context';
 
 describe('BookmarkDashboard', () => {
   let el;
-  let mockUseCase;
+  let mockGetUseCase;
+  let mockDeleteUseCase;
+  let mockUpdateUseCase;
 
   beforeEach(async () => {
-    mockUseCase = {
+    mockGetUseCase = {
       execute: (query) => {
         const data = [
-          { '@id': '1', name: 'Lit', url: 'https://lit.dev', about: [] },
-          { '@id': '2', name: 'MDW', url: 'https://m3.material.io', about: [] }
+          new Bookmark({ id: '1', name: 'Lit', url: 'https://lit.dev', about: [] }),
+          new Bookmark({ id: '2', name: 'MDW', url: 'https://m3.material.io', about: [] })
         ];
         if (!query) return Promise.resolve(data);
-        return Promise.resolve(data.filter(b => b.name.toLowerCase().includes(query.toLowerCase())));
+        return Promise.resolve(data.filter(b => b.name().toLowerCase().includes(query.toLowerCase())));
       }
     };
 
-    const container = document.createElement('div');
+    mockDeleteUseCase = {
+      execute: (id) => {
+        mockDeleteUseCase.calledWith = id;
+        return Promise.resolve();
+      }
+    };
+
+    mockUpdateUseCase = {
+      execute: (data) => Promise.resolve(data)
+    };
+
+    const container = await fixture(html`<div></div>`);
+    
     new ContextProvider(container, {
       context: getBookmarksContext,
-      initialValue: mockUseCase
+      initialValue: mockGetUseCase
     });
 
-    el = new BookmarkDashboard();
-    container.appendChild(el);
-    document.body.appendChild(container);
-    await el.updateComplete;
-  });
+    new ContextProvider(container, {
+      context: deleteBookmarkContext,
+      initialValue: mockDeleteUseCase
+    });
 
-  afterEach(() => {
-    document.body.innerHTML = '';
+    new ContextProvider(container, {
+      context: updateBookmarkContext,
+      initialValue: mockUpdateUseCase
+    });
+
+    el = document.createElement('bookmark-dashboard');
+    container.appendChild(el);
+    await el.updateComplete;
   });
 
   it('filters the list when searching', async () => {
     const searchField = el.shadowRoot.querySelector('md-outlined-text-field');
     const bookmarkList = el.shadowRoot.querySelector('bookmark-list');
 
-    // Initial state
-    await new Promise(r => setTimeout(r, 100)); // Wait for task
-    expect(bookmarkList.shadowRoot.querySelectorAll('bookmark-item')).to.have.lengthOf(2);
+    await waitUntil(() => 
+      bookmarkList.shadowRoot.querySelectorAll('bookmark-item').length === 2,
+      'List did not load'
+    );
 
-    // Type in search
     searchField.value = 'Lit';
     searchField.dispatchEvent(new Event('input'));
     
     await el.updateComplete;
-    await new Promise(r => setTimeout(r, 100)); // Wait for task re-run
     
-    expect(bookmarkList.shadowRoot.querySelectorAll('bookmark-item')).to.have.lengthOf(1);
-    expect(bookmarkList.shadowRoot.querySelector('bookmark-item').bookmark.name).to.equal('Lit');
+    await waitUntil(() => 
+      bookmarkList.shadowRoot.querySelectorAll('bookmark-item').length === 1,
+      'List did not filter'
+    );
+    const filteredItem = bookmarkList.shadowRoot.querySelector('bookmark-item');
+    expect(filteredItem.bookmark.name()).to.equal('Lit');
   });
+
+  it('opens delete confirmation dialog and calls use case', async () => {
+    const bookmarkList = el.shadowRoot.querySelector('bookmark-list');
+    await waitUntil(() => 
+      bookmarkList.shadowRoot.querySelector('bookmark-item'),
+      'Item did not load'
+    );
+
+    const item = bookmarkList.shadowRoot.querySelector('bookmark-item');
+    await item.updateComplete;
+
+    // Target the second icon button (delete is usually second in my template)
+    const deleteButton = item.shadowRoot.querySelectorAll('md-icon-button')[1];
+
+    deleteButton.click();
+    await el.updateComplete;
+
+    const dialog = el.shadowRoot.querySelector('#delete-dialog');
+    await waitUntil(() => dialog.open, 'Dialog did not open');
+
+    const confirmButton = Array.from(dialog.querySelectorAll('md-text-button'))
+      .find(b => b.value === 'delete');
+
+    confirmButton.click();
+
+    await waitUntil(() => mockDeleteUseCase.calledWith === '1', 'Delete UseCase not called');
+  });
+
+  it('opens edit dialog when edit is clicked', async () => {
+    const bookmarkList = el.shadowRoot.querySelector('bookmark-list');
+    await waitUntil(() => 
+      bookmarkList.shadowRoot.querySelector('bookmark-item'),
+      'Item did not load'
+    );
+
+    const item = bookmarkList.shadowRoot.querySelector('bookmark-item');
+    await item.updateComplete;
+
+    // Target the first icon button (edit)
+    const editButton = item.shadowRoot.querySelectorAll('md-icon-button')[0];
+
+    editButton.click();
+    await el.updateComplete;
+
+    const editDialog = el.shadowRoot.querySelector('edit-bookmark-dialog');
+    await waitUntil(() => editDialog.bookmark, 'Edit dialog did not receive bookmark');
+    expect(editDialog.bookmark.id()).to.equal('1');
+  });
+
 });

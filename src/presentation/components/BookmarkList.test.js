@@ -1,5 +1,7 @@
 import { expect } from '@esm-bundle/chai';
+import { fixture, html, waitUntil } from '@open-wc/testing-helpers';
 import { BookmarkList } from './BookmarkList.js';
+import { Bookmark } from '../../domain/entities/Bookmark.js';
 import { getBookmarksContext } from '../context.js';
 import { ContextProvider } from '@lit/context';
 
@@ -10,35 +12,26 @@ describe('BookmarkList', () => {
   beforeEach(async () => {
     mockUseCase = {
       execute: () => Promise.resolve([
-        { '@id': '1', name: 'Lit', url: 'https://lit.dev', about: [] },
-        { '@id': '2', name: 'MDW', url: 'https://m3.material.io', about: [] }
+        new Bookmark({ id: '1', name: 'Test 1', url: 'https://test1.com' }),
+        new Bookmark({ id: '2', name: 'Test 2', url: 'https://test2.com' })
       ])
     };
 
-    const container = document.createElement('div');
+    const container = await fixture(html`<div></div>`);
     new ContextProvider(container, {
       context: getBookmarksContext,
       initialValue: mockUseCase
     });
 
-    el = new BookmarkList();
+    el = document.createElement('bookmark-list');
     container.appendChild(el);
-    document.body.appendChild(container);
     await el.updateComplete;
-  });
-
-  afterEach(() => {
-    document.body.innerHTML = '';
   });
 
   it('renders a list of bookmarks', async () => {
-    // Wait for Controller task to complete
-    await new Promise(r => setTimeout(r, 50));
-    await el.updateComplete;
-
+    await waitUntil(() => el.shadowRoot.querySelectorAll('bookmark-item').length === 2, 'List did not render');
     const items = el.shadowRoot.querySelectorAll('bookmark-item');
-    expect(items).to.have.lengthOf(2);
-    // items[0].bookmark is data now
-    expect(items[0].bookmark.name).to.equal('Lit');
+    expect(items[0].bookmark.name()).to.equal('Test 1');
+    expect(items[1].bookmark.name()).to.equal('Test 2');
   });
 });

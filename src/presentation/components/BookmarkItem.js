@@ -24,19 +24,19 @@ export class BookmarkItem extends LitElement {
       <md-elevated-card>
         <div class="header">
           ${this.bookmark.image ? html`
-            <img class="favicon" src=${this.bookmark.image} alt="" @error=${this.#handleImageError}>
+            <img class="favicon" src=${this.bookmark.image()} alt="" @error=${this.#handleImageError}>
           ` : ''}
-          <div class="title md-typescale-title-medium">${this.bookmark.name}</div>
+          <div class="title md-typescale-title-medium">${this.bookmark.name()}</div>
         </div>
-        <a class="url md-typescale-body-medium" href=${this.bookmark.url} target="_blank" rel="noopener">
-          ${this.bookmark.url}
+        <a class="url md-typescale-body-medium" href=${this.bookmark.url()} target="_blank" rel="noopener">
+          ${this.bookmark.url()}
         </a>
-        ${this.bookmark.description ? html`
-          <div class="desc md-typescale-body-medium">${this.bookmark.description}</div>
+        ${this.bookmark.description() ? html`
+          <div class="desc md-typescale-body-medium">${this.bookmark.description()}</div>
         ` : ''}
-        ${this.bookmark.about && this.bookmark.about.length > 0 ? html`
+        ${this.bookmark.about && this.bookmark.about().length > 0 ? html`
           <div class="tags">
-            ${this.bookmark.about.map(tag => html`
+            ${this.bookmark.about().map(tag => html`
               <span class="tag md-typescale-label-medium">${tag['@id'].replace('topic/', '')}</span>
             `)}
           </div>

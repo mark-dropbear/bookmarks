@@ -4,6 +4,7 @@ import { GetBookmarksUseCase } from './GetBookmarksUseCase.js';
 import { InMemoryBookmarkRepository } from '../../data/repositories/InMemoryBookmarkRepository.js';
 import { InMemoryTopicRepository } from '../../data/repositories/InMemoryTopicRepository.js';
 import { Bookmark } from '../entities/Bookmark.js';
+import { Topic } from '../entities/Topic.js';
 import { ValidationError } from '../../core/errors/AppErrors.js';
 
 describe('Bookmark Use Cases', () => {
@@ -29,9 +30,10 @@ describe('Bookmark Use Cases', () => {
       expect(result).to.be.instanceOf(Bookmark);
       
       // Verify topic was created/updated
-      const topic = await topicRepository.getById('topic/123');
+      const topicData = await topicRepository.getById('topic/123');
+      const topic = Topic.fromJSON(topicData);
       expect(topic).to.exist;
-      expect(topic.subjectOf).to.deep.include({ '@id': result.id() });
+      expect(topic.subjectOf()).to.deep.include({ '@id': result.id() });
     });
 
     it('should throw ValidationError if bookmark data is invalid', async () => {
@@ -82,7 +84,7 @@ describe('Bookmark Use Cases', () => {
 
       const search = await useCase.execute('Alpha');
       expect(search).to.have.lengthOf(1);
-      expect(search[0].name).to.equal('Alpha');
+      expect(search[0].name()).to.equal('Alpha');
     });
   });
 });
