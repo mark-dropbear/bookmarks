@@ -57,3 +57,9 @@ md-elevated-card {
 .url:hover {
   text-decoration: underline;
 }
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
