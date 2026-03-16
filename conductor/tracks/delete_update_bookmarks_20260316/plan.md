@@ -9,11 +9,11 @@
     - [x] Write failing tests in `src/domain/usecases/DeleteBookmarkUseCase.test.js`. (000bb3b)
     - [x] Implement `execute(id)` logic in `DeleteBookmarkUseCase.js`. (000bb3b)
     - [x] Ensure that deleting a bookmark removes its ID from all associated `Topic` entities (cleaning up `subjectOf`). (000bb3b)
-- [ ] Task: Implement Update Use Case
-    - [ ] Create `src/domain/usecases/UpdateBookmarkUseCase.js`.
-    - [ ] Write failing tests in `src/domain/usecases/UpdateBookmarkUseCase.test.js`.
-    - [ ] Implement `execute(data)` logic in `UpdateBookmarkUseCase.js`.
-    - [ ] Integrate favicon re-discovery and topic synchronization logic if URL changes.
+- [x] Task: Implement Update Use Case (25fdaab)
+    - [x] Create `src/domain/usecases/UpdateBookmarkUseCase.js`. (25fdaab)
+    - [x] Write failing tests in `src/domain/usecases/UpdateBookmarkUseCase.test.js`. (25fdaab)
+    - [x] Implement `execute(data)` logic in `UpdateBookmarkUseCase.js`. (25fdaab)
+    - [x] Integrate favicon re-discovery and topic synchronization logic if URL changes. (25fdaab)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Domain & Data Layer' (Protocol in workflow.md)
 
 ## Phase 2: UI Implementation (Actions & Feedback)
