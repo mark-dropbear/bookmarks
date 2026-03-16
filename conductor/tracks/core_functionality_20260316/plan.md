@@ -1,11 +1,11 @@
 # Implementation Plan: Core Bookmarking Functionality
 
 ## Phase 1: Environment Setup
-- [ ] Task: Project Scaffolding
-    - [ ] Create directory structure for Clean Architecture (src/domain, src/data, src/presentation).
-    - [ ] Initialize `package.json` with `@web/dev-server` and JSPM CLI.
-    - [ ] Generate initial `importmap.json` using `jspm link` for Lit, Material Web, Router, Context, and Task.
-    - [ ] Configure `index.html` with `es-module-shims` and the generated import map.
+- [x] Task: Project Scaffolding (bc35177)
+    - [x] Create directory structure for Clean Architecture (src/domain, src/data, src/presentation).
+    - [x] Initialize `package.json` with `@web/dev-server` and JSPM CLI.
+    - [x] Generate initial `importmap.json` using `jspm link` for Lit, Material Web, Router, Context, and Task.
+    - [x] Configure `index.html` with `es-module-shims` and the generated import map.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Environment Setup' (Protocol in workflow.md)
 
 ## Phase 2: Domain & Data Layers
