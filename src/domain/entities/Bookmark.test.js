@@ -27,6 +27,24 @@ describe('Bookmark Entity', () => {
     expect(json.about).to.deep.equal(data.about);
   });
 
+  it('should create a Bookmark from JSON using fromJSON', () => {
+    const json = {
+      '@id': 'webpage/123',
+      name: 'JSON Title',
+      url: 'https://json.com',
+      image: 'https://json.com/img.png',
+      about: [{ '@id': 'topic/1' }]
+    };
+
+    const bookmark = Bookmark.fromJSON(json);
+
+    expect(bookmark.id()).to.equal(json['@id']);
+    expect(bookmark.name()).to.equal(json.name);
+    expect(bookmark.url()).to.equal(json.url);
+    expect(bookmark.image()).to.equal(json.image);
+    expect(bookmark.about()).to.deep.equal(json.about);
+  });
+
   it('should throw ValidationError if URL is missing', () => {
     expect(() => new Bookmark({ name: 'Test' }))
       .to.throw(ValidationError, 'URL is required');

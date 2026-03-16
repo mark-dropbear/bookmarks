@@ -31,8 +31,8 @@ export class AddBookmarkUseCase {
       data.image = await this.#discoverFavicon(data.url);
     }
 
-    // 2. Create Bookmark Entity (Constructor performs validation and throws ValidationError)
-    const bookmark = new Bookmark(data);
+    // 2. Create Bookmark Entity
+    const bookmark = Bookmark.fromJSON(data);
     await this.bookmarkRepository.add(bookmark);
 
     // 3. Maintain bi-directional links with topics
@@ -44,11 +44,11 @@ export class AddBookmarkUseCase {
         
         try {
           const topicData = await this.topicRepository.getById(topicId);
-          topic = new Topic(topicData);
+          topic = Topic.fromJSON(topicData);
         } catch (e) {
           if (e instanceof NotFoundError) {
             // Topic doesn't exist, create it
-            topic = new Topic({ id: topicId, name: 'New Topic' });
+            topic = Topic.fromJSON({ '@id': topicId, name: 'New Topic' });
           } else {
             throw e;
           }

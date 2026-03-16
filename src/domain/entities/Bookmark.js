@@ -53,6 +53,23 @@ export class Bookmark {
   }
 
   /**
+   * Factory method to create a Bookmark from a plain JSON object.
+   * Handles mapping schema.org fields if necessary.
+   * @param {Object} json 
+   * @returns {Bookmark}
+   */
+  static fromJSON(json) {
+    return new Bookmark({
+      id: json['@id'] || json.id,
+      name: json.name,
+      description: json.description,
+      url: json.url,
+      image: json.image,
+      about: json.about
+    });
+  }
+
+  /**
    * Gets the unique identifier for the bookmark.
    * @returns {string} 
    */

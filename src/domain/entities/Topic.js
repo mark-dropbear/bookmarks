@@ -34,6 +34,21 @@ export class Topic {
   }
 
   /**
+   * Factory method to create a Topic from a plain JSON object.
+   * Handles mapping schema.org fields if necessary.
+   * @param {Object} json 
+   * @returns {Topic}
+   */
+  static fromJSON(json) {
+    return new Topic({
+      id: json['@id'] || json.id,
+      name: json.name,
+      description: json.description,
+      subjectOf: json.subjectOf
+    });
+  }
+
+  /**
    * Gets the unique identifier for the topic.
    * @returns {string} 
    */
@@ -65,6 +80,14 @@ export class Topic {
     if (!this.#subjectOf.some(b => b['@id'] === bookmarkId)) {
       this.#subjectOf.push({ '@id': bookmarkId });
     }
+  }
+
+  /**
+   * Unlinks a bookmark from this topic.
+   * @param {string} bookmarkId 
+   */
+  removeBookmark(bookmarkId) {
+    this.#subjectOf = this.#subjectOf.filter(b => b['@id'] !== bookmarkId);
   }
 
   /**

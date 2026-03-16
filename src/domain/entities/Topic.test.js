@@ -21,9 +21,31 @@ describe('Topic Entity', () => {
     expect(json.subjectOf).to.deep.equal(data.subjectOf);
   });
 
+  it('should create a Topic from JSON using fromJSON', () => {
+    const json = {
+      '@id': 'topic/123',
+      name: 'JSON Topic',
+      description: 'Desc',
+      subjectOf: [{ '@id': 'webpage/1' }]
+    };
+
+    const topic = Topic.fromJSON(json);
+
+    expect(topic.id()).to.equal(json['@id']);
+    expect(topic.name()).to.equal(json.name);
+    expect(topic.description()).to.equal(json.description);
+    expect(topic.subjectOf()).to.deep.equal(json.subjectOf);
+  });
+
   it('should allow adding bookmarks via addBookmark', () => {
     const topic = new Topic({ name: 'Lit' });
     topic.addBookmark('webpage/999');
     expect(topic.subjectOf()).to.deep.equal([{ '@id': 'webpage/999' }]);
+  });
+
+  it('should allow removing bookmarks via removeBookmark', () => {
+    const topic = new Topic({ name: 'Lit', subjectOf: [{ '@id': 'webpage/999' }] });
+    topic.removeBookmark('webpage/999');
+    expect(topic.subjectOf()).to.be.empty;
   });
 });
