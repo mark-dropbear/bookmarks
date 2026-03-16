@@ -14,8 +14,8 @@
 - [x] Task: Implement Data Layer (66a1eba)
     - [x] Create `InMemoryBookmarkRepository` in `src/data/repositories/InMemoryBookmarkRepository.js`.
     - [x] Implement `add`, `getAll`, and `search` methods.
-- [~] Task: Implement Use Cases
-    - [ ] Create `AddBookmarkUseCase.js` and `GetBookmarksUseCase.js` in `src/domain/usecases/`.
+- [x] Task: Implement Use Cases (7e7e513)
+    - [x] Create `AddBookmarkUseCase.js` and `GetBookmarksUseCase.js` in `src/domain/usecases/`.
 - [ ] Task: Set Up Dependency Injection
     - [ ] Define Lit contexts in `src/presentation/context.js` (e.g., repository context or use case context).
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Domain & Data Layers' (Protocol in workflow.md)
