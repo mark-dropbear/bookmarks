@@ -1,30 +1,43 @@
 /**
- * @implements {BookmarkRepository}
+ * In-memory implementation of the BookmarkRepository.
+ * This class provides volatile storage for bookmarks, useful for development, testing, and 
+ * initial core implementation without a persistent database dependency.
+ * @implements {import('../../domain/repositories/BookmarkRepository.js').BookmarkRepository}
  */
 export class InMemoryBookmarkRepository {
+  /**
+   * Initializes a new instance of the in-memory repository.
+   */
   constructor() {
-    /** @type {import('../../domain/entities/Bookmark.js').Bookmark[]} */
+    /** 
+     * The internal collection of bookmarks stored in memory.
+     * @type {import('../../domain/entities/Bookmark.js').Bookmark[]} 
+     */
     this.bookmarks = [];
   }
 
   /**
-   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark
-   * @returns {Promise<void>}
+   * Adds a new bookmark to the in-memory collection.
+   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark - The bookmark entity to add.
+   * @returns {Promise<void>} Resolves when the bookmark is successfully added.
    */
   async add(bookmark) {
     this.bookmarks.push(bookmark);
   }
 
   /**
-   * @returns {Promise<import('../../domain/entities/Bookmark.js').Bookmark[]>}
+   * Retrieves all currently stored bookmarks.
+   * @returns {Promise<import('../../domain/entities/Bookmark.js').Bookmark[]>} Resolves to a copy of the bookmark array.
    */
   async getAll() {
     return [...this.bookmarks];
   }
 
   /**
-   * @param {string} query
-   * @returns {Promise<import('../../domain/entities/Bookmark.js').Bookmark[]>}
+   * Searches the in-memory collection for bookmarks matching the provided query.
+   * Case-insensitive matching across name, url, description, and tags.
+   * @param {string} query - The search term to match.
+   * @returns {Promise<import('../../domain/entities/Bookmark.js').Bookmark[]>} Resolves to a filtered array of bookmarks.
    */
   async search(query) {
     const lowQuery = query.toLowerCase();
