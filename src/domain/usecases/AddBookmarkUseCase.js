@@ -1,6 +1,7 @@
 import { Bookmark } from '../entities/Bookmark.js';
 import { Topic } from '../entities/Topic.js';
 import { NotFoundError } from '../../core/errors/AppErrors.js';
+import { FaviconDiscovery } from './FaviconDiscovery.js';
 
 /**
  * Use case for adding a new bookmark and ensuring its topics are managed.
@@ -28,7 +29,7 @@ export class AddBookmarkUseCase {
   async execute(data) {
     // 1. Discover Favicon if not already provided
     if (!data.image) {
-      data.image = await this.#discoverFavicon(data.url);
+      data.image = await FaviconDiscovery.discoverFavicon(data.url);
     }
 
     // 2. Create Bookmark Entity
@@ -60,43 +61,5 @@ export class AddBookmarkUseCase {
     }
 
     return bookmark;
-  }
-
-  /**
-   * Attempts to find a favicon for the given URL by testing common extensions.
-   * @param {string} url 
-   * @returns {Promise<string>} The URL of the found favicon, or empty string.
-   */
-  async #discoverFavicon(url) {
-    try {
-      const urlObj = new URL(url);
-      const baseUrl = `${urlObj.protocol}//${urlObj.hostname}`;
-      const extensions = ['ico', 'svg', 'png'];
-
-      for (const ext of extensions) {
-        const faviconUrl = `${baseUrl}/favicon.${ext}`;
-        const exists = await this.#testImageUrl(faviconUrl);
-        if (exists) {
-          return faviconUrl;
-        }
-      }
-    } catch (e) {
-      // Invalid URL - we just return empty image instead of crashing
-    }
-    return '';
-  }
-
-  /**
-   * Tests if an image URL is valid and accessible.
-   * @param {string} url 
-   * @returns {Promise<boolean>}
-   */
-  #testImageUrl(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
   }
 }
