@@ -8,6 +8,18 @@ md-elevated-card {
   flex-direction: column;
   gap: 4px;
 }
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.favicon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
 .title {
   font-weight: bold;
   font-size: 1.1em;
@@ -20,10 +32,14 @@ md-elevated-card {
 .url:hover {
   text-decoration: underline;
 }
+.desc {
+  margin-top: 4px;
+  color: #444;
+}
 .tags {
   display: flex;
   gap: 4px;
-  margin-top: 4px;
+  margin-top: 8px;
 }
 .tag {
   background: #eee;

@@ -4,12 +4,16 @@ import '@material/web/labs/card/elevated-card.js';
 
 /**
  * A component representing a single bookmark item.
+ * Displays the title, URL, description, topics, and an optional favicon image.
  */
 export class BookmarkItem extends LitElement {
   static styles = styles;
 
   static properties = {
-    /** @type {import('../../domain/entities/Bookmark.js').BookmarkData} */
+    /** 
+     * The bookmark data object (JSON-LD compliant).
+     * @type {import('../../domain/entities/Bookmark.js').BookmarkData} 
+     */
     bookmark: { type: Object }
   };
 
@@ -17,7 +21,12 @@ export class BookmarkItem extends LitElement {
     if (!this.bookmark) return html``;
     return html`
       <md-elevated-card>
-        <div class="title">${this.bookmark.name}</div>
+        <div class="header">
+          ${this.bookmark.image 
+            ? html`<img class="favicon" src="${this.bookmark.image}" alt="" loading="lazy" @error=${this.#handleImageError}>` 
+            : ''}
+          <div class="title">${this.bookmark.name}</div>
+        </div>
         <a class="url" href="${this.bookmark.url}" target="_blank">${this.bookmark.url}</a>
         ${this.bookmark.description ? html`<div class="desc">${this.bookmark.description}</div>` : ''}
         <div class="tags">
@@ -25,6 +34,15 @@ export class BookmarkItem extends LitElement {
         </div>
       </md-elevated-card>
     `;
+  }
+
+  /**
+   * Handles image loading errors by hiding the image.
+   * @param {Event} e 
+   */
+  #handleImageError(e) {
+    const target = /** @type {HTMLImageElement} */ (e.target);
+    target.style.display = 'none';
   }
 }
 

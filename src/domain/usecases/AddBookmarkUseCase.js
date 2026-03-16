@@ -3,7 +3,7 @@ import { Topic } from '../entities/Topic.js';
 
 /**
  * Use case for adding a new bookmark and ensuring its topics are managed.
- * This encapsulates the logic of bi-directional linking between WebPages and Things.
+ * Includes URL validation and automated favicon discovery using Image loading.
  */
 export class AddBookmarkUseCase {
   /**
@@ -18,15 +18,22 @@ export class AddBookmarkUseCase {
 
   /**
    * Executes the use case to add a new bookmark.
-   * Automatically creates or updates associated topics to maintain bi-directional links.
+   * Automatically creates or updates associated topics and attempts to find a favicon.
    * @param {import('../entities/Bookmark.js').BookmarkData} data - The bookmark data.
    * @returns {Promise<Bookmark>} The created bookmark.
    */
   async execute(data) {
+    // 1. Discover Favicon if not already provided
+    // We use Image loading instead of fetch to avoid CORS issues.
+    if (!data.image) {
+      data.image = await this.#discoverFavicon(data.url);
+    }
+
+    // 2. Create Bookmark Entity (Constructor performs final URL validation)
     const bookmark = new Bookmark(data);
     await this.bookmarkRepository.add(bookmark);
 
-    // Maintain bi-directional links with topics
+    // 3. Maintain bi-directional links with topics
     const topics = bookmark.about;
     if (topics.length > 0) {
       for (const ref of topics) {
@@ -43,5 +50,44 @@ export class AddBookmarkUseCase {
     }
 
     return bookmark;
+  }
+
+  /**
+   * Attempts to find a favicon for the given URL by testing common extensions.
+   * Uses the Image object to bypass CORS restrictions associated with fetch.
+   * @param {string} url 
+   * @returns {Promise<string>} The URL of the found favicon, or empty string.
+   */
+  async #discoverFavicon(url) {
+    try {
+      const urlObj = new URL(url);
+      const baseUrl = `${urlObj.protocol}//${urlObj.hostname}`;
+      const extensions = ['ico', 'svg', 'png'];
+
+      for (const ext of extensions) {
+        const faviconUrl = `${baseUrl}/favicon.${ext}`;
+        const exists = await this.#testImageUrl(faviconUrl);
+        if (exists) {
+          return faviconUrl;
+        }
+      }
+    } catch (e) {
+      // Invalid URL
+    }
+    return '';
+  }
+
+  /**
+   * Tests if an image URL is valid and accessible by attempting to load it.
+   * @param {string} url 
+   * @returns {Promise<boolean>}
+   */
+  #testImageUrl(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
   }
 }

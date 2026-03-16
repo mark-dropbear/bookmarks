@@ -8,6 +8,7 @@ describe('Bookmark Entity', () => {
       name: 'Example Title',
       description: 'An example description',
       url: 'https://example.com',
+      image: 'https://example.com/favicon.ico',
       about: [{ '@id': 'topic/123' }]
     };
 
@@ -16,15 +17,21 @@ describe('Bookmark Entity', () => {
     expect(bookmark.id).to.equal(data.id);
     expect(bookmark.name).to.equal(data.name);
     expect(bookmark.url).to.equal(data.url);
+    expect(bookmark.image).to.equal(data.image);
     
     const json = bookmark.toJSON();
     expect(json['@type']).to.equal('WebPage');
     expect(json['@id']).to.equal(data.id);
+    expect(json.image).to.equal(data.image);
     expect(json.about).to.deep.equal(data.about);
   });
 
   it('should throw an error if URL is missing', () => {
     expect(() => new Bookmark({ name: 'Test' })).to.throw('URL is required');
+  });
+
+  it('should throw an error if URL is invalid', () => {
+    expect(() => new Bookmark({ name: 'Test', url: 'not-a-url' })).to.throw('Invalid URL');
   });
 
   it('should allow adding topics via addTopic', () => {

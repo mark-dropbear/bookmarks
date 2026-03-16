@@ -32,6 +32,29 @@ describe('Bookmark Use Cases', () => {
       expect(topic).to.exist;
       expect(topic.subjectOf).to.deep.include({ '@id': result.id });
     });
+
+    it('should attempt to discover a favicon using Image loading', async () => {
+      const useCase = new AddBookmarkUseCase(bookmarkRepository, topicRepository);
+      
+      // Stub Image for this test
+      const originalImage = window.Image;
+      window.Image = class {
+        set src(url) {
+          if (url.endsWith('favicon.ico')) {
+            setTimeout(() => this.onload(), 0);
+          } else {
+            setTimeout(() => this.onerror(), 0);
+          }
+        }
+      };
+
+      const bookmarkData = { name: 'Fetch Test', url: 'https://lit.dev' };
+      const result = await useCase.execute(bookmarkData);
+      
+      expect(result.image).to.equal('https://lit.dev/favicon.ico');
+      
+      window.Image = originalImage;
+    });
   });
 
   describe('GetBookmarksUseCase', () => {

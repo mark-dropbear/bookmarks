@@ -10,6 +10,7 @@
  * @property {string} name - The title of the webpage.
  * @property {string} [description] - A brief summary of the webpage.
  * @property {string} url - The absolute URL of the webpage.
+ * @property {string} [image] - A URL to an image representing the webpage (e.g., a favicon).
  * @property {TopicReference[]} [about] - Topics this webpage is about.
  */
 
@@ -22,22 +23,30 @@ export class Bookmark {
   #name;
   #description;
   #url;
+  #image;
   #about;
 
   /**
    * Creates an instance of a Bookmark.
    * @param {BookmarkData} data - The initial data for the bookmark.
-   * @throws {Error} If the URL is missing.
+   * @throws {Error} If the URL is missing or invalid.
    */
-  constructor({ id, name, description, url, about }) {
+  constructor({ id, name, description, url, image, about }) {
     if (!url) {
       throw new Error('URL is required');
+    }
+    
+    try {
+      new URL(url);
+    } catch (e) {
+      throw new Error('Invalid URL');
     }
     
     this.#id = id || `webpage/${crypto.randomUUID()}`;
     this.#name = name || 'Untitled';
     this.#description = description || '';
     this.#url = url;
+    this.#image = image || '';
     this.#about = about || [];
   }
 
@@ -52,6 +61,9 @@ export class Bookmark {
 
   /** @returns {string} */
   get url() { return this.#url; }
+
+  /** @returns {string} */
+  get image() { return this.#image; }
 
   /** @returns {TopicReference[]} */
   get about() { return [...this.#about]; }
@@ -77,6 +89,7 @@ export class Bookmark {
       'name': this.#name,
       'description': this.#description,
       'url': this.#url,
+      'image': this.#image,
       'about': this.#about
     };
   }
