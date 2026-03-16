@@ -11,10 +11,10 @@
 ## Phase 2: Domain & Data Layers
 - [x] Task: Define Domain Model (17f4a79)
     - [x] Create Bookmark entity in `src/domain/entities/Bookmark.js`.
-- [~] Task: Implement Data Layer
-    - [ ] Create `InMemoryBookmarkRepository` in `src/data/repositories/InMemoryBookmarkRepository.js`.
-    - [ ] Implement `add`, `getAll`, and `search` methods.
-- [ ] Task: Implement Use Cases
+- [x] Task: Implement Data Layer (66a1eba)
+    - [x] Create `InMemoryBookmarkRepository` in `src/data/repositories/InMemoryBookmarkRepository.js`.
+    - [x] Implement `add`, `getAll`, and `search` methods.
+- [~] Task: Implement Use Cases
     - [ ] Create `AddBookmarkUseCase.js` and `GetBookmarksUseCase.js` in `src/domain/usecases/`.
 - [ ] Task: Set Up Dependency Injection
     - [ ] Define Lit contexts in `src/presentation/context.js` (e.g., repository context or use case context).
