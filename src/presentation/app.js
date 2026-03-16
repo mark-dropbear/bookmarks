@@ -15,6 +15,8 @@ import { InMemoryBookmarkRepository } from '../data/repositories/InMemoryBookmar
 import { InMemoryTopicRepository } from '../data/repositories/InMemoryTopicRepository.js';
 import { BrowserThemeRepository } from '../data/repositories/BrowserThemeRepository.js';
 import { AddBookmarkUseCase } from '../domain/usecases/AddBookmarkUseCase.js';
+import { DeleteBookmarkUseCase } from '../domain/usecases/DeleteBookmarkUseCase.js';
+import { UpdateBookmarkUseCase } from '../domain/usecases/UpdateBookmarkUseCase.js';
 import { GetBookmarksUseCase } from '../domain/usecases/GetBookmarksUseCase.js';
 import { GetThemeUseCase } from '../domain/usecases/GetThemeUseCase.js';
 import { SetThemeUseCase } from '../domain/usecases/SetThemeUseCase.js';
@@ -23,6 +25,8 @@ import {
   bookmarkRepositoryContext, 
   topicRepositoryContext, 
   addBookmarkContext, 
+  deleteBookmarkContext,
+  updateBookmarkContext,
   getBookmarksContext 
 } from './context.js';
 
@@ -46,6 +50,10 @@ export class BookmarksApp extends LitElement {
   #themeRepo;
   /** @type {AddBookmarkUseCase} */
   #addBookmarkUseCase;
+  /** @type {DeleteBookmarkUseCase} */
+  #deleteBookmarkUseCase;
+  /** @type {UpdateBookmarkUseCase} */
+  #updateBookmarkUseCase;
   /** @type {GetBookmarksUseCase} */
   #getBookmarksUseCase;
   /** @type {GetThemeUseCase} */
@@ -60,6 +68,10 @@ export class BookmarksApp extends LitElement {
   #topicRepoProvider;
   /** @type {ContextProvider} */
   #addBookmarkProvider;
+  /** @type {ContextProvider} */
+  #deleteBookmarkProvider;
+  /** @type {ContextProvider} */
+  #updateBookmarkProvider;
   /** @type {ContextProvider} */
   #getBookmarksProvider;
   /** @type {Router} */
@@ -85,6 +97,8 @@ export class BookmarksApp extends LitElement {
 
     // Initialize Use Cases
     this.#addBookmarkUseCase = new AddBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo);
+    this.#deleteBookmarkUseCase = new DeleteBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo);
+    this.#updateBookmarkUseCase = new UpdateBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo);
     this.#getBookmarksUseCase = new GetBookmarksUseCase(this.#bookmarkRepo);
     this.#getThemeUseCase = new GetThemeUseCase(this.#themeRepo);
     this.#setThemeUseCase = new SetThemeUseCase(this.#themeRepo);
@@ -111,6 +125,16 @@ export class BookmarksApp extends LitElement {
     this.#addBookmarkProvider = new ContextProvider(this, {
       context: addBookmarkContext,
       initialValue: this.#addBookmarkUseCase
+    });
+
+    this.#deleteBookmarkProvider = new ContextProvider(this, {
+      context: deleteBookmarkContext,
+      initialValue: this.#deleteBookmarkUseCase
+    });
+
+    this.#updateBookmarkProvider = new ContextProvider(this, {
+      context: updateBookmarkContext,
+      initialValue: this.#updateBookmarkUseCase
     });
 
     this.#getBookmarksProvider = new ContextProvider(this, {

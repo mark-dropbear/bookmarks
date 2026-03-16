@@ -1,8 +1,12 @@
 import { LitElement, html } from 'lit';
 import styles from './BookmarkDashboard.css' with { type: 'css' };
 import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
+import { ContextConsumer } from '@lit/context';
+import { deleteBookmarkContext } from '../context.js';
 import '../components/BookmarkList.js';
 import '@material/web/textfield/outlined-text-field.js';
+import '@material/web/dialog/dialog.js';
+import '@material/web/button/text-button.js';
 
 /**
  * The primary dashboard page.
@@ -13,12 +17,21 @@ export class BookmarkDashboard extends LitElement {
 
   static properties = {
     /** @type {string} */
-    _searchQuery: { state: true }
+    _searchQuery: { state: true },
+    /** @type {string|null} */
+    _deleteId: { state: true }
   };
+
+  /** @type {ContextConsumer<import('../context.js').deleteBookmarkContext>} */
+  #deleteBookmarkUseCase = new ContextConsumer(this, {
+    context: deleteBookmarkContext,
+    subscribe: true,
+  });
 
   constructor() {
     super();
     this._searchQuery = '';
+    this._deleteId = null;
   }
 
   render() {
@@ -31,7 +44,26 @@ export class BookmarkDashboard extends LitElement {
           @input=${this.#handleSearch}
         ></md-outlined-text-field>
       </div>
-      <bookmark-list .searchQuery=${this._searchQuery}></bookmark-list>
+      
+      <bookmark-list 
+        .searchQuery=${this._searchQuery}
+        @delete-bookmark=${this.#handleDelete}
+      ></bookmark-list>
+
+      <md-dialog 
+        id="delete-dialog"
+        ?open=${!!this._deleteId}
+        @closed=${() => this._deleteId = null}
+      >
+        <div slot="headline">Delete Bookmark?</div>
+        <form slot="content" id="form-id" method="dialog">
+          Are you sure you want to delete this bookmark? This action cannot be undone.
+        </form>
+        <div slot="actions">
+          <md-text-button form="form-id" value="cancel">Cancel</md-text-button>
+          <md-text-button form="form-id" value="delete" @click=${this.#confirmDelete}>Delete</md-text-button>
+        </div>
+      </md-dialog>
     `;
   }
 
@@ -42,6 +74,37 @@ export class BookmarkDashboard extends LitElement {
   #handleSearch(e) {
     const target = /** @type {HTMLInputElement} */ (e.target);
     this._searchQuery = target.value;
+  }
+
+  /**
+   * Triggers the deletion confirmation dialog.
+   * @param {CustomEvent} e 
+   */
+  #handleDelete(e) {
+    this._deleteId = e.detail.id;
+  }
+
+  /**
+   * Executes the deletion after confirmation.
+   */
+  async #confirmDelete() {
+    if (!this._deleteId) return;
+
+    try {
+      await this.#deleteBookmarkUseCase.value.execute(this._deleteId);
+      this._deleteId = null;
+      
+      // Refresh the list
+      const list = this.shadowRoot.querySelector('bookmark-list');
+      if (list) {
+        list.refresh();
+      }
+      
+      // TODO: Show success snackbar
+    } catch (err) {
+      console.error('Failed to delete bookmark:', err);
+      alert('Failed to delete bookmark. Please try again.');
+    }
   }
 }
 

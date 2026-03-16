@@ -22,6 +22,16 @@ export const topicRepositoryContext = createContext('topic-repository');
 export const addBookmarkContext = createContext('add-bookmark-use-case');
 
 /**
+ * Context for the DeleteBookmarkUseCase.
+ */
+export const deleteBookmarkContext = createContext('delete-bookmark-use-case');
+
+/**
+ * Context for the UpdateBookmarkUseCase.
+ */
+export const updateBookmarkContext = createContext('update-bookmark-use-case');
+
+/**
  * Context for the GetBookmarksUseCase.
  * Allows components to inject and use the logic for retrieving/searching bookmarks.
  * @type {import('@lit/context').Context<unknown, import('../domain/usecases/GetBookmarksUseCase.js').GetBookmarksUseCase>}
