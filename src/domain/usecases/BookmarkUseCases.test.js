@@ -4,6 +4,7 @@ import { GetBookmarksUseCase } from './GetBookmarksUseCase.js';
 import { InMemoryBookmarkRepository } from '../../data/repositories/InMemoryBookmarkRepository.js';
 import { InMemoryTopicRepository } from '../../data/repositories/InMemoryTopicRepository.js';
 import { Bookmark } from '../entities/Bookmark.js';
+import { ValidationError } from '../../core/errors/AppErrors.js';
 
 describe('Bookmark Use Cases', () => {
   let bookmarkRepository;
@@ -31,6 +32,19 @@ describe('Bookmark Use Cases', () => {
       const topic = await topicRepository.getById('topic/123');
       expect(topic).to.exist;
       expect(topic.subjectOf).to.deep.include({ '@id': result.id() });
+    });
+
+    it('should throw ValidationError if bookmark data is invalid', async () => {
+      const useCase = new AddBookmarkUseCase(bookmarkRepository, topicRepository);
+      const invalidData = { name: 'Invalid', url: '' };
+
+      try {
+        await useCase.execute(invalidData);
+        expect.fail('Should have thrown ValidationError');
+      } catch (e) {
+        expect(e).to.be.instanceOf(ValidationError);
+        expect(e.message).to.equal('URL is required');
+      }
     });
 
     it('should attempt to discover a favicon using Image loading', async () => {

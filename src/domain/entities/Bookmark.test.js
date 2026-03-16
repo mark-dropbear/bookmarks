@@ -1,5 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { Bookmark } from './Bookmark.js';
+import { ValidationError } from '../../core/errors/AppErrors.js';
 
 describe('Bookmark Entity', () => {
   it('should create a valid Bookmark object and serialize to JSON-LD', () => {
@@ -26,12 +27,14 @@ describe('Bookmark Entity', () => {
     expect(json.about).to.deep.equal(data.about);
   });
 
-  it('should throw an error if URL is missing', () => {
-    expect(() => new Bookmark({ name: 'Test' })).to.throw('URL is required');
+  it('should throw ValidationError if URL is missing', () => {
+    expect(() => new Bookmark({ name: 'Test' }))
+      .to.throw(ValidationError, 'URL is required');
   });
 
-  it('should throw an error if URL is invalid', () => {
-    expect(() => new Bookmark({ name: 'Test', url: 'not-a-url' })).to.throw('Invalid URL');
+  it('should throw ValidationError if URL is invalid', () => {
+    expect(() => new Bookmark({ name: 'Test', url: 'not-a-url' }))
+      .to.throw(ValidationError, 'Invalid URL');
   });
 
   it('should allow adding topics via addTopic', () => {

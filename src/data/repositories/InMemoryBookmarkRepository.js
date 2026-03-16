@@ -1,3 +1,5 @@
+import { NotFoundError } from '../../core/errors/AppErrors.js';
+
 /**
  * In-memory implementation of the BookmarkRepository.
  * Stores and retrieves plain objects representing bookmarks.
@@ -37,6 +39,20 @@ export class InMemoryBookmarkRepository {
    */
   async getAll() {
     return [...this.bookmarks];
+  }
+
+  /**
+   * Retrieves a bookmark by its unique identifier.
+   * @param {string} id - The unique identifier for the bookmark.
+   * @returns {Promise<Object>} A promise that resolves to the bookmark data.
+   * @throws {NotFoundError} If the bookmark is not found.
+   */
+  async getById(id) {
+    const bookmark = this.bookmarks.find(b => b['@id'] === id);
+    if (!bookmark) {
+      throw new NotFoundError(`Bookmark with id ${id} not found`, { details: { id } });
+    }
+    return bookmark;
   }
 
   /**

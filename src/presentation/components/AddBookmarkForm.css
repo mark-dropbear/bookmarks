@@ -9,3 +9,10 @@ form {
   gap: 16px;
   max-width: 400px;
 }
+
+.error-message {
+  background-color: var(--md-sys-color-error-container);
+  border-radius: 4px;
+  color: var(--md-sys-color-on-error-container);
+  padding: 12px;
+}

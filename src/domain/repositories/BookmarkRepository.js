@@ -24,6 +24,16 @@ export class BookmarkRepository {
   }
 
   /**
+   * Retrieves a bookmark by its unique identifier.
+   * @param {string} id - The unique identifier for the bookmark.
+   * @returns {Promise<import('../entities/Bookmark.js').Bookmark>} A promise that resolves to the bookmark entity.
+   * @throws {Error} If the operation is not implemented by the subclass.
+   */
+  async getById(id) {
+    throw new Error('Not implemented');
+  }
+
+  /**
    * Searches for bookmarks matching the provided query.
    * Searches across name, URL, description, and tags.
    * @param {string} query - The search string to match against.

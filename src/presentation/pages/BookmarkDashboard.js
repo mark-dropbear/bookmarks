@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
 import styles from './BookmarkDashboard.css' with { type: 'css' };
+import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
 import '../components/BookmarkList.js';
 import '@material/web/textfield/outlined-text-field.js';
 
@@ -8,7 +9,7 @@ import '@material/web/textfield/outlined-text-field.js';
  * Displays the list of bookmarks and provides a real-time search interface.
  */
 export class BookmarkDashboard extends LitElement {
-  static styles = styles;
+  static styles = [typescaleStyles, styles];
 
   static properties = {
     /** @type {string} */

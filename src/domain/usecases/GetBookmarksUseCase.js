@@ -15,6 +15,7 @@ export class GetBookmarksUseCase {
    * Executes the use case to fetch bookmarks.
    * @param {string} [query] - Optional search query to filter bookmarks.
    * @returns {Promise<import('../entities/Bookmark.js').Bookmark[]>} Resolves to an array of bookmarks.
+   * @throws {import('../../core/errors/AppErrors.js').RepositoryError} If storage retrieval fails.
    */
   async execute(query) {
     if (query) {

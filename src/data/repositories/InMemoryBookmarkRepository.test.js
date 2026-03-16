@@ -1,6 +1,7 @@
 import { expect } from '@esm-bundle/chai';
 import { InMemoryBookmarkRepository } from './InMemoryBookmarkRepository.js';
 import { Bookmark } from '../../domain/entities/Bookmark.js';
+import { NotFoundError } from '../../core/errors/AppErrors.js';
 
 describe('InMemoryBookmarkRepository', () => {
   let repository;
@@ -20,6 +21,24 @@ describe('InMemoryBookmarkRepository', () => {
     expect(all).to.have.lengthOf(2);
     expect(all[0]).to.deep.equal(bookmark1.toJSON());
     expect(all[1]).to.deep.equal(bookmark2.toJSON());
+  });
+
+  it('should retrieve a bookmark by ID', async () => {
+    const bookmark = new Bookmark({ id: 'b/123', name: 'Test', url: 'https://test.com' });
+    await repository.add(bookmark);
+
+    const retrieved = await repository.getById('b/123');
+    expect(retrieved).to.deep.equal(bookmark.toJSON());
+  });
+
+  it('should throw NotFoundError if bookmark is not found by ID', async () => {
+    try {
+      await repository.getById('non-existent');
+      expect.fail('Should have thrown NotFoundError');
+    } catch (e) {
+      expect(e).to.be.instanceOf(NotFoundError);
+      expect(e.message).to.contain('Bookmark with id non-existent not found');
+    }
   });
 
   it('should search bookmarks by name', async () => {

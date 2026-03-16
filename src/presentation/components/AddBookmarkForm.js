@@ -2,6 +2,7 @@ import { LitElement, html } from 'lit';
 import styles from './AddBookmarkForm.css' with { type: 'css' };
 import { ContextConsumer } from '@lit/context';
 import { addBookmarkContext } from '../context.js';
+import { AppError } from '../../core/errors/AppErrors.js';
 
 import '@material/web/button/filled-button.js';
 import '@material/web/textfield/outlined-text-field.js';
@@ -11,7 +12,16 @@ import '@material/web/textfield/outlined-text-field.js';
  * Consumes the AddBookmarkUseCase via context.
  */
 export class AddBookmarkForm extends LitElement {
+  static properties = {
+    _error: { state: true }
+  };
+
   static styles = styles;
+
+  constructor() {
+    super();
+    this._error = null;
+  }
 
   // Consume the use case from context
   #addBookmarkUseCase = new ContextConsumer(this, {
@@ -22,6 +32,7 @@ export class AddBookmarkForm extends LitElement {
   render() {
     return html`
       <form @submit=${this.#handleSubmit}>
+        ${this._error ? html`<div class="error-message">${this._error}</div>` : ''}
         <md-outlined-text-field label="Title" name="name" required></md-outlined-text-field>
         <md-outlined-text-field label="URL" name="url" type="url" required></md-outlined-text-field>
         <md-outlined-text-field label="Description" name="description"></md-outlined-text-field>
@@ -37,6 +48,7 @@ export class AddBookmarkForm extends LitElement {
    */
   async #handleSubmit(e) {
     e.preventDefault();
+    this._error = null;
     const form = e.target;
     const formData = new FormData(form);
     
@@ -64,6 +76,7 @@ export class AddBookmarkForm extends LitElement {
       }
     } catch (err) {
       console.error('Failed to add bookmark:', err);
+      this._error = err instanceof AppError ? err.message : 'An unexpected error occurred';
     }
   }
 }

@@ -1,3 +1,5 @@
+import { NotFoundError } from '../../core/errors/AppErrors.js';
+
 /**
  * In-memory implementation of the TopicRepository.
  * Stores and retrieves plain objects representing topics.
@@ -41,9 +43,14 @@ export class InMemoryTopicRepository {
   /**
    * Gets a specific topic by its unique identifier.
    * @param {string} id - The @id of the topic to retrieve.
-   * @returns {Promise<Object|null>} Resolves to the topic data or null if not found.
+   * @returns {Promise<Object>} Resolves to the topic data.
+   * @throws {NotFoundError} If the topic is not found.
    */
   async getById(id) {
-    return this.topics.find(t => t['@id'] === id) || null;
+    const topic = this.topics.find(t => t['@id'] === id);
+    if (!topic) {
+      throw new NotFoundError(`Topic with id ${id} not found`, { details: { id } });
+    }
+    return topic;
   }
 }

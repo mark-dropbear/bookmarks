@@ -1,18 +1,40 @@
+:host {
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+  display: block;
+  margin: 0 auto;
+  min-height: 100vh;
+  max-width: 1200px;
+  padding: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 header {
   align-items: center;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
   display: flex;
   justify-content: space-between;
   margin-bottom: 24px;
+  padding-bottom: 16px;
 }
 
-:host {
-  display: block;
-  font-family: Roboto, system-ui, sans-serif;
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 16px;
+h1 {
+  color: var(--md-sys-color-primary);
+  margin: 0;
+}
+
+.controls {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
 }
 
 main {
   padding: 8px;
 }
+

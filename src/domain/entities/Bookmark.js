@@ -1,3 +1,5 @@
+import { ValidationError } from '../../core/errors/AppErrors.js';
+
 /**
  * @typedef {Object} TopicReference
  * @property {string} @id - The unique identifier of the topic.
@@ -29,17 +31,17 @@ export class Bookmark {
   /**
    * Creates an instance of a Bookmark.
    * @param {BookmarkData} data - The initial data for the bookmark.
-   * @throws {Error} If the URL is missing or invalid.
+   * @throws {ValidationError} If the URL is missing or invalid.
    */
   constructor({ id, name, description, url, image, about }) {
     if (!url) {
-      throw new Error('URL is required');
+      throw new ValidationError('URL is required');
     }
     
     try {
       new URL(url);
     } catch (e) {
-      throw new Error('Invalid URL');
+      throw new ValidationError('Invalid URL', { details: { url } });
     }
     
     this.#id = id || `webpage/${crypto.randomUUID()}`;

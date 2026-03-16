@@ -1,5 +1,6 @@
 import { Bookmark } from '../entities/Bookmark.js';
 import { Topic } from '../entities/Topic.js';
+import { NotFoundError } from '../../core/errors/AppErrors.js';
 
 /**
  * Use case for adding a new bookmark and ensuring its topics are managed.
@@ -21,15 +22,16 @@ export class AddBookmarkUseCase {
    * Automatically creates or updates associated topics and attempts to find a favicon.
    * @param {import('../entities/Bookmark.js').BookmarkData} data - The bookmark data.
    * @returns {Promise<Bookmark>} The created bookmark.
+   * @throws {import('../../core/errors/AppErrors.js').ValidationError} If the bookmark data is invalid.
+   * @throws {import('../../core/errors/AppErrors.js').RepositoryError} If storage fails.
    */
   async execute(data) {
     // 1. Discover Favicon if not already provided
-    // We use Image loading instead of fetch to avoid CORS issues.
     if (!data.image) {
       data.image = await this.#discoverFavicon(data.url);
     }
 
-    // 2. Create Bookmark Entity (Constructor performs final URL validation)
+    // 2. Create Bookmark Entity (Constructor performs validation and throws ValidationError)
     const bookmark = new Bookmark(data);
     await this.bookmarkRepository.add(bookmark);
 
@@ -38,10 +40,18 @@ export class AddBookmarkUseCase {
     if (topics.length > 0) {
       for (const ref of topics) {
         const topicId = ref['@id'];
-        let topic = await this.topicRepository.getById(topicId);
+        let topic;
         
-        if (!topic) {
-          topic = new Topic({ id: topicId, name: 'New Topic' });
+        try {
+          const topicData = await this.topicRepository.getById(topicId);
+          topic = new Topic(topicData);
+        } catch (e) {
+          if (e instanceof NotFoundError) {
+            // Topic doesn't exist, create it
+            topic = new Topic({ id: topicId, name: 'New Topic' });
+          } else {
+            throw e;
+          }
         }
 
         topic.addBookmark(bookmark.id());
@@ -54,7 +64,6 @@ export class AddBookmarkUseCase {
 
   /**
    * Attempts to find a favicon for the given URL by testing common extensions.
-   * Uses the Image object to bypass CORS restrictions associated with fetch.
    * @param {string} url 
    * @returns {Promise<string>} The URL of the found favicon, or empty string.
    */
@@ -72,13 +81,13 @@ export class AddBookmarkUseCase {
         }
       }
     } catch (e) {
-      // Invalid URL
+      // Invalid URL - we just return empty image instead of crashing
     }
     return '';
   }
 
   /**
-   * Tests if an image URL is valid and accessible by attempting to load it.
+   * Tests if an image URL is valid and accessible.
    * @param {string} url 
    * @returns {Promise<boolean>}
    */
