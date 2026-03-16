@@ -1,6 +1,6 @@
 # Implementation Plan: Delete and Update Bookmarks
 
-## Phase 1: Domain & Data Layer (CRUD Extensions)
+## Phase 1: Domain & Data Layer (CRUD Extensions) [checkpoint: 35b3738]
 - [x] Task: Extend Repositories (abc3592, 32336e3)
     - [x] Write failing tests for `delete` and `update` in `InMemoryBookmarkRepository.test.js`. (abc3592)
     - [x] Implement `delete(id)` and `update(bookmark)` in `InMemoryBookmarkRepository.js`. (abc3592)
@@ -16,7 +16,7 @@
     - [x] Write failing tests in `src/domain/usecases/UpdateBookmarkUseCase.test.js`. (25fdaab)
     - [x] Implement `execute(data)` logic in `UpdateBookmarkUseCase.js`. (25fdaab)
     - [x] Integrate favicon re-discovery and topic synchronization logic if URL changes. (25fdaab)
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Domain & Data Layer' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Domain & Data Layer' (Protocol in workflow.md) (35b3738)
 
 ## Phase 2: UI Implementation (Actions & Feedback)
 - [ ] Task: Add Actions to Bookmark Item
