@@ -16,8 +16,8 @@
     - [x] Implement `add`, `getAll`, and `search` methods.
 - [x] Task: Implement Use Cases (7e7e513)
     - [x] Create `AddBookmarkUseCase.js` and `GetBookmarksUseCase.js` in `src/domain/usecases/`.
-- [~] Task: Set Up Dependency Injection
-    - [ ] Define Lit contexts in `src/presentation/context.js` (e.g., repository context or use case context).
+- [x] Task: Set Up Dependency Injection (052d549)
+    - [x] Define Lit contexts in `src/presentation/context.js` (e.g., repository context or use case context).
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Domain & Data Layers' (Protocol in workflow.md)
 
 ## Phase 3: UI Components (Presentation Layer)
