@@ -8,17 +8,19 @@
     - [x] Configure `index.html` with `es-module-shims` and the generated import map.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Environment Setup' (Protocol in workflow.md) (c335d18)
 
-## Phase 2: Domain & Data Layers [checkpoint: 06c3b40]
-- [x] Task: Define Domain Model (17f4a79)
+## Phase 2: Domain & Data Layers [checkpoint: bf46563]
+- [x] Task: Define Domain Model (bf46563)
     - [x] Create Bookmark entity in `src/domain/entities/Bookmark.js`.
-- [x] Task: Implement Data Layer (66a1eba)
+    - [x] Create Topic entity in `src/domain/entities/Topic.js`.
+- [x] Task: Implement Data Layer (bf46563)
     - [x] Create `InMemoryBookmarkRepository` in `src/data/repositories/InMemoryBookmarkRepository.js`.
+    - [x] Create `InMemoryTopicRepository` in `src/data/repositories/InMemoryTopicRepository.js`.
     - [x] Implement `add`, `getAll`, and `search` methods.
-- [x] Task: Implement Use Cases (7e7e513)
+- [x] Task: Implement Use Cases (bf46563)
     - [x] Create `AddBookmarkUseCase.js` and `GetBookmarksUseCase.js` in `src/domain/usecases/`.
 - [x] Task: Set Up Dependency Injection (052d549)
-    - [x] Define Lit contexts in `src/presentation/context.js` (e.g., repository context or use case context).
-- [x] Task: Conductor - User Manual Verification 'Phase 2: Domain & Data Layers' (Protocol in workflow.md) (06c3b40)
+    - [x] Define Lit contexts in `src/presentation/context.js`.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Domain & Data Layers' (Protocol in workflow.md) (bf46563)
 
 ## Phase 3: UI Components (Presentation Layer)
 - [ ] Task: Core UI & Routing
