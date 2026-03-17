@@ -1,7 +1,6 @@
 import { Bookmark } from '../entities/Bookmark.js';
 import { Topic } from '../entities/Topic.js';
 import { NotFoundError } from '../../core/errors/AppErrors.js';
-import { FaviconDiscovery } from './FaviconDiscovery.js';
 
 /**
  * Use case for updating an existing bookmark.
@@ -10,10 +9,12 @@ export class UpdateBookmarkUseCase {
   /**
    * @param {import('../repositories/BookmarkRepository.js').BookmarkRepository} bookmarkRepository
    * @param {import('../repositories/TopicRepository.js').TopicRepository} topicRepository
+   * @param {import('./FaviconDiscovery.js').FaviconDiscovery} faviconDiscovery
    */
-  constructor(bookmarkRepository, topicRepository) {
+  constructor(bookmarkRepository, topicRepository, faviconDiscovery) {
     this.bookmarkRepository = bookmarkRepository;
     this.topicRepository = topicRepository;
+    this.faviconDiscovery = faviconDiscovery;
   }
 
   /**
@@ -32,7 +33,7 @@ export class UpdateBookmarkUseCase {
 
     // 2. Re-discover favicon if URL changed
     if (data.url !== currentBookmark.url() && !data.image) {
-      data.image = await FaviconDiscovery.discoverFavicon(data.url);
+      data.image = await this.faviconDiscovery.discoverFavicon(data.url);
     } else if (!data.image) {
       data.image = currentBookmark.image();
     }

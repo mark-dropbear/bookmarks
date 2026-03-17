@@ -14,6 +14,8 @@ import '@material/web/select/select-option.js';
 import { InMemoryBookmarkRepository } from '../data/repositories/InMemoryBookmarkRepository.js';
 import { InMemoryTopicRepository } from '../data/repositories/InMemoryTopicRepository.js';
 import { BrowserThemeRepository } from '../data/repositories/BrowserThemeRepository.js';
+import { BrowserImageValidationService } from '../data/services/BrowserImageValidationService.js';
+import { FaviconDiscovery } from '../domain/usecases/FaviconDiscovery.js';
 import { AddBookmarkUseCase } from '../domain/usecases/AddBookmarkUseCase.js';
 import { DeleteBookmarkUseCase } from '../domain/usecases/DeleteBookmarkUseCase.js';
 import { UpdateBookmarkUseCase } from '../domain/usecases/UpdateBookmarkUseCase.js';
@@ -96,10 +98,14 @@ export class BookmarksApp extends LitElement {
     this.#topicRepo = new InMemoryTopicRepository();
     this.#themeRepo = new BrowserThemeRepository();
 
+    // Initialize Services
+    const imageValidationService = new BrowserImageValidationService();
+    const faviconDiscovery = new FaviconDiscovery(imageValidationService);
+
     // Initialize Use Cases
-    this.#addBookmarkUseCase = new AddBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo);
+    this.#addBookmarkUseCase = new AddBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo, faviconDiscovery);
     this.#deleteBookmarkUseCase = new DeleteBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo);
-    this.#updateBookmarkUseCase = new UpdateBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo);
+    this.#updateBookmarkUseCase = new UpdateBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo, faviconDiscovery);
     this.#getBookmarksUseCase = new GetBookmarksUseCase(this.#bookmarkRepo);
     this.#getThemeUseCase = new GetThemeUseCase(this.#themeRepo);
     this.#setThemeUseCase = new SetThemeUseCase(this.#themeRepo);

@@ -10,11 +10,15 @@ describe('UpdateBookmarkUseCase', () => {
   let bookmarkRepository;
   let topicRepository;
   let useCase;
+  let mockFaviconDiscovery;
 
   beforeEach(() => {
     bookmarkRepository = new InMemoryBookmarkRepository();
     topicRepository = new InMemoryTopicRepository();
-    useCase = new UpdateBookmarkUseCase(bookmarkRepository, topicRepository);
+    mockFaviconDiscovery = {
+      discoverFavicon: async () => ''
+    };
+    useCase = new UpdateBookmarkUseCase(bookmarkRepository, topicRepository, mockFaviconDiscovery);
   });
 
   it('should update core bookmark fields', async () => {
@@ -35,25 +39,19 @@ describe('UpdateBookmarkUseCase', () => {
     const bookmark = new Bookmark({ id: 'b/1', name: 'Test', url: 'https://old.com', image: 'https://old.com/fav.ico' });
     await bookmarkRepository.add(bookmark);
 
-    // Mock Image for discovery
-    const originalImage = window.Image;
-    window.Image = class {
-      set src(url) {
-        if (url === 'https://new.com/favicon.ico') {
-          setTimeout(() => this.onload(), 0);
-        } else {
-          setTimeout(() => this.onerror(), 0);
-        }
+    const customMockDiscovery = {
+      discoverFavicon: async (url) => {
+        if (url === 'https://new.com') return 'https://new.com/favicon.ico';
+        return '';
       }
     };
+    const localUseCase = new UpdateBookmarkUseCase(bookmarkRepository, topicRepository, customMockDiscovery);
 
     const updateData = { id: 'b/1', name: 'Test', url: 'https://new.com' };
-    const result = await useCase.execute(updateData);
+    const result = await localUseCase.execute(updateData);
 
     expect(result.url()).to.equal('https://new.com');
     expect(result.image()).to.equal('https://new.com/favicon.ico');
-
-    window.Image = originalImage;
   });
 
   it('should synchronize topic links (add new, remove old)', async () => {

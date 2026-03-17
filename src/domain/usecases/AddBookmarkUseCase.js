@@ -1,21 +1,22 @@
 import { Bookmark } from '../entities/Bookmark.js';
 import { Topic } from '../entities/Topic.js';
 import { NotFoundError } from '../../core/errors/AppErrors.js';
-import { FaviconDiscovery } from './FaviconDiscovery.js';
 
 /**
  * Use case for adding a new bookmark and ensuring its topics are managed.
- * Includes URL validation and automated favicon discovery using Image loading.
+ * Includes URL validation and automated favicon discovery.
  */
 export class AddBookmarkUseCase {
   /**
-   * Initializes the use case with repositories.
+   * Initializes the use case with repositories and services.
    * @param {import('../repositories/BookmarkRepository.js').BookmarkRepository} bookmarkRepository
    * @param {import('../repositories/TopicRepository.js').TopicRepository} topicRepository
+   * @param {import('./FaviconDiscovery.js').FaviconDiscovery} faviconDiscovery
    */
-  constructor(bookmarkRepository, topicRepository) {
+  constructor(bookmarkRepository, topicRepository, faviconDiscovery) {
     this.bookmarkRepository = bookmarkRepository;
     this.topicRepository = topicRepository;
+    this.faviconDiscovery = faviconDiscovery;
   }
 
   /**
@@ -29,7 +30,7 @@ export class AddBookmarkUseCase {
   async execute(data) {
     // 1. Discover Favicon if not already provided
     if (!data.image) {
-      data.image = await FaviconDiscovery.discoverFavicon(data.url);
+      data.image = await this.faviconDiscovery.discoverFavicon(data.url);
     }
 
     // 2. Resolve topics by name to get their IDs

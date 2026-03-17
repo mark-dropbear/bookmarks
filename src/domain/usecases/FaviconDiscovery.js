@@ -1,7 +1,15 @@
 /**
  * Shared logic for discovering favicons.
  */
-export const FaviconDiscovery = {
+export class FaviconDiscovery {
+  /**
+   * Initializes the discovery service.
+   * @param {import('../services/ImageValidationService.js').ImageValidationService} imageValidationService
+   */
+  constructor(imageValidationService) {
+    this.imageValidationService = imageValidationService;
+  }
+
   /**
    * Attempts to find a favicon for the given URL by testing common extensions.
    * @param {string} url 
@@ -15,7 +23,7 @@ export const FaviconDiscovery = {
 
       for (const ext of extensions) {
         const faviconUrl = `${baseUrl}/favicon.${ext}`;
-        const exists = await this.testImageUrl(faviconUrl);
+        const exists = await this.imageValidationService.isValidImage(faviconUrl);
         if (exists) {
           return faviconUrl;
         }
@@ -24,19 +32,5 @@ export const FaviconDiscovery = {
       // Invalid URL - we just return empty image instead of crashing
     }
     return '';
-  },
-
-  /**
-   * Tests if an image URL is valid and accessible.
-   * @param {string} url 
-   * @returns {Promise<boolean>}
-   */
-  testImageUrl(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve(true);
-      img.onerror = () => resolve(false);
-      img.src = url;
-    });
   }
-};
+}

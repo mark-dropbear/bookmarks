@@ -10,15 +10,19 @@ import { ValidationError } from '../../core/errors/AppErrors.js';
 describe('Bookmark Use Cases', () => {
   let bookmarkRepository;
   let topicRepository;
+  let mockFaviconDiscovery;
 
   beforeEach(() => {
     bookmarkRepository = new InMemoryBookmarkRepository();
     topicRepository = new InMemoryTopicRepository();
+    mockFaviconDiscovery = {
+      discoverFavicon: async () => ''
+    };
   });
 
   describe('AddBookmarkUseCase', () => {
     it('should add a bookmark and maintain topic links', async () => {
-      const useCase = new AddBookmarkUseCase(bookmarkRepository, topicRepository);
+      const useCase = new AddBookmarkUseCase(bookmarkRepository, topicRepository, mockFaviconDiscovery);
       const bookmarkData = { 
         name: 'Test', 
         url: 'https://test.com',
@@ -38,7 +42,7 @@ describe('Bookmark Use Cases', () => {
     });
 
     it('should throw ValidationError if bookmark data is invalid', async () => {
-      const useCase = new AddBookmarkUseCase(bookmarkRepository, topicRepository);
+      const useCase = new AddBookmarkUseCase(bookmarkRepository, topicRepository, mockFaviconDiscovery);
       const invalidData = { name: 'Invalid', url: '' };
 
       try {
@@ -50,27 +54,19 @@ describe('Bookmark Use Cases', () => {
       }
     });
 
-    it('should attempt to discover a favicon using Image loading', async () => {
-      const useCase = new AddBookmarkUseCase(bookmarkRepository, topicRepository);
-      
-      // Stub Image for this test
-      const originalImage = window.Image;
-      window.Image = class {
-        set src(url) {
-          if (url.endsWith('favicon.ico')) {
-            setTimeout(() => this.onload(), 0);
-          } else {
-            setTimeout(() => this.onerror(), 0);
-          }
+    it('should attempt to discover a favicon using the provided service', async () => {
+      const customMockDiscovery = {
+        discoverFavicon: async (url) => {
+          if (url === 'https://lit.dev') return 'https://lit.dev/favicon.ico';
+          return '';
         }
       };
+      const useCase = new AddBookmarkUseCase(bookmarkRepository, topicRepository, customMockDiscovery);
 
       const bookmarkData = { name: 'Fetch Test', url: 'https://lit.dev' };
       const result = await useCase.execute(bookmarkData);
       
       expect(result.image()).to.equal('https://lit.dev/favicon.ico');
-      
-      window.Image = originalImage;
     });
   });
 
