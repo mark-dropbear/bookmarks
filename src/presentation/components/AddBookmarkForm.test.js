@@ -45,10 +45,12 @@ describe('AddBookmarkForm', () => {
   it('calls the use case on submit', async () => {
     const nameInput = el.shadowRoot.querySelector('md-outlined-text-field[name="name"]');
     const urlInput = el.shadowRoot.querySelector('md-outlined-text-field[name="url"]');
+    const topicsInput = el.shadowRoot.querySelector('md-outlined-text-field[name="topics"]');
     const form = el.shadowRoot.querySelector('form');
 
     nameInput.value = 'My Bookmark';
     urlInput.value = 'https://lit.dev';
+    topicsInput.value = 'Lit, Web Components';
     
     // Simulate form submission
     form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
@@ -58,5 +60,6 @@ describe('AddBookmarkForm', () => {
 
     expect(mockUseCase.lastData.name).to.equal('My Bookmark');
     expect(mockUseCase.lastData.url).to.equal('https://lit.dev');
+    expect(mockUseCase.lastData.topicNames).to.deep.equal(['Lit', 'Web Components']);
   });
 });

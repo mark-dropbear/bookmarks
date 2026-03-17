@@ -52,13 +52,16 @@ export class AddBookmarkForm extends LitElement {
     const form = e.target;
     const formData = new FormData(form);
     
+    const topicsStr = formData.get('topics') ? formData.get('topics').toString() : '';
+    const topicNames = topicsStr.split(',')
+      .map(t => t.trim())
+      .filter(t => t.length > 0);
+
     const data = {
       name: formData.get('name'),
       url: formData.get('url'),
       description: formData.get('description'),
-      about: formData.get('topics')
-        ? formData.get('topics').split(',').map(t => ({ name: t.trim() }))
-        : []
+      topicNames: topicNames
     };
 
     try {
