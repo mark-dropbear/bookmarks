@@ -1,8 +1,9 @@
 import { NotFoundError } from '../../core/errors/AppErrors.js';
+import { BookmarkPersistenceMapper } from '../../core/mappers/BookmarkPersistenceMapper.js';
 
 /**
  * In-memory implementation of the BookmarkRepository.
- * Stores and retrieves plain objects representing bookmarks.
+ * Stores persistence data objects and returns pure Domain Entities.
  * @implements {import('../../domain/repositories/BookmarkRepository.js').BookmarkRepository}
  */
 export class InMemoryBookmarkRepository {
@@ -11,7 +12,7 @@ export class InMemoryBookmarkRepository {
    */
   constructor() {
     /** 
-     * The internal collection of bookmarks stored in memory.
+     * The internal collection of bookmarks stored as persistence objects.
      * @type {Object[]} 
      */
     this.bookmarks = [];
@@ -19,13 +20,12 @@ export class InMemoryBookmarkRepository {
 
   /**
    * Adds or updates a bookmark in the in-memory collection.
-   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark - The bookmark entity to save.
-   * @returns {Promise<void>} Resolves when the bookmark is successfully added.
+   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark 
+   * @returns {Promise<void>} 
    */
   async add(bookmark) {
-    // Store as plain object for easier search and consistent serialization
-    const data = bookmark.toJSON();
-    const index = this.bookmarks.findIndex(b => b['@id'] === data['@id']);
+    const data = BookmarkPersistenceMapper.toPersistence(bookmark);
+    const index = this.bookmarks.findIndex(b => b.id === data.id);
     if (index !== -1) {
       this.bookmarks[index] = data;
     } else {
@@ -34,50 +34,50 @@ export class InMemoryBookmarkRepository {
   }
 
   /**
-   * Retrieves all currently stored bookmarks as plain data objects.
-   * @returns {Promise<Object[]>} Resolves to a copy of the bookmark array.
+   * Retrieves all currently stored bookmarks.
+   * @returns {Promise<import('../../domain/entities/Bookmark.js').Bookmark[]>}
    */
   async getAll() {
-    return [...this.bookmarks];
+    return this.bookmarks.map(b => BookmarkPersistenceMapper.toEntity(b));
   }
 
   /**
    * Retrieves a bookmark by its unique identifier.
-   * @param {string} id - The unique identifier for the bookmark.
-   * @returns {Promise<Object>} A promise that resolves to the bookmark data.
+   * @param {string} id 
+   * @returns {Promise<import('../../domain/entities/Bookmark.js').Bookmark>} 
    * @throws {NotFoundError} If the bookmark is not found.
    */
   async getById(id) {
-    const bookmark = this.bookmarks.find(b => b['@id'] === id);
-    if (!bookmark) {
+    const data = this.bookmarks.find(b => b.id === id);
+    if (!data) {
       throw new NotFoundError(`Bookmark with id ${id} not found`, { details: { id } });
     }
-    return bookmark;
+    return BookmarkPersistenceMapper.toEntity(data);
   }
 
   /**
    * Updates an existing bookmark in the in-memory collection.
-   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark - The bookmark entity to update.
-   * @returns {Promise<void>} Resolves when the bookmark is successfully updated.
+   * @param {import('../../domain/entities/Bookmark.js').Bookmark} bookmark 
+   * @returns {Promise<void>} 
    * @throws {NotFoundError} If the bookmark is not found.
    */
   async update(bookmark) {
-    const data = bookmark.toJSON();
-    const index = this.bookmarks.findIndex(b => b['@id'] === data['@id']);
+    const data = BookmarkPersistenceMapper.toPersistence(bookmark);
+    const index = this.bookmarks.findIndex(b => b.id === data.id);
     if (index === -1) {
-      throw new NotFoundError(`Bookmark with id ${data['@id']} not found`);
+      throw new NotFoundError(`Bookmark with id ${data.id} not found`);
     }
     this.bookmarks[index] = data;
   }
 
   /**
    * Deletes a bookmark from the in-memory collection.
-   * @param {string} id - The unique identifier for the bookmark to delete.
-   * @returns {Promise<void>} Resolves when the bookmark is successfully deleted.
+   * @param {string} id 
+   * @returns {Promise<void>} 
    * @throws {NotFoundError} If the bookmark is not found.
    */
   async delete(id) {
-    const index = this.bookmarks.findIndex(b => b['@id'] === id);
+    const index = this.bookmarks.findIndex(b => b.id === id);
     if (index === -1) {
       throw new NotFoundError(`Bookmark with id ${id} not found`);
     }
@@ -86,17 +86,16 @@ export class InMemoryBookmarkRepository {
 
   /**
    * Searches the in-memory collection for bookmarks matching the provided query.
-   * Case-insensitive matching across name, url, description, and related topic names.
    * @param {string} query - The search term to match.
-   * @returns {Promise<Object[]>} Resolves to a filtered array of bookmark data.
+   * @returns {Promise<import('../../domain/entities/Bookmark.js').Bookmark[]>} 
    */
   async search(query) {
     const lowQuery = query.toLowerCase();
-    return this.bookmarks.filter(b => 
+    const results = this.bookmarks.filter(b => 
       b.name.toLowerCase().includes(lowQuery) ||
       b.url.toLowerCase().includes(lowQuery) ||
-      b.description.toLowerCase().includes(lowQuery) ||
-      b.about.some(t => t.name && t.name.toLowerCase().includes(lowQuery))
+      b.description.toLowerCase().includes(lowQuery)
     );
+    return results.map(b => BookmarkPersistenceMapper.toEntity(b));
   }
 }

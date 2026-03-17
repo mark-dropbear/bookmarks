@@ -37,8 +37,8 @@ describe('IndexedDBBookmarkRepository', () => {
     // Sort by name for consistent comparison
     all.sort((a, b) => a.name.localeCompare(b.name));
     
-    expect(all[0]).to.deep.equal(bookmark1.toJSON());
-    expect(all[1]).to.deep.equal(bookmark2.toJSON());
+    expect(all[0]).to.deep.equal(bookmark1);
+    expect(all[1]).to.deep.equal(bookmark2);
   });
 
   it('should retrieve a bookmark by ID', async () => {
@@ -46,7 +46,7 @@ describe('IndexedDBBookmarkRepository', () => {
     await repository.add(bookmark);
 
     const retrieved = await repository.getById('b/123');
-    expect(retrieved).to.deep.equal(bookmark.toJSON());
+    expect(retrieved).to.deep.equal(bookmark);
   });
 
   it('should throw NotFoundError if bookmark is not found by ID', async () => {

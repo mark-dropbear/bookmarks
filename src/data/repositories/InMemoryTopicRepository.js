@@ -1,8 +1,9 @@
 import { NotFoundError } from '../../core/errors/AppErrors.js';
+import { TopicPersistenceMapper } from '../../core/mappers/TopicPersistenceMapper.js';
 
 /**
  * In-memory implementation of the TopicRepository.
- * Stores and retrieves plain objects representing topics.
+ * Stores persistence data objects and returns pure Domain Entities.
  * @implements {import('../../domain/repositories/TopicRepository.js').TopicRepository}
  */
 export class InMemoryTopicRepository {
@@ -11,7 +12,7 @@ export class InMemoryTopicRepository {
    */
   constructor() {
     /** 
-     * The internal collection of topics stored in memory.
+     * The internal collection of topics stored as persistence objects.
      * @type {Object[]} 
      */
     this.topics = [];
@@ -19,12 +20,12 @@ export class InMemoryTopicRepository {
 
   /**
    * Adds or updates a topic in the in-memory collection.
-   * @param {import('../../domain/entities/Topic.js').Topic} topic - The topic entity to save.
-   * @returns {Promise<void>} Resolves when the topic is successfully added.
+   * @param {import('../../domain/entities/Topic.js').Topic} topic 
+   * @returns {Promise<void>} 
    */
   async add(topic) {
-    const data = topic.toJSON();
-    const index = this.topics.findIndex(t => t['@id'] === data['@id']);
+    const data = TopicPersistenceMapper.toPersistence(topic);
+    const index = this.topics.findIndex(t => t.id === data.id);
     if (index !== -1) {
       this.topics[index] = data;
     } else {
@@ -33,49 +34,49 @@ export class InMemoryTopicRepository {
   }
 
   /**
-   * Retrieves all currently stored topics as plain data objects.
-   * @returns {Promise<Object[]>} Resolves to a copy of the topic array.
+   * Retrieves all currently stored topics.
+   * @returns {Promise<import('../../domain/entities/Topic.js').Topic[]>} 
    */
   async getAll() {
-    return [...this.topics];
+    return this.topics.map(t => TopicPersistenceMapper.toEntity(t));
   }
 
   /**
    * Gets a specific topic by its unique identifier.
-   * @param {string} id - The @id of the topic to retrieve.
-   * @returns {Promise<Object>} Resolves to the topic data.
+   * @param {string} id 
+   * @returns {Promise<import('../../domain/entities/Topic.js').Topic>} 
    * @throws {NotFoundError} If the topic is not found.
    */
   async getById(id) {
-    const topic = this.topics.find(t => t['@id'] === id);
-    if (!topic) {
+    const data = this.topics.find(t => t.id === id);
+    if (!data) {
       throw new NotFoundError(`Topic with id ${id} not found`, { details: { id } });
     }
-    return topic;
+    return TopicPersistenceMapper.toEntity(data);
   }
 
   /**
    * Gets a specific topic by its name.
-   * @param {string} name - The name of the topic to retrieve.
-   * @returns {Promise<Object>} Resolves to the topic data.
+   * @param {string} name 
+   * @returns {Promise<import('../../domain/entities/Topic.js').Topic>} 
    * @throws {NotFoundError} If the topic is not found.
    */
   async getByName(name) {
-    const topic = this.topics.find(t => t.name.toLowerCase() === name.toLowerCase());
-    if (!topic) {
+    const data = this.topics.find(t => t.name.toLowerCase() === name.toLowerCase());
+    if (!data) {
       throw new NotFoundError(`Topic with name ${name} not found`, { details: { name } });
     }
-    return topic;
+    return TopicPersistenceMapper.toEntity(data);
   }
 
   /**
    * Deletes a topic from the in-memory collection.
-   * @param {string} id - The @id of the topic to delete.
-   * @returns {Promise<void>} Resolves when the topic is successfully deleted.
+   * @param {string} id 
+   * @returns {Promise<void>} 
    * @throws {NotFoundError} If the topic is not found.
    */
   async delete(id) {
-    const index = this.topics.findIndex(t => t['@id'] === id);
+    const index = this.topics.findIndex(t => t.id === id);
     if (index === -1) {
       throw new NotFoundError(`Topic with id ${id} not found`);
     }

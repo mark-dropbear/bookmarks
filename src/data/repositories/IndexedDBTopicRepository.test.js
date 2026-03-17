@@ -37,8 +37,8 @@ describe('IndexedDBTopicRepository', () => {
     // Sort by name for consistent comparison
     all.sort((a, b) => a.name.localeCompare(b.name));
     
-    expect(all[0]).to.deep.equal(topic1.toJSON());
-    expect(all[1]).to.deep.equal(topic2.toJSON());
+    expect(all[0]).to.deep.equal(topic1);
+    expect(all[1]).to.deep.equal(topic2);
   });
 
   it('should retrieve a topic by ID', async () => {
@@ -46,7 +46,7 @@ describe('IndexedDBTopicRepository', () => {
     await repository.add(topic);
 
     const retrieved = await repository.getById('t/123');
-    expect(retrieved).to.deep.equal(topic.toJSON());
+    expect(retrieved).to.deep.equal(topic);
   });
 
   it('should retrieve a topic by name', async () => {
@@ -54,7 +54,7 @@ describe('IndexedDBTopicRepository', () => {
     await repository.add(topic);
 
     const retrieved = await repository.getByName('Unique Name');
-    expect(retrieved).to.deep.equal(topic.toJSON());
+    expect(retrieved).to.deep.equal(topic);
   });
 
   it('should throw NotFoundError if topic is not found by name', async () => {

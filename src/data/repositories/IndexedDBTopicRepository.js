@@ -1,4 +1,5 @@
 import { NotFoundError } from '../../core/errors/AppErrors.js';
+import { TopicPersistenceMapper } from '../../core/mappers/TopicPersistenceMapper.js';
 
 /**
  * IndexedDB implementation of the TopicRepository.
@@ -18,66 +19,48 @@ export class IndexedDBTopicRepository {
   }
 
   /**
-   * Helper to map application data to IndexedDB storage format.
-   * Maps '@id' to 'id'.
-   */
-  #toDB(data) {
-    const { '@id': id, ...rest } = data;
-    return { id, ...rest };
-  }
-
-  /**
-   * Helper to map IndexedDB storage format back to application data.
-   * Maps 'id' back to '@id'.
-   */
-  #fromDB(data) {
-    const { id, ...rest } = data;
-    return { '@id': id, ...rest };
-  }
-
-  /**
    * Adds or updates a topic in the database.
    * @param {import('../../domain/entities/Topic.js').Topic} topic 
    * @returns {Promise<void>}
    */
   async add(topic) {
-    const data = this.#toDB(topic.toJSON());
+    const data = TopicPersistenceMapper.toPersistence(topic);
     await this.#db.put(this.#storeName, data);
   }
 
   /**
    * Retrieves all topics.
-   * @returns {Promise<Object[]>}
+   * @returns {Promise<import('../../domain/entities/Topic.js').Topic[]>}
    */
   async getAll() {
     const all = await this.#db.getAll(this.#storeName);
-    return all.map(t => this.#fromDB(t));
+    return all.map(t => TopicPersistenceMapper.toEntity(t));
   }
 
   /**
    * Retrieves a topic by its unique identifier.
    * @param {string} id 
-   * @returns {Promise<Object>}
+   * @returns {Promise<import('../../domain/entities/Topic.js').Topic>}
    */
   async getById(id) {
     const data = await this.#db.get(this.#storeName, id);
     if (!data) {
       throw new NotFoundError(`Topic with id ${id} not found`, { details: { id } });
     }
-    return this.#fromDB(data);
+    return TopicPersistenceMapper.toEntity(data);
   }
 
   /**
    * Retrieves a topic by its name.
    * @param {string} name 
-   * @returns {Promise<Object>}
+   * @returns {Promise<import('../../domain/entities/Topic.js').Topic>}
    */
   async getByName(name) {
     const data = await this.#db.getFromIndex(this.#storeName, 'name', name);
     if (!data) {
       throw new NotFoundError(`Topic with name ${name} not found`, { details: { name } });
     }
-    return this.#fromDB(data);
+    return TopicPersistenceMapper.toEntity(data);
   }
 
   /**

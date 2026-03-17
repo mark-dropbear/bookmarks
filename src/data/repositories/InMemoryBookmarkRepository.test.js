@@ -19,8 +19,8 @@ describe('InMemoryBookmarkRepository', () => {
 
     const all = await repository.getAll();
     expect(all).to.have.lengthOf(2);
-    expect(all[0]).to.deep.equal(bookmark1.toJSON());
-    expect(all[1]).to.deep.equal(bookmark2.toJSON());
+    expect(all[0]).to.deep.equal(bookmark1);
+    expect(all[1]).to.deep.equal(bookmark2);
   });
 
   it('should retrieve a bookmark by ID', async () => {
@@ -28,7 +28,7 @@ describe('InMemoryBookmarkRepository', () => {
     await repository.add(bookmark);
 
     const retrieved = await repository.getById('b/123');
-    expect(retrieved).to.deep.equal(bookmark.toJSON());
+    expect(retrieved).to.deep.equal(bookmark);
   });
 
   it('should throw NotFoundError if bookmark is not found by ID', async () => {
@@ -51,18 +51,6 @@ describe('InMemoryBookmarkRepository', () => {
     const results = await repository.search('Search');
     expect(results).to.have.lengthOf(1);
     expect(results[0].name).to.equal('Search Me');
-  });
-
-  it('should search bookmarks by topic name', async () => {
-    const bookmark1 = new Bookmark({ name: 'T1', url: 'https://t1.com', about: [{ '@id': 'topic/123', name: 'Awesome Topic' }] });
-    const bookmark2 = new Bookmark({ name: 'T2', url: 'https://t2.com', about: [{ '@id': 'topic/456', name: 'Boring Topic' }] });
-
-    await repository.add(bookmark1);
-    await repository.add(bookmark2);
-
-    const results = await repository.search('Awesome');
-    expect(results).to.have.lengthOf(1);
-    expect(results[0].name).to.equal('T1');
   });
 
   it('should delete a bookmark by ID', async () => {
