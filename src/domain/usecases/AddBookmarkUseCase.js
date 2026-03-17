@@ -34,7 +34,9 @@ export class AddBookmarkUseCase {
     }
 
     // 2. Resolve topics by name (if provided by UI) to get their IDs
-    const topicNames = dto.topicNames || [];
+    // Deduplicate case-insensitively before processing
+    const rawNames = dto.topicNames || [];
+    const topicNames = [...new Map(rawNames.map(name => [name.toLowerCase(), name])).values()];
     const resolvedTopicIds = [...(dto.topicIds || [])];
 
     for (const name of topicNames) {

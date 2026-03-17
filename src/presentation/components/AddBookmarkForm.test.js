@@ -62,4 +62,28 @@ describe('AddBookmarkForm', () => {
     expect(mockUseCase.lastData.url).to.equal('https://lit.dev');
     expect(mockUseCase.lastData.topicNames).to.deep.equal(['Lit', 'Web Components']);
   });
+
+  it('renders an error message if the use case throws an AppError', async () => {
+    mockUseCase.execute = () => Promise.reject(new Error('Invalid Bookmark Data'));
+    
+    // Ensure form has basic required fields so browser validation doesn't block it
+    const nameInput = el.shadowRoot.querySelector('md-outlined-text-field[name="name"]');
+    const urlInput = el.shadowRoot.querySelector('md-outlined-text-field[name="url"]');
+    nameInput.value = 'Bad';
+    urlInput.value = 'bad-url';
+    
+    const form = el.shadowRoot.querySelector('form');
+    form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    
+    await el.updateComplete; // Wait for Lit to re-render the error state
+    
+    // The component dispatches a show-snackbar event on error
+    let snackbarFired = false;
+    el.addEventListener('show-snackbar', () => { snackbarFired = true; });
+    
+    form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    await el.updateComplete;
+    
+    expect(snackbarFired).to.be.true;
+  });
 });

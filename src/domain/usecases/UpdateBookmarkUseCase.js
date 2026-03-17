@@ -41,7 +41,11 @@ export class UpdateBookmarkUseCase {
     let resolvedTopicIds = [];
 
     if (dto.topicNames !== undefined) {
-      for (const name of dto.topicNames) {
+      // Deduplicate case-insensitively
+      const rawNames = dto.topicNames;
+      const topicNames = [...new Map(rawNames.map(name => [name.toLowerCase(), name])).values()];
+      
+      for (const name of topicNames) {
         let topic;
         try {
           topic = await this.topicRepository.getByName(name);
