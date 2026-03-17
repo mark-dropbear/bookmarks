@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { fixture, html, waitUntil } from '@open-wc/testing-helpers';
+import { fixture, html } from '@open-wc/testing-helpers';
 import './AppSnackbar.js';
 
 describe('AppSnackbar', () => {
