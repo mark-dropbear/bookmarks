@@ -19,7 +19,7 @@
     - [x] Write unit tests for Serialization Mappers.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Mappers' (Protocol in workflow.md) [602fc4d]
 
-## Phase 3: Repositories & Use Cases
+## Phase 3: Repositories & Use Cases [checkpoint: 162f491]
 - [x] Task: Update Repositories [868329a]
     - [x] Update `InMemoryBookmarkRepository` and `IndexedDBBookmarkRepository` to use Persistence Mappers internally.
     - [x] Update `InMemoryTopicRepository` and `IndexedDBTopicRepository` to use Persistence Mappers internally.
@@ -27,10 +27,10 @@
 - [x] Task: Update Use Cases [e7552aa]
     - [x] Refactor `AddBookmarkUseCase`, `UpdateBookmarkUseCase`, `DeleteBookmarkUseCase`, and `GetBookmarksUseCase` to accept/return DTOs and map to Entities internally.
     - [x] Update corresponding use case tests.
-- [~] Task: Conductor - User Manual Verification 'Phase 3: Repositories & Use Cases' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Repositories & Use Cases' (Protocol in workflow.md) [162f491]
 
 ## Phase 4: UI Refactoring
-- [ ] Task: Update UI Components and Controllers
+- [~] Task: Update UI Components and Controllers
     - [ ] Update `BookmarkList`, `AddBookmarkForm`, `EditBookmarkDialog`, and `BookmarkDashboard` to consume and produce DTOs exclusively.
     - [ ] Update `BookmarksController` to handle DTOs.
     - [ ] Fix any failing UI tests.
