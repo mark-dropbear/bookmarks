@@ -1,0 +1,8 @@
+{
+  "track_id": "indexeddb_persistence_20260317",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-03-17T09:00:00Z",
+  "updated_at": "2026-03-17T09:00:00Z",
+  "description": "We will be implementing a new persistence layer using IndexedDB in the browser to complement our InMemory repositories which are useful for testing but obviously not suitable for production."
+}
