@@ -15,14 +15,14 @@
 - [x] Task: Implement `IndexedDBBookmarkRepository` [4503024]
     - [x] Create `src/data/repositories/IndexedDBBookmarkRepository.js`
     - [x] Implement `add`, `getAll`, `getById`, `update`, `delete`, and `search`
-- [ ] Task: Implement `IndexedDBTopicRepository`
-    - [ ] Create `src/data/repositories/IndexedDBTopicRepository.js`
-    - [ ] Implement `add`, `getAll`, `getById`, `getByName`, and `delete`
-- [ ] Task: Write Tests for IndexedDB Repositories
-    - [ ] Create `src/data/repositories/IndexedDBBookmarkRepository.test.js`
-    - [ ] Create `src/data/repositories/IndexedDBTopicRepository.test.js`
-    - [ ] Ensure tests cover CRUD operations and index-based lookups
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Repository Implementations' (Protocol in workflow.md)
+- [x] Task: Implement `IndexedDBTopicRepository` [7aba039]
+    - [x] Create `src/data/repositories/IndexedDBTopicRepository.js`
+    - [x] Implement `add`, `getAll`, `getById`, `getByName`, and `delete`
+- [x] Task: Write Tests for IndexedDB Repositories [7aba039]
+    - [x] Create `src/data/repositories/IndexedDBBookmarkRepository.test.js`
+    - [x] Create `src/data/repositories/IndexedDBTopicRepository.test.js`
+    - [x] Ensure tests cover CRUD operations and index-based lookups
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Repository Implementations' (Protocol in workflow.md)
 
 ## Phase 3: Integration & Production Entry Point
 - [ ] Task: Create Production Entry Point
