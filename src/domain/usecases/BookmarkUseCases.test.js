@@ -26,19 +26,20 @@ describe('Bookmark Use Cases', () => {
       const bookmarkData = { 
         name: 'Test', 
         url: 'https://test.com',
-        about: [{ name: 'Test Topic' }]
+        topicNames: ['Test Topic']
       };
       
       const result = await useCase.execute(bookmarkData);
       
-      expect(result).to.be.instanceOf(Bookmark);
+      expect(result.id).to.exist;
+      expect(result.name).to.equal('Test');
+      expect(result.topicIds).to.have.lengthOf(1);
       
       // Verify topic was created/updated
       const topics = await topicRepository.getAll();
-      const topicData = topics.find(t => t.name === 'Test Topic');
-      const topic = Topic.fromJSON(topicData);
+      const topic = topics.find(t => t.name === 'Test Topic');
       expect(topic).to.exist;
-      expect(topic.subjectOf()).to.deep.include({ '@id': result.id() });
+      expect(topic.bookmarkIds).to.include(result.id);
     });
 
     it('should throw ValidationError if bookmark data is invalid', async () => {
@@ -66,7 +67,7 @@ describe('Bookmark Use Cases', () => {
       const bookmarkData = { name: 'Fetch Test', url: 'https://lit.dev' };
       const result = await useCase.execute(bookmarkData);
       
-      expect(result.image()).to.equal('https://lit.dev/favicon.ico');
+      expect(result.image).to.equal('https://lit.dev/favicon.ico');
     });
   });
 
@@ -78,10 +79,11 @@ describe('Bookmark Use Cases', () => {
 
       const all = await useCase.execute();
       expect(all).to.have.lengthOf(2);
+      expect(all[0].id).to.exist; // Verify it's a DTO
 
       const search = await useCase.execute('Alpha');
       expect(search).to.have.lengthOf(1);
-      expect(search[0].name()).to.equal('Alpha');
+      expect(search[0].name).to.equal('Alpha');
     });
   });
 });

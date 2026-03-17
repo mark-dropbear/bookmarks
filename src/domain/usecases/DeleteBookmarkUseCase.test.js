@@ -18,8 +18,8 @@ describe('DeleteBookmarkUseCase', () => {
   });
 
   it('should delete a bookmark and cleanup topic references', async () => {
-    const bookmark = new Bookmark({ id: 'b/1', name: 'Test', url: 'https://test.com', about: [{ '@id': 'topic/1' }] });
-    const topic = new Topic({ id: 'topic/1', name: 'Topic 1', subjectOf: [{ '@id': 'b/1' }] });
+    const bookmark = new Bookmark({ id: 'b/1', name: 'Test', url: 'https://test.com', topicIds: ['topic/1'] });
+    const topic = new Topic({ id: 'topic/1', name: 'Topic 1', bookmarkIds: ['b/1'] });
     
     await bookmarkRepository.add(bookmark);
     await topicRepository.add(topic);
@@ -46,11 +46,11 @@ describe('DeleteBookmarkUseCase', () => {
   it('should preserve shared topics and delete orphaned topics', async () => {
     // Shared Topic: used by b/1 and b/2
     // Unique Topic: used only by b/1
-    const b1 = new Bookmark({ id: 'b/1', name: 'B1', url: 'https://b1.com', about: [{ '@id': 'topic/shared' }, { '@id': 'topic/unique' }] });
-    const b2 = new Bookmark({ id: 'b/2', name: 'B2', url: 'https://b2.com', about: [{ '@id': 'topic/shared' }] });
+    const b1 = new Bookmark({ id: 'b/1', name: 'B1', url: 'https://b1.com', topicIds: ['topic/shared', 'topic/unique'] });
+    const b2 = new Bookmark({ id: 'b/2', name: 'B2', url: 'https://b2.com', topicIds: ['topic/shared'] });
     
-    const tShared = new Topic({ id: 'topic/shared', name: 'Shared', subjectOf: [{ '@id': 'b/1' }, { '@id': 'b/2' }] });
-    const tUnique = new Topic({ id: 'topic/unique', name: 'Unique', subjectOf: [{ '@id': 'b/1' }] });
+    const tShared = new Topic({ id: 'topic/shared', name: 'Shared', bookmarkIds: ['b/1', 'b/2'] });
+    const tUnique = new Topic({ id: 'topic/unique', name: 'Unique', bookmarkIds: ['b/1'] });
 
     await bookmarkRepository.add(b1);
     await bookmarkRepository.add(b2);
@@ -62,7 +62,7 @@ describe('DeleteBookmarkUseCase', () => {
     // Shared topic should still exist and have b/2
     const updatedShared = await topicRepository.getById('topic/shared');
     expect(updatedShared).to.exist;
-    expect(updatedShared.subjectOf).to.deep.equal([{ '@id': 'b/2' }]);
+    expect(updatedShared.bookmarkIds).to.deep.equal(['b/2']);
 
     // Unique topic should be DELETED because it's orphaned
     try {

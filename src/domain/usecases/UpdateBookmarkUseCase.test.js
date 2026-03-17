@@ -28,8 +28,8 @@ describe('UpdateBookmarkUseCase', () => {
     const updateData = { id: 'b/1', name: 'Updated', url: 'https://test.com', description: 'New Desc' };
     const result = await useCase.execute(updateData);
 
-    expect(result.name()).to.equal('Updated');
-    expect(result.description()).to.equal('New Desc');
+    expect(result.name).to.equal('Updated');
+    expect(result.description).to.equal('New Desc');
     
     const retrieved = await bookmarkRepository.getById('b/1');
     expect(retrieved.name).to.equal('Updated');
@@ -50,8 +50,8 @@ describe('UpdateBookmarkUseCase', () => {
     const updateData = { id: 'b/1', name: 'Test', url: 'https://new.com' };
     const result = await localUseCase.execute(updateData);
 
-    expect(result.url()).to.equal('https://new.com');
-    expect(result.image()).to.equal('https://new.com/favicon.ico');
+    expect(result.url).to.equal('https://new.com');
+    expect(result.image).to.equal('https://new.com/favicon.ico');
   });
 
   it('should synchronize topic links (add new, remove old)', async () => {
@@ -59,9 +59,9 @@ describe('UpdateBookmarkUseCase', () => {
       id: 'b/1', 
       name: 'Test', 
       url: 'https://test.com', 
-      about: [{ '@id': 'topic/old' }] 
+      topicIds: ['topic/old'] 
     });
-    const oldTopic = new Topic({ id: 'topic/old', name: 'Old', subjectOf: [{ '@id': 'b/1' }] });
+    const oldTopic = new Topic({ id: 'topic/old', name: 'Old', bookmarkIds: ['b/1'] });
     const newTopic = new Topic({ id: 'topic/new', name: 'New' });
 
     await bookmarkRepository.add(bookmark);
@@ -72,7 +72,7 @@ describe('UpdateBookmarkUseCase', () => {
       id: 'b/1', 
       name: 'Test', 
       url: 'https://test.com', 
-      about: [{ name: 'New' }] 
+      topicNames: ['New'] 
     };
     await useCase.execute(updateData);
 
@@ -86,7 +86,7 @@ describe('UpdateBookmarkUseCase', () => {
 
     // Verify new topic linked
     const updatedNewTopic = await topicRepository.getById('topic/new');
-    expect(updatedNewTopic.subjectOf).to.deep.include({ '@id': 'b/1' });
+    expect(updatedNewTopic.bookmarkIds).to.deep.include('b/1');
   });
 
   it('should delete orphaned topics during update', async () => {
@@ -94,9 +94,9 @@ describe('UpdateBookmarkUseCase', () => {
       id: 'b/1', 
       name: 'Test', 
       url: 'https://test.com', 
-      about: [{ '@id': 'topic/orphan' }] 
+      topicIds: ['topic/orphan'] 
     });
-    const orphanTopic = new Topic({ id: 'topic/orphan', name: 'Orphan', subjectOf: [{ '@id': 'b/1' }] });
+    const orphanTopic = new Topic({ id: 'topic/orphan', name: 'Orphan', bookmarkIds: ['b/1'] });
 
     await bookmarkRepository.add(bookmark);
     await topicRepository.add(orphanTopic);
@@ -105,7 +105,8 @@ describe('UpdateBookmarkUseCase', () => {
       id: 'b/1', 
       name: 'Test', 
       url: 'https://test.com', 
-      about: [] // Remove the topic
+      topicIds: [], // Remove the topic
+      topicNames: []
     };
     await useCase.execute(updateData);
 

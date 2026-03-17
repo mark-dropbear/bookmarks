@@ -22,68 +22,61 @@ export class AddBookmarkUseCase {
   /**
    * Executes the use case to add a new bookmark.
    * Automatically creates or updates associated topics and attempts to find a favicon.
-   * @param {import('../entities/Bookmark.js').BookmarkData} data - The bookmark data.
-   * @returns {Promise<Bookmark>} The created bookmark.
+   * @param {import('../types/index.js').BookmarkDTO} dto - The bookmark DTO from the UI.
+   * @returns {Promise<import('../types/index.js').BookmarkDTO>} The created bookmark DTO.
    * @throws {import('../../core/errors/AppErrors.js').ValidationError} If the bookmark data is invalid.
-   * @throws {import('../../core/errors/AppErrors.js').RepositoryError} If storage fails.
    */
-  async execute(data) {
+  async execute(dto) {
     // 1. Discover Favicon if not already provided
-    if (!data.image) {
-      data.image = await this.faviconDiscovery.discoverFavicon(data.url);
+    let image = dto.image;
+    if (!image) {
+      image = await this.faviconDiscovery.discoverFavicon(dto.url);
     }
 
-    // 2. Resolve topics by name to get their IDs
-    const topics = data.about || [];
-    const resolvedTopics = [];
+    // 2. Resolve topics by name (if provided by UI) to get their IDs
+    const topicNames = dto.topicNames || [];
+    const resolvedTopicIds = [...(dto.topicIds || [])];
 
-    if (topics.length > 0) {
-      for (const topicData of topics) {
-        let topic;
-        
-        try {
-          // Input data provides names
-          const topicEntityData = await this.topicRepository.getByName(topicData.name);
-          topic = Topic.fromJSON(topicEntityData);
-        } catch (e) {
-          if (e instanceof NotFoundError) {
-            // Topic doesn't exist, create it. It will auto-generate a ResourceId.
-            topic = new Topic({ name: topicData.name });
-          } else {
-            throw e;
-          }
-        }
-        
-        resolvedTopics.push({ '@id': topic.id(), name: topic.name() });
+    for (const name of topicNames) {
+      let topic;
+      try {
+        topic = await this.topicRepository.getByName(name);
+      } catch (_e) {
+        // Topic doesn't exist, create it.
+        topic = new Topic({ name });
+        await this.topicRepository.add(topic);
+      }
+      if (!resolvedTopicIds.includes(topic.id)) {
+        resolvedTopicIds.push(topic.id);
       }
     }
-    
-    // Replace the input topic strings with fully resolved references
-    data.about = resolvedTopics;
 
     // 3. Create Bookmark Entity
-    const bookmark = new Bookmark(data);
+    const bookmark = new Bookmark({
+      id: dto.id,
+      name: dto.name,
+      description: dto.description,
+      url: dto.url,
+      image: image,
+      topicIds: resolvedTopicIds
+    });
+    
     await this.bookmarkRepository.add(bookmark);
 
     // 4. Maintain bi-directional links with topics
-    for (const ref of resolvedTopics) {
-      let topic;
-      try {
-        const topicData = await this.topicRepository.getById(ref['@id']);
-        topic = Topic.fromJSON(topicData);
-      } catch (e) {
-        if (e instanceof NotFoundError) {
-          // We created it in memory earlier but it might not be in the repo yet
-          topic = new Topic({ id: ref['@id'], name: ref.name });
-        } else {
-          throw e;
-        }
-      }
-      
-      topic.addBookmark(bookmark.id());
+    for (const topicId of resolvedTopicIds) {
+      const topic = await this.topicRepository.getById(topicId);
+      topic.addBookmark(bookmark.id);
       await this.topicRepository.add(topic);
     }
 
-    return bookmark;
+    return {
+      id: bookmark.id,
+      name: bookmark.name,
+      description: bookmark.description,
+      url: bookmark.url,
+      image: bookmark.image,
+      topicIds: [...bookmark.topicIds]
+    };
   }
 }
