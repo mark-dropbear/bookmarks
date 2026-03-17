@@ -13,8 +13,8 @@ describe('BookmarkList', () => {
   beforeEach(async () => {
     mockUseCase = {
       execute: () => Promise.resolve([
-        new Bookmark({ id: '1', name: 'Test 1', url: 'https://test1.com' }),
-        new Bookmark({ id: '2', name: 'Test 2', url: 'https://test2.com' })
+        { id: '1', name: 'Test 1', url: 'https://test1.com', topicIds: [] },
+        { id: '2', name: 'Test 2', url: 'https://test2.com', topicIds: [] }
       ])
     };
 
@@ -32,7 +32,7 @@ describe('BookmarkList', () => {
   it('renders a list of bookmarks', async () => {
     await waitUntil(() => el.shadowRoot.querySelectorAll('bookmark-item').length === 2, 'List did not render');
     const items = el.shadowRoot.querySelectorAll('bookmark-item');
-    expect(items[0].bookmark.name()).to.equal('Test 1');
-    expect(items[1].bookmark.name()).to.equal('Test 2');
+    expect(items[0].bookmark.name).to.equal('Test 1');
+    expect(items[1].bookmark.name).to.equal('Test 2');
   });
 });

@@ -1,6 +1,5 @@
 import { expect } from '@esm-bundle/chai';
 import { BookmarksController } from './BookmarksController.js';
-import { Bookmark } from '../../domain/entities/Bookmark.js';
 import { getBookmarksContext } from '../context.js';
 import { ContextProvider } from '@lit/context';
 import { LitElement, html } from 'lit';
@@ -31,7 +30,7 @@ describe('BookmarksController', () => {
   beforeEach(async () => {
     mockUseCase = {
       execute: (query) => Promise.resolve([
-        new Bookmark({ name: `Result for ${query || 'all'}`, url: 'https://test.com' })
+        { id: '1', name: `Result for ${query || 'all'}`, url: 'https://test.com', topicIds: [] }
       ])
     };
 
@@ -71,7 +70,7 @@ describe('BookmarksController', () => {
   it('fetches bookmarks on init', async () => {
     await waitForData(controller);
     expect(controller.value()).to.exist;
-    expect(controller.value()[0].name()).to.equal('Result for all');
+    expect(controller.value()[0].name).to.equal('Result for all');
   });
 
   it('refetches when host searchQuery changes', async () => {
@@ -81,13 +80,13 @@ describe('BookmarksController', () => {
     await host.updateComplete;
     
     const start = Date.now();
-    while (controller.value()[0].name() !== 'Result for test') {
+    while (controller.value()[0].name !== 'Result for test') {
       if (Date.now() - start > 2000) {
         throw new Error(`Timeout waiting for refetch. Value: ${JSON.stringify(controller.value())}`);
       }
       await new Promise(r => setTimeout(r, 50));
     }
     
-    expect(controller.value()[0].name()).to.equal('Result for test');
+    expect(controller.value()[0].name).to.equal('Result for test');
   });
 });

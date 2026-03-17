@@ -26,7 +26,7 @@ describe('BookmarksApp', () => {
       addBookmarkUseCase: {},
       deleteBookmarkUseCase: {},
       updateBookmarkUseCase: {},
-      getBookmarksUseCase: new GetBookmarksUseCase(bookmarkRepo),
+      getBookmarksUseCase: new GetBookmarksUseCase(bookmarkRepo, topicRepo),
       getThemeUseCase: new GetThemeUseCase(themeRepo),
       setThemeUseCase: new SetThemeUseCase(themeRepo)
     });

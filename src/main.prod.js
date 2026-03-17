@@ -30,7 +30,7 @@ import { SetThemeUseCase } from './domain/usecases/SetThemeUseCase.js';
   const addBookmarkUseCase = new AddBookmarkUseCase(bookmarkRepo, topicRepo, faviconDiscovery);
   const deleteBookmarkUseCase = new DeleteBookmarkUseCase(bookmarkRepo, topicRepo);
   const updateBookmarkUseCase = new UpdateBookmarkUseCase(bookmarkRepo, topicRepo, faviconDiscovery);
-  const getBookmarksUseCase = new GetBookmarksUseCase(bookmarkRepo);
+  const getBookmarksUseCase = new GetBookmarksUseCase(bookmarkRepo, topicRepo);
   const getThemeUseCase = new GetThemeUseCase(themeRepo);
   const setThemeUseCase = new SetThemeUseCase(themeRepo);
 

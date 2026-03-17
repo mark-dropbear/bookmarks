@@ -15,11 +15,11 @@ describe('BookmarkDashboard', () => {
     mockGetUseCase = {
       execute: (query) => {
         const data = [
-          new Bookmark({ id: '1', name: 'Lit', url: 'https://lit.dev', about: [] }),
-          new Bookmark({ id: '2', name: 'MDW', url: 'https://m3.material.io', about: [] })
+          { id: '1', name: 'Lit', url: 'https://lit.dev', topicIds: [] },
+          { id: '2', name: 'MDW', url: 'https://m3.material.io', topicIds: [] }
         ];
         if (!query) return Promise.resolve(data);
-        return Promise.resolve(data.filter(b => b.name().toLowerCase().includes(query.toLowerCase())));
+        return Promise.resolve(data.filter(b => b.name.toLowerCase().includes(query.toLowerCase())));
       }
     };
 
@@ -75,7 +75,7 @@ describe('BookmarkDashboard', () => {
       'List did not filter'
     );
     const filteredItem = bookmarkList.shadowRoot.querySelector('bookmark-item');
-    expect(filteredItem.bookmark.name()).to.equal('Lit');
+    expect(filteredItem.bookmark.name).to.equal('Lit');
   });
 
   it('opens delete confirmation dialog and calls use case', async () => {
@@ -123,7 +123,7 @@ describe('BookmarkDashboard', () => {
 
     const editDialog = el.shadowRoot.querySelector('edit-bookmark-dialog');
     await waitUntil(() => editDialog.bookmark, 'Edit dialog did not receive bookmark');
-    expect(editDialog.bookmark.id()).to.equal('1');
+    expect(editDialog.bookmark.id).to.equal('1');
   });
 
 });

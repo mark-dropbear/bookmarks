@@ -73,7 +73,7 @@ describe('Bookmark Use Cases', () => {
 
   describe('GetBookmarksUseCase', () => {
     it('should retrieve all bookmarks or search them', async () => {
-      const useCase = new GetBookmarksUseCase(bookmarkRepository);
+      const useCase = new GetBookmarksUseCase(bookmarkRepository, topicRepository);
       await bookmarkRepository.add(new Bookmark({ name: 'Alpha', url: 'https://a.com' }));
       await bookmarkRepository.add(new Bookmark({ name: 'Beta', url: 'https://b.com' }));
 

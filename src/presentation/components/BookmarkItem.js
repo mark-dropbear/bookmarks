@@ -24,20 +24,20 @@ export class BookmarkItem extends LitElement {
       <md-elevated-card>
         <div class="header">
           ${this.bookmark.image ? html`
-            <img class="favicon" src=${this.bookmark.image()} alt="" @error=${this.#handleImageError}>
+            <img class="favicon" src=${this.bookmark.image} alt="" @error=${this.#handleImageError}>
           ` : ''}
-          <div class="title md-typescale-title-medium">${this.bookmark.name()}</div>
+          <div class="title md-typescale-title-medium">${this.bookmark.name}</div>
         </div>
-        <a class="url md-typescale-body-medium" href=${this.bookmark.url()} target="_blank" rel="noopener">
-          ${this.bookmark.url()}
+        <a class="url md-typescale-body-medium" href=${this.bookmark.url} target="_blank" rel="noopener">
+          ${this.bookmark.url}
         </a>
-        ${this.bookmark.description() ? html`
-          <div class="desc md-typescale-body-medium">${this.bookmark.description()}</div>
+        ${this.bookmark.description ? html`
+          <div class="desc md-typescale-body-medium">${this.bookmark.description}</div>
         ` : ''}
-        ${this.bookmark.about && this.bookmark.about().length > 0 ? html`
+        ${this.bookmark.topicNames && this.bookmark.topicNames.length > 0 ? html`
           <div class="tags">
-            ${this.bookmark.about().map(tag => html`
-              <span class="tag md-typescale-label-medium">${tag.name}</span>
+            ${this.bookmark.topicNames.map(name => html`
+              <span class="tag md-typescale-label-medium">${name}</span>
             `)}
           </div>
         ` : ''}
@@ -67,7 +67,7 @@ export class BookmarkItem extends LitElement {
 
   #handleDelete() {
     this.dispatchEvent(new CustomEvent('delete-bookmark', {
-      detail: { id: this.bookmark.id() },
+      detail: { id: this.bookmark.id },
       bubbles: true,
       composed: true
     }));

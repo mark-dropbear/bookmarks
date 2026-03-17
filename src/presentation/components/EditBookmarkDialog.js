@@ -50,7 +50,7 @@ export class EditBookmarkDialog extends LitElement {
           <md-outlined-text-field 
             label="Title" 
             name="name" 
-            .value=${this.bookmark.name()} 
+            .value=${this.bookmark.name || ''} 
             required
           ></md-outlined-text-field>
           
@@ -58,20 +58,20 @@ export class EditBookmarkDialog extends LitElement {
             label="URL" 
             name="url" 
             type="url" 
-            .value=${this.bookmark.url()} 
+            .value=${this.bookmark.url || ''} 
             required
           ></md-outlined-text-field>
           
           <md-outlined-text-field 
             label="Description" 
             name="description" 
-            .value=${this.bookmark.description()}
+            .value=${this.bookmark.description || ''}
           ></md-outlined-text-field>
           
           <md-outlined-text-field 
             label="Topics (comma separated)" 
             name="topics" 
-            .value=${this.bookmark.about().map(t => t.name).join(', ')}
+            .value=${(this.bookmark.topicNames || []).join(', ')}
           ></md-outlined-text-field>
         </form>
         <div slot="actions">
@@ -105,14 +105,18 @@ export class EditBookmarkDialog extends LitElement {
     const form = this.shadowRoot.querySelector('#edit-form');
     const formData = new FormData(form);
     
+    const topicsStr = formData.get('topics') ? formData.get('topics').toString() : '';
+    const topicNames = topicsStr.split(',')
+      .map(t => t.trim())
+      .filter(t => t.length > 0);
+
     const data = {
-      id: this.bookmark.id(),
-      name: formData.get('name'),
-      url: formData.get('url'),
-      description: formData.get('description'),
-      about: formData.get('topics')
-        ? formData.get('topics').split(',').map(t => ({ name: t.trim() }))
-        : []
+      id: this.bookmark.id,
+      name: (formData.get('name') || '').toString(),
+      url: (formData.get('url') || '').toString(),
+      description: (formData.get('description') || '').toString(),
+      topicNames: topicNames,
+      topicIds: this.bookmark.topicIds || [] // preserve existing IDs
     };
 
     try {

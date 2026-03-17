@@ -1,7 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { fixture, html, waitUntil } from '@open-wc/testing-helpers';
 import './EditBookmarkDialog.js';
-import { Bookmark } from '../../domain/entities/Bookmark.js';
 
 import { ContextProvider } from '@lit/context';
 import { updateBookmarkContext } from '../context.js';
@@ -12,11 +11,11 @@ describe('EditBookmarkDialog', () => {
   let bookmark;
 
   beforeEach(async () => {
-    bookmark = new Bookmark({ id: 'b/1', name: 'Original', url: 'https://test.com' });
+    bookmark = { id: 'b/1', name: 'Original', url: 'https://test.com', topicIds: [], topicNames: [] };
     mockUpdateUseCase = {
       execute: (data) => {
         mockUpdateUseCase.calledWith = data;
-        return Promise.resolve(Bookmark.fromJSON(data));
+        return Promise.resolve(data);
       }
     };
 
