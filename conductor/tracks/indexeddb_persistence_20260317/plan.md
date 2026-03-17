@@ -6,9 +6,9 @@
 - [x] Task: Create IndexedDB connection utility [4a85579]
     - [x] Implement `src/data/infrastructure/IndexedDBConnection.js` using `idb`
     - [x] Define the database name and initial version
-- [ ] Task: Define Schema & Migrations
-    - [ ] Configure `bookmarks` store with an `@id` key path and indexes for `url`
-    - [ ] Configure `topics` store with an `@id` key path and indexes for `name`
+- [x] Task: Define Schema & Migrations [df8bbff]
+    - [x] Configure `bookmarks` store with an `@id` key path and indexes for `url`
+    - [x] Configure `topics` store with an `@id` key path and indexes for `name`
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure & Database Setup' (Protocol in workflow.md)
 
 ## Phase 2: Repository Implementations
