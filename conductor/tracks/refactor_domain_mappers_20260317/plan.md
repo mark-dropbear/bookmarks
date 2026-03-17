@@ -8,26 +8,26 @@
     - [x] Create `src/domain/types/index.js` (or similar) to define `BookmarkDTO` and `TopicDTO` via JSDoc.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Domain Entities & DTOs' (Protocol in workflow.md) [1749e58]
 
-## Phase 2: Mappers
+## Phase 2: Mappers [checkpoint: 602fc4d]
 - [x] Task: Implement Persistence Mappers [70e257e]
     - [x] Create `src/core/mappers/BookmarkPersistenceMapper.js`.
     - [x] Create `src/core/mappers/TopicPersistenceMapper.js`.
     - [x] Write unit tests for Persistence Mappers.
-- [x] Task: Implement Serialization Mappers [2ab2d0d]
+- [x] Task: Implement Serialization Mappers [56934e8]
     - [x] Create `src/core/mappers/BookmarkJsonLdMapper.js`.
     - [x] Create `src/core/mappers/TopicJsonLdMapper.js`.
     - [x] Write unit tests for Serialization Mappers.
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Mappers' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Mappers' (Protocol in workflow.md) [602fc4d]
 
 ## Phase 3: Repositories & Use Cases
-- [ ] Task: Update Repositories
-    - [ ] Update `InMemoryBookmarkRepository` and `IndexedDBBookmarkRepository` to use Persistence Mappers internally.
-    - [ ] Update `InMemoryTopicRepository` and `IndexedDBTopicRepository` to use Persistence Mappers internally.
-    - [ ] Update corresponding repository tests.
-- [ ] Task: Update Use Cases
-    - [ ] Refactor `AddBookmarkUseCase`, `UpdateBookmarkUseCase`, `DeleteBookmarkUseCase`, and `GetBookmarksUseCase` to accept/return DTOs and map to Entities internally.
-    - [ ] Update corresponding use case tests.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Repositories & Use Cases' (Protocol in workflow.md)
+- [x] Task: Update Repositories [868329a]
+    - [x] Update `InMemoryBookmarkRepository` and `IndexedDBBookmarkRepository` to use Persistence Mappers internally.
+    - [x] Update `InMemoryTopicRepository` and `IndexedDBTopicRepository` to use Persistence Mappers internally.
+    - [x] Update corresponding repository tests.
+- [x] Task: Update Use Cases [e7552aa]
+    - [x] Refactor `AddBookmarkUseCase`, `UpdateBookmarkUseCase`, `DeleteBookmarkUseCase`, and `GetBookmarksUseCase` to accept/return DTOs and map to Entities internally.
+    - [x] Update corresponding use case tests.
+- [~] Task: Conductor - User Manual Verification 'Phase 3: Repositories & Use Cases' (Protocol in workflow.md)
 
 ## Phase 4: UI Refactoring
 - [ ] Task: Update UI Components and Controllers
