@@ -115,8 +115,7 @@ export class EditBookmarkDialog extends LitElement {
       name: (formData.get('name') || '').toString(),
       url: (formData.get('url') || '').toString(),
       description: (formData.get('description') || '').toString(),
-      topicNames: topicNames,
-      topicIds: this.bookmark.topicIds || [] // preserve existing IDs
+      topicNames: topicNames
     };
 
     try {

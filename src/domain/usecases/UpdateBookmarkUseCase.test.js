@@ -73,6 +73,7 @@ describe('UpdateBookmarkUseCase', () => {
       name: 'Test', 
       url: 'https://test.com', 
       topicNames: ['New'] 
+      // Notice we do NOT pass topicIds: ['topic/old']
     };
     await useCase.execute(updateData);
 
@@ -87,6 +88,28 @@ describe('UpdateBookmarkUseCase', () => {
     // Verify new topic linked
     const updatedNewTopic = await topicRepository.getById('topic/new');
     expect(updatedNewTopic.bookmarkIds).to.deep.include('b/1');
+    
+    // Verify bookmark has new topic only
+    const updatedBookmark = await bookmarkRepository.getById('b/1');
+    expect(updatedBookmark.topicIds).to.deep.equal(['topic/new']);
+  });
+
+  it('should ignore topicIds if topicNames is provided', async () => {
+    const bookmark = new Bookmark({ id: 'b/1', name: 'Test', url: 'https://test.com', topicIds: ['t/1'] });
+    await bookmarkRepository.add(bookmark);
+    await topicRepository.add(new Topic({ id: 't/1', name: 'T1', bookmarkIds: ['b/1'] }));
+
+    const updateData = { 
+      id: 'b/1', 
+      name: 'Test', 
+      url: 'https://test.com', 
+      topicIds: ['t/1'], // Provide old IDs
+      topicNames: [] // But say we want empty tags
+    };
+    await useCase.execute(updateData);
+
+    const updated = await bookmarkRepository.getById('b/1');
+    expect(updated.topicIds).to.be.empty; // topicNames won!
   });
 
   it('should delete orphaned topics during update', async () => {

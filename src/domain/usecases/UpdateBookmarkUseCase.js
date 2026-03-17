@@ -37,22 +37,29 @@ export class UpdateBookmarkUseCase {
       image = currentBookmark.image;
     }
 
-    // 3. Resolve topics by name (if provided by UI) to get their IDs
-    const topicNames = dto.topicNames || [];
-    const resolvedTopicIds = [...(dto.topicIds || [])];
+    // 3. Resolve topics. If topicNames is provided, it's the source of truth for the new state.
+    let resolvedTopicIds = [];
 
-    for (const name of topicNames) {
-      let topic;
-      try {
-        topic = await this.topicRepository.getByName(name);
-      } catch (_e) {
-        // Topic doesn't exist, create it
-        topic = new Topic({ name });
-        await this.topicRepository.add(topic);
+    if (dto.topicNames !== undefined) {
+      for (const name of dto.topicNames) {
+        let topic;
+        try {
+          topic = await this.topicRepository.getByName(name);
+        } catch (_e) {
+          // Topic doesn't exist, create it
+          topic = new Topic({ name });
+          await this.topicRepository.add(topic);
+        }
+        if (!resolvedTopicIds.includes(topic.id)) {
+          resolvedTopicIds.push(topic.id);
+        }
       }
-      if (!resolvedTopicIds.includes(topic.id)) {
-        resolvedTopicIds.push(topic.id);
-      }
+    } else if (dto.topicIds !== undefined) {
+      // If only IDs were provided, use them
+      resolvedTopicIds = [...dto.topicIds];
+    } else {
+      // If neither provided, keep existing topics (partial update)
+      resolvedTopicIds = [...currentBookmark.topicIds];
     }
 
     // 4. Create and update bookmark entity
