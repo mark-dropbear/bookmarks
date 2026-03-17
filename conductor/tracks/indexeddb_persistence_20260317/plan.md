@@ -1,6 +1,6 @@
-# Implementation Plan: IndexedDB Persistence Layer
+# Implementation Plan: IndexedDB Persistence Layer [checkpoint: 771a9bf]
 
-## Phase 1: Infrastructure & Database Setup
+## Phase 1: Infrastructure & Database Setup [checkpoint: 771a9bf]
 - [x] Task: Install the `idb` library [cf6f1df]
     - [x] Run `npm install idb` (or update package.json/importmap)
 - [x] Task: Create IndexedDB connection utility [4a85579]
@@ -9,7 +9,7 @@
 - [x] Task: Define Schema & Migrations [df8bbff]
     - [x] Configure `bookmarks` store with an `@id` key path and indexes for `url`
     - [x] Configure `topics` store with an `@id` key path and indexes for `name`
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure & Database Setup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure & Database Setup' (Protocol in workflow.md) [771a9bf]
 
 ## Phase 2: Repository Implementations
 - [ ] Task: Implement `IndexedDBBookmarkRepository`
