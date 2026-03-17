@@ -13,7 +13,18 @@
     "jspm:install": "jspm install",
     "jspm:build": "jspm install -o importmap.js",
     "jspm:build:prod": "jspm install ./src/main.prod.js -o importmap.js",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build": "jspm build --integrity --map importmap.js --release"
+  },
+  "jspm": {
+    "files": [
+      "src",
+      "index.html",
+      "404.html"
+    ],
+    "ignore": [
+      "src/**/*.test.js"
+    ]
   },
   "dependencies": {
     "@esm-bundle/chai": "^4.3.4-1",
