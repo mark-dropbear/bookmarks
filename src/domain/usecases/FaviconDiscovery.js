@@ -28,7 +28,7 @@ export class FaviconDiscovery {
           return faviconUrl;
         }
       }
-    } catch (e) {
+    } catch (_e) {
       // Invalid URL - we just return empty image instead of crashing
     }
     return '';

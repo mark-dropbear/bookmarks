@@ -25,7 +25,7 @@ export class Bookmark {
     
     try {
       new URL(url);
-    } catch (e) {
+    } catch (_e) {
       throw new ValidationError('Invalid URL', { details: { url } });
     }
     

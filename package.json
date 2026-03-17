@@ -10,7 +10,8 @@
     "start": "web-dev-server --open",
     "test": "wtr --node-resolve",
     "jspm:install": "jspm install",
-    "jspm:build": "jspm build --out importmap.js"
+    "jspm:build": "jspm build --out importmap.js",
+    "lint": "eslint"
   },
   "dependencies": {
     "@esm-bundle/chai": "^4.3.4-1",
@@ -21,10 +22,15 @@
     "lit": "^3.0.0"
   },
   "devDependencies": {
+    "@eslint/css": "^1.0.0",
+    "@eslint/js": "^10.0.1",
     "@open-wc/testing-helpers": "^3.0.1",
     "@web/dev-server": "^0.4.0",
     "@web/test-runner": "^0.18.0",
     "@web/test-runner-playwright": "^0.11.0",
+    "eslint": "^10.0.3",
+    "eslint-plugin-lit": "^2.2.1",
+    "globals": "^17.4.0",
     "jspm": "^4.0.0"
   }
 }

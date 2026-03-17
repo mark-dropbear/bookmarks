@@ -16,7 +16,7 @@ export class ThemeRepository {
    * Persists the user's theme preference.
    * @param {string} theme - The theme identifier.
    */
-  setTheme(theme) {
+  setTheme(_theme) {
     throw new Error('Not implemented');
   }
 
@@ -25,7 +25,7 @@ export class ThemeRepository {
    * @param {function(string): void} callback - Called when the system theme changes.
    * @returns {function(): void} An unsubscribe function.
    */
-  onSystemThemeChange(callback) {
+  onSystemThemeChange(_callback) {
     throw new Error('Not implemented');
   }
 }

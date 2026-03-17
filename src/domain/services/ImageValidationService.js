@@ -8,7 +8,7 @@ export class ImageValidationService {
    * @param {string} url - The URL of the image to test.
    * @returns {Promise<boolean>} True if the image exists and is valid, false otherwise.
    */
-  async isValidImage(url) {
+  async isValidImage(_url) {
     throw new Error('Not implemented');
   }
 }

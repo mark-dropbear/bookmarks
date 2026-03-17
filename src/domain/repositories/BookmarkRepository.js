@@ -10,7 +10,7 @@ export class BookmarkRepository {
    * @returns {Promise<void>} A promise that resolves when the operation is complete.
    * @throws {Error} If the operation is not implemented by the subclass.
    */
-  async add(bookmark) {
+  async add(_bookmark) {
     throw new Error('Not implemented');
   }
 
@@ -29,7 +29,7 @@ export class BookmarkRepository {
    * @returns {Promise<import('../entities/Bookmark.js').Bookmark>} A promise that resolves to the bookmark entity.
    * @throws {Error} If the operation is not implemented by the subclass.
    */
-  async getById(id) {
+  async getById(_id) {
     throw new Error('Not implemented');
   }
 
@@ -39,7 +39,7 @@ export class BookmarkRepository {
    * @returns {Promise<void>} A promise that resolves when the operation is complete.
    * @throws {Error} If the operation is not implemented by the subclass.
    */
-  async update(bookmark) {
+  async update(_bookmark) {
     throw new Error('Not implemented');
   }
 
@@ -49,7 +49,7 @@ export class BookmarkRepository {
    * @returns {Promise<void>} A promise that resolves when the operation is complete.
    * @throws {Error} If the operation is not implemented by the subclass.
    */
-  async delete(id) {
+  async delete(_id) {
     throw new Error('Not implemented');
   }
 
@@ -60,7 +60,7 @@ export class BookmarkRepository {
    * @returns {Promise<import('../entities/Bookmark.js').Bookmark[]>} A promise that resolves to an array of matching bookmarks.
    * @throws {Error} If the operation is not implemented by the subclass.
    */
-  async search(query) {
+  async search(_query) {
     throw new Error('Not implemented');
   }
 }

@@ -43,7 +43,7 @@ export class DeleteBookmarkUseCase {
         } else {
           await this.topicRepository.add(topic);
         }
-      } catch (e) {
+      } catch (_e) {
         // If topic not found, it's already "clean" for this bookmark
       }
     }

@@ -8,7 +8,7 @@ export class TopicRepository {
    * @param {import('../entities/Topic.js').Topic} topic - The topic to save.
    * @returns {Promise<void>}
    */
-  async add(topic) {
+  async add(_topic) {
     throw new Error('Not implemented');
   }
 
@@ -25,7 +25,7 @@ export class TopicRepository {
    * @param {string} id - The @id of the topic.
    * @returns {Promise<import('../entities/Topic.js').Topic|null>}
    */
-  async getById(id) {
+  async getById(_id) {
     throw new Error('Not implemented');
   }
 
@@ -34,7 +34,7 @@ export class TopicRepository {
    * @param {string} name - The name of the topic.
    * @returns {Promise<import('../entities/Topic.js').Topic|null>}
    */
-  async getByName(name) {
+  async getByName(_name) {
     throw new Error('Not implemented');
   }
 
@@ -43,7 +43,7 @@ export class TopicRepository {
    * @param {string} id - The @id of the topic.
    * @returns {Promise<void>}
    */
-  async delete(id) {
+  async delete(_id) {
     throw new Error('Not implemented');
   }
 }

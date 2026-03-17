@@ -92,7 +92,7 @@ export class ResourceId {
       const expectedChecksum = Number(intValue % 37n);
       
       return Base32Codec.ALPHABET[expectedChecksum] === checksumChar;
-    } catch (e) {
+    } catch (_e) {
       return false;
     }
   }
