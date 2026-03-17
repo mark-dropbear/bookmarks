@@ -74,7 +74,7 @@ describe('UpdateBookmarkUseCase', () => {
       id: 'b/1', 
       name: 'Test', 
       url: 'https://test.com', 
-      about: [{ '@id': 'topic/new' }] 
+      about: [{ name: 'New' }] 
     };
     await useCase.execute(updateData);
 

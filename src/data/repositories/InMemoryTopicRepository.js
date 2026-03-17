@@ -55,6 +55,20 @@ export class InMemoryTopicRepository {
   }
 
   /**
+   * Gets a specific topic by its name.
+   * @param {string} name - The name of the topic to retrieve.
+   * @returns {Promise<Object>} Resolves to the topic data.
+   * @throws {NotFoundError} If the topic is not found.
+   */
+  async getByName(name) {
+    const topic = this.topics.find(t => t.name.toLowerCase() === name.toLowerCase());
+    if (!topic) {
+      throw new NotFoundError(`Topic with name ${name} not found`, { details: { name } });
+    }
+    return topic;
+  }
+
+  /**
    * Deletes a topic from the in-memory collection.
    * @param {string} id - The @id of the topic to delete.
    * @returns {Promise<void>} Resolves when the topic is successfully deleted.

@@ -37,7 +37,7 @@ export class BookmarkItem extends LitElement {
         ${this.bookmark.about && this.bookmark.about().length > 0 ? html`
           <div class="tags">
             ${this.bookmark.about().map(tag => html`
-              <span class="tag md-typescale-label-medium">${tag['@id'].replace('topic/', '')}</span>
+              <span class="tag md-typescale-label-medium">${tag.name}</span>
             `)}
           </div>
         ` : ''}

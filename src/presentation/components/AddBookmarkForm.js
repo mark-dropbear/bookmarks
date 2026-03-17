@@ -57,7 +57,7 @@ export class AddBookmarkForm extends LitElement {
       url: formData.get('url'),
       description: formData.get('description'),
       about: formData.get('topics')
-        ? formData.get('topics').split(',').map(t => ({ '@id': `topic/${t.trim()}` }))
+        ? formData.get('topics').split(',').map(t => ({ name: t.trim() }))
         : []
     };
 

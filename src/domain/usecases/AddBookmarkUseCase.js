@@ -32,32 +32,55 @@ export class AddBookmarkUseCase {
       data.image = await FaviconDiscovery.discoverFavicon(data.url);
     }
 
-    // 2. Create Bookmark Entity
-    const bookmark = Bookmark.fromJSON(data);
-    await this.bookmarkRepository.add(bookmark);
+    // 2. Resolve topics by name to get their IDs
+    const topics = data.about || [];
+    const resolvedTopics = [];
 
-    // 3. Maintain bi-directional links with topics
-    const topics = bookmark.about();
     if (topics.length > 0) {
-      for (const ref of topics) {
-        const topicId = ref['@id'];
+      for (const topicData of topics) {
         let topic;
         
         try {
-          const topicData = await this.topicRepository.getById(topicId);
-          topic = Topic.fromJSON(topicData);
+          // Input data provides names
+          const topicEntityData = await this.topicRepository.getByName(topicData.name);
+          topic = Topic.fromJSON(topicEntityData);
         } catch (e) {
           if (e instanceof NotFoundError) {
-            // Topic doesn't exist, create it
-            topic = Topic.fromJSON({ '@id': topicId, name: 'New Topic' });
+            // Topic doesn't exist, create it. It will auto-generate a ResourceId.
+            topic = new Topic({ name: topicData.name });
           } else {
             throw e;
           }
         }
-
-        topic.addBookmark(bookmark.id());
-        await this.topicRepository.add(topic);
+        
+        resolvedTopics.push({ '@id': topic.id(), name: topic.name() });
       }
+    }
+    
+    // Replace the input topic strings with fully resolved references
+    data.about = resolvedTopics;
+
+    // 3. Create Bookmark Entity
+    const bookmark = new Bookmark(data);
+    await this.bookmarkRepository.add(bookmark);
+
+    // 4. Maintain bi-directional links with topics
+    for (const ref of resolvedTopics) {
+      let topic;
+      try {
+        const topicData = await this.topicRepository.getById(ref['@id']);
+        topic = Topic.fromJSON(topicData);
+      } catch (e) {
+        if (e instanceof NotFoundError) {
+          // We created it in memory earlier but it might not be in the repo yet
+          topic = new Topic({ id: ref['@id'], name: ref.name });
+        } else {
+          throw e;
+        }
+      }
+      
+      topic.addBookmark(bookmark.id());
+      await this.topicRepository.add(topic);
     }
 
     return bookmark;

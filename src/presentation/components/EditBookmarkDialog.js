@@ -71,7 +71,7 @@ export class EditBookmarkDialog extends LitElement {
           <md-outlined-text-field 
             label="Topics (comma separated)" 
             name="topics" 
-            .value=${this.bookmark.about().map(t => t['@id'].replace('topic/', '')).join(', ')}
+            .value=${this.bookmark.about().map(t => t.name).join(', ')}
           ></md-outlined-text-field>
         </form>
         <div slot="actions">
@@ -111,7 +111,7 @@ export class EditBookmarkDialog extends LitElement {
       url: formData.get('url'),
       description: formData.get('description'),
       about: formData.get('topics')
-        ? formData.get('topics').split(',').map(t => ({ '@id': `topic/${t.trim()}` }))
+        ? formData.get('topics').split(',').map(t => ({ name: t.trim() }))
         : []
     };
 

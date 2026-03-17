@@ -1,9 +1,8 @@
+import { Base32Codec } from '../../core/utils/Base32Codec.js';
+
 /**
  * @typedef {string} ResourceIdString - The full string representation (e.g., 'bookmarks/12345~')
  */
-
-const ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ*~$=U';
-const BASE32_ALPHABET = ALPHABET.slice(0, 32);
 
 export class ResourceId {
   /**
@@ -34,11 +33,11 @@ export class ResourceId {
     
     globalThis.crypto.getRandomValues(bytes);
 
-    const intValue = ResourceId._bytesToBigInt(bytes);
+    const intValue = Base32Codec.bytesToBigInt(bytes);
     const checksum = Number(intValue % 37n);
-    const checksumChar = ALPHABET[checksum];
+    const checksumChar = Base32Codec.ALPHABET[checksum];
     
-    const base32Str = ResourceId._bigIntToBase32(intValue);
+    const base32Str = Base32Codec.bigIntToBase32(intValue);
     
     // Add hyphens for readability (groups of 5)
     let formatted = '';
@@ -89,44 +88,13 @@ export class ResourceId {
       const idStr = normalized.slice(0, -1);
       const checksumChar = normalized.slice(-1);
       
-      const intValue = ResourceId._base32ToBigInt(idStr);
+      const intValue = Base32Codec.base32ToBigInt(idStr);
       const expectedChecksum = Number(intValue % 37n);
       
-      return ALPHABET[expectedChecksum] === checksumChar;
+      return Base32Codec.ALPHABET[expectedChecksum] === checksumChar;
     } catch (e) {
       return false;
     }
-  }
-
-  static _bytesToBigInt(bytes) {
-    let hex = '';
-    for (const b of bytes) {
-      hex += b.toString(16).padStart(2, '0');
-    }
-    return BigInt('0x' + hex);
-  }
-
-  static _bigIntToBase32(bigIntValue) {
-    if (bigIntValue === 0n) return '0'.padStart(26, '0');
-    let result = '';
-    let temp = bigIntValue;
-    while (temp > 0n) {
-      const rem = Number(temp % 32n);
-      result = BASE32_ALPHABET[rem] + result;
-      temp = temp / 32n;
-    }
-    return result.padStart(26, '0');
-  }
-
-  static _base32ToBigInt(str) {
-    let result = 0n;
-    for (let i = 0; i < str.length; i++) {
-      const char = str[i];
-      const val = BASE32_ALPHABET.indexOf(char);
-      if (val === -1) throw new Error(`Invalid Base32 character: ${char}`);
-      result = result * 32n + BigInt(val);
-    }
-    return result;
   }
 
   /**

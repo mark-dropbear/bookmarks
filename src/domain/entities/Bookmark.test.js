@@ -57,7 +57,7 @@ describe('Bookmark Entity', () => {
 
   it('should allow adding topics via addTopic', () => {
     const bookmark = new Bookmark({ name: 'T', url: 'https://t.com' });
-    bookmark.addTopic('topic/789');
-    expect(bookmark.about()).to.deep.equal([{ '@id': 'topic/789' }]);
+    bookmark.addTopic({ '@id': 'topic/789', name: 'Test Topic' });
+    expect(bookmark.about()).to.deep.equal([{ '@id': 'topic/789', name: 'Test Topic' }]);
   });
 });

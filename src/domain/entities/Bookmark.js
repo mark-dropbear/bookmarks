@@ -4,6 +4,7 @@ import { ResourceId } from '../values/ResourceId.js';
 /**
  * @typedef {Object} TopicReference
  * @property {string} @id - The unique identifier of the topic.
+ * @property {string} [name] - The name of the topic.
  */
 
 /**
@@ -108,11 +109,11 @@ export class Bookmark {
 
   /**
    * Adds a topic reference to the bookmark.
-   * @param {string} topicId 
+   * @param {TopicReference} topicRef 
    */
-  addTopic(topicId) {
-    if (!this.#about.some(t => t['@id'] === topicId)) {
-      this.#about.push({ '@id': topicId });
+  addTopic(topicRef) {
+    if (!this.#about.some(t => t['@id'] === topicRef['@id'])) {
+      this.#about.push({ '@id': topicRef['@id'], name: topicRef.name });
     }
   }
 

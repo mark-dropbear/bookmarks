@@ -30,6 +30,15 @@ export class TopicRepository {
   }
 
   /**
+   * Finds a topic by its name.
+   * @param {string} name - The name of the topic.
+   * @returns {Promise<import('../entities/Topic.js').Topic|null>}
+   */
+  async getByName(name) {
+    throw new Error('Not implemented');
+  }
+
+  /**
    * Deletes a topic by its unique identifier.
    * @param {string} id - The @id of the topic.
    * @returns {Promise<void>}

@@ -37,16 +37,43 @@ export class UpdateBookmarkUseCase {
       data.image = currentBookmark.image();
     }
 
-    // 3. Create and update bookmark
+    // 3. Resolve topics by name to get their IDs
+    const topics = data.about || [];
+    const resolvedTopics = [];
+
+    if (topics.length > 0) {
+      for (const topicData of topics) {
+        let topic;
+        
+        try {
+          // Input data provides names
+          const topicEntityData = await this.topicRepository.getByName(topicData.name);
+          topic = Topic.fromJSON(topicEntityData);
+        } catch (e) {
+          if (e instanceof NotFoundError) {
+            // Topic doesn't exist, create it
+            topic = new Topic({ name: topicData.name });
+          } else {
+            throw e;
+          }
+        }
+        
+        resolvedTopics.push({ '@id': topic.id(), name: topic.name() });
+      }
+    }
+    
+    data.about = resolvedTopics;
+
+    // 4. Create and update bookmark
     const updatedBookmark = Bookmark.fromJSON(data);
     await this.bookmarkRepository.update(updatedBookmark);
 
-    // 4. Synchronize Topics
+    // 5. Synchronize Topics
     const oldTopicIds = currentBookmark.about().map(t => t['@id']);
     const newTopicIds = updatedBookmark.about().map(t => t['@id']);
 
-    const toRemove = oldTopicIds.filter(id => !newTopicIds.includes(id));
-    const toAdd = newTopicIds.filter(id => !oldTopicIds.includes(id));
+    const toRemove = oldTopicIds.filter(tid => !newTopicIds.includes(tid));
+    const toAdd = newTopicIds.filter(tid => !oldTopicIds.includes(tid));
 
     // Remove from old topics
     for (const topicId of toRemove) {
@@ -67,14 +94,14 @@ export class UpdateBookmarkUseCase {
     }
 
     // Add to new topics
-    for (const topicId of toAdd) {
+    for (const topicRef of resolvedTopics.filter(t => toAdd.includes(t['@id']))) {
       let topic;
       try {
-        const topicData = await this.topicRepository.getById(topicId);
+        const topicData = await this.topicRepository.getById(topicRef['@id']);
         topic = Topic.fromJSON(topicData);
       } catch (e) {
         if (e instanceof NotFoundError) {
-          topic = Topic.fromJSON({ '@id': topicId, name: 'New Topic' });
+          topic = new Topic({ id: topicRef['@id'], name: topicRef.name });
         } else {
           throw e;
         }

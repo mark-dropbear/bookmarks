@@ -22,7 +22,7 @@ describe('Bookmark Use Cases', () => {
       const bookmarkData = { 
         name: 'Test', 
         url: 'https://test.com',
-        about: [{ '@id': 'topic/123' }]
+        about: [{ name: 'Test Topic' }]
       };
       
       const result = await useCase.execute(bookmarkData);
@@ -30,7 +30,8 @@ describe('Bookmark Use Cases', () => {
       expect(result).to.be.instanceOf(Bookmark);
       
       // Verify topic was created/updated
-      const topicData = await topicRepository.getById('topic/123');
+      const topics = await topicRepository.getAll();
+      const topicData = topics.find(t => t.name === 'Test Topic');
       const topic = Topic.fromJSON(topicData);
       expect(topic).to.exist;
       expect(topic.subjectOf()).to.deep.include({ '@id': result.id() });

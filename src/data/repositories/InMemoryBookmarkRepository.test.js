@@ -53,14 +53,14 @@ describe('InMemoryBookmarkRepository', () => {
     expect(results[0].name).to.equal('Search Me');
   });
 
-  it('should search bookmarks by topic ID', async () => {
-    const bookmark1 = new Bookmark({ name: 'T1', url: 'https://t1.com', about: [{ '@id': 'topic/123' }] });
-    const bookmark2 = new Bookmark({ name: 'T2', url: 'https://t2.com', about: [{ '@id': 'topic/456' }] });
+  it('should search bookmarks by topic name', async () => {
+    const bookmark1 = new Bookmark({ name: 'T1', url: 'https://t1.com', about: [{ '@id': 'topic/123', name: 'Awesome Topic' }] });
+    const bookmark2 = new Bookmark({ name: 'T2', url: 'https://t2.com', about: [{ '@id': 'topic/456', name: 'Boring Topic' }] });
 
     await repository.add(bookmark1);
     await repository.add(bookmark2);
 
-    const results = await repository.search('topic/123');
+    const results = await repository.search('Awesome');
     expect(results).to.have.lengthOf(1);
     expect(results[0].name).to.equal('T1');
   });
