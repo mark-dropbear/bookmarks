@@ -24,13 +24,13 @@
     - [x] Ensure tests cover CRUD operations and index-based lookups
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Repository Implementations' (Protocol in workflow.md) [7e45bb0]
 
-## Phase 3: Integration & Production Entry Point
-- [ ] Task: Create Production Entry Point
-    - [ ] Implement `src/main.prod.js` mirroring `src/main.js` but using `IndexedDB` repositories
-- [ ] Task: Update Build/Run Configuration
-    - [ ] Update `package.json` to include a `jspm:build:prod` script (or similar) to target `src/main.prod.js`
-    - [ ] Update `importmap.js` to handle the production export if necessary
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Production Entry Point' (Protocol in workflow.md)
+## Phase 3: Integration & Production Entry Point [checkpoint: e30bd8b]
+- [x] Task: Create Production Entry Point [560dd0b]
+    - [x] Implement `src/main.prod.js` mirroring `src/main.js` but using `IndexedDB` repositories
+- [x] Task: Update Build/Run Configuration [9a631ee]
+    - [x] Update `package.json` to include a `jspm:build:prod` script (or similar) to target `src/main.prod.js`
+    - [x] Update `importmap.js` to handle the production export if necessary
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Production Entry Point' (Protocol in workflow.md) [e30bd8b]
 
 ## Phase 4: Final Verification & Quality Gate
 - [ ] Task: Execute Full Test Suite
