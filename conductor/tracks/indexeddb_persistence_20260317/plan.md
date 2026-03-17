@@ -12,9 +12,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure & Database Setup' (Protocol in workflow.md) [771a9bf]
 
 ## Phase 2: Repository Implementations
-- [ ] Task: Implement `IndexedDBBookmarkRepository`
-    - [ ] Create `src/data/repositories/IndexedDBBookmarkRepository.js`
-    - [ ] Implement `add`, `getAll`, `getById`, `update`, `delete`, and `search`
+- [x] Task: Implement `IndexedDBBookmarkRepository` [4503024]
+    - [x] Create `src/data/repositories/IndexedDBBookmarkRepository.js`
+    - [x] Implement `add`, `getAll`, `getById`, `update`, `delete`, and `search`
 - [ ] Task: Implement `IndexedDBTopicRepository`
     - [ ] Create `src/data/repositories/IndexedDBTopicRepository.js`
     - [ ] Implement `add`, `getAll`, `getById`, `getByName`, and `delete`
