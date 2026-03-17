@@ -9,15 +9,15 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Domain Entities & DTOs' (Protocol in workflow.md) [1749e58]
 
 ## Phase 2: Mappers
-- [~] Task: Implement Persistence Mappers
-    - [ ] Create `src/core/mappers/BookmarkPersistenceMapper.js`.
-    - [ ] Create `src/core/mappers/TopicPersistenceMapper.js`.
-    - [ ] Write unit tests for Persistence Mappers.
-- [ ] Task: Implement Serialization Mappers
-    - [ ] Create `src/core/mappers/BookmarkJsonLdMapper.js`.
-    - [ ] Create `src/core/mappers/TopicJsonLdMapper.js`.
-    - [ ] Write unit tests for Serialization Mappers.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Mappers' (Protocol in workflow.md)
+- [x] Task: Implement Persistence Mappers [70e257e]
+    - [x] Create `src/core/mappers/BookmarkPersistenceMapper.js`.
+    - [x] Create `src/core/mappers/TopicPersistenceMapper.js`.
+    - [x] Write unit tests for Persistence Mappers.
+- [x] Task: Implement Serialization Mappers [2ab2d0d]
+    - [x] Create `src/core/mappers/BookmarkJsonLdMapper.js`.
+    - [x] Create `src/core/mappers/TopicJsonLdMapper.js`.
+    - [x] Write unit tests for Serialization Mappers.
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Mappers' (Protocol in workflow.md)
 
 ## Phase 3: Repositories & Use Cases
 - [ ] Task: Update Repositories
