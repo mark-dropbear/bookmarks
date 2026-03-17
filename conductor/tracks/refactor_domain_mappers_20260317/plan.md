@@ -4,9 +4,9 @@
 - [x] Task: Refactor Domain Entities [469c497]
     - [x] Remove `toJSON`, `fromJSON`, and JSON-LD specific fields from `src/domain/entities/Bookmark.js`.
     - [x] Remove `toJSON`, `fromJSON`, and JSON-LD specific fields from `src/domain/entities/Topic.js`.
-- [ ] Task: Define Data Transfer Objects (DTOs)
-    - [ ] Create `src/domain/types/index.js` (or similar) to define `BookmarkDTO` and `TopicDTO` via JSDoc.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Domain Entities & DTOs' (Protocol in workflow.md)
+- [x] Task: Define Data Transfer Objects (DTOs) [b10df6b]
+    - [x] Create `src/domain/types/index.js` (or similar) to define `BookmarkDTO` and `TopicDTO` via JSDoc.
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Domain Entities & DTOs' (Protocol in workflow.md)
 
 ## Phase 2: Mappers
 - [ ] Task: Implement Persistence Mappers
