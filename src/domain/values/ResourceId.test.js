@@ -43,13 +43,14 @@ describe('ResourceId', () => {
         // Value: '10' -> Base32 To BigInt: 32n
         // Checksum: 32n % 37n = 32 -> '*'
         // The value string is '10*'
-        const id = new ResourceId('test', '10*');
+        const _id = new ResourceId('test', '10*');
         // 'I' and 'O' should normalize to '1' and '0'
         expect(ResourceId.verify('IO*')).to.be.true;
-        
+
         const parsedId = new ResourceId('test', 'IO*');
         expect(parsedId.value).to.equal('10*');
     });
+
 
     it('should handle hyphens gracefully', () => {
         const id = new ResourceId('test', '1-0-*');

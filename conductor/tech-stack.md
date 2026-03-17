@@ -18,6 +18,8 @@
 
 ## Development & Build Tools
 - **Local Server:** [@web/dev-server](https://modern-web.dev/docs/dev-server/overview/) for a modern, fast development experience.
+- **Code Quality:** [ESLint](https://eslint.org/) for JavaScript and Lit (`eslint-plugin-lit`) linting.
+- **CSS Linting & Compatibility:** [@eslint/css](https://github.com/eslint/css) for CSS linting, with [Web Platform Baseline](https://web.dev/baseline) enforcement (Warn level) to identify features that may require progressive enhancement or fallback strategies.
 - **Dependency Management:** Import Maps via [JSPM CLI](https://jspm.org/docs/cli/) for seamless external dependency management without a heavy bundler, using `es-module-shims` for browser support.
-- **Architecture:** Clean Architecture pattern for long-term maintainability.
+- **Architecture:** Clean Architecture pattern with a dedicated **Composition Root** (`main.js`) and **Dependency Registry** (`DependencyRegistry.js`) to ensure loose coupling.
 - **Reactive Controllers:** Custom controllers (e.g., BookmarksController) to encapsulate async logic and reactive state.

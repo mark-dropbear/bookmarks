@@ -1,7 +1,8 @@
 import { expect } from '@esm-bundle/chai';
 import { fixture, html, waitUntil } from '@open-wc/testing-helpers';
-import { BookmarkList } from './BookmarkList.js';
+import './BookmarkList.js';
 import { Bookmark } from '../../domain/entities/Bookmark.js';
+
 import { getBookmarksContext } from '../context.js';
 import { ContextProvider } from '@lit/context';
 

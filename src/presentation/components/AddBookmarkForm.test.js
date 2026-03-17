@@ -16,12 +16,13 @@ describe('AddBookmarkForm', () => {
     };
 
     const container = document.createElement('div');
-    const provider = new ContextProvider(container, {
+    const _provider = new ContextProvider(container, {
       context: addBookmarkContext,
       initialValue: mockUseCase
     });
 
     el = new AddBookmarkForm();
+
     container.appendChild(el);
     document.body.appendChild(container);
     await el.updateComplete;

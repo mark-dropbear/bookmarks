@@ -1,5 +1,12 @@
 import { expect } from '@esm-bundle/chai';
 import { BookmarksApp } from './app.js';
+import { DependencyRegistry } from '../core/DependencyRegistry.js';
+import { InMemoryBookmarkRepository } from '../data/repositories/InMemoryBookmarkRepository.js';
+import { InMemoryTopicRepository } from '../data/repositories/InMemoryTopicRepository.js';
+import { BrowserThemeRepository } from '../data/repositories/BrowserThemeRepository.js';
+import { GetBookmarksUseCase } from '../domain/usecases/GetBookmarksUseCase.js';
+import { GetThemeUseCase } from '../domain/usecases/GetThemeUseCase.js';
+import { SetThemeUseCase } from '../domain/usecases/SetThemeUseCase.js';
 
 describe('BookmarksApp', () => {
   let el;
@@ -7,13 +14,33 @@ describe('BookmarksApp', () => {
   beforeEach(async () => {
     localStorage.clear();
     document.documentElement.removeAttribute('data-theme');
+    
+    const bookmarkRepo = new InMemoryBookmarkRepository();
+    const topicRepo = new InMemoryTopicRepository();
+    const themeRepo = new BrowserThemeRepository();
+
+    const registry = new DependencyRegistry({
+      bookmarkRepository: bookmarkRepo,
+      topicRepository: topicRepo,
+      themeRepository: themeRepo,
+      addBookmarkUseCase: {},
+      deleteBookmarkUseCase: {},
+      updateBookmarkUseCase: {},
+      getBookmarksUseCase: new GetBookmarksUseCase(bookmarkRepo),
+      getThemeUseCase: new GetThemeUseCase(themeRepo),
+      setThemeUseCase: new SetThemeUseCase(themeRepo)
+    });
+
     el = new BookmarksApp();
+    el.dependencies = registry;
     document.body.appendChild(el);
     await el.updateComplete;
   });
 
   afterEach(() => {
-    document.body.removeChild(el);
+    if (el && el.parentNode) {
+      document.body.removeChild(el);
+    }
     document.documentElement.removeAttribute('data-theme');
   });
 

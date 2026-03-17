@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import { fixture, html, waitUntil } from '@open-wc/testing-helpers';
-import { AppSnackbar } from './AppSnackbar.js';
+import './AppSnackbar.js';
 
 describe('AppSnackbar', () => {
   let el;
@@ -11,10 +11,11 @@ describe('AppSnackbar', () => {
 
   it('is hidden by default', () => {
     expect(el.open).to.be.false;
-    const snackbar = el.shadowRoot.querySelector('.snackbar');
+    const _snackbar = el.shadowRoot.querySelector('.snackbar');
     // The opacity transition means we should check the property
     expect(el.hasAttribute('open')).to.be.false;
   });
+
 
   it('shows the provided message', async () => {
     el.show('Hello World');

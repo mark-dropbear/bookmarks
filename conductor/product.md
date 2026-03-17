@@ -27,5 +27,6 @@ A privacy-focused, local-first bookmark manager that empowers users with full da
 - **Clean Architecture:** Maintain a modular, well-tested codebase with clear separation of concerns. Rigidly enforces boundaries between business logic (Use Cases), persistence (Repositories), and rendering (Controllers/Components).
 - **Minimal Dependencies:** Prioritize web standards and small, focused libraries like Lit and Material Web.
 - **Type Safety:** Leverage JSDoc comments for robust type hinting without a full TypeScript build step.
+- **Web Platform Compatibility:** Targets [Web Platform Baseline](https://web.dev/baseline) (Widely Available) for all critical functionality. Supports progressive enhancement using newer features where appropriate, provided the core experience remains functional.
 - **Data Portability:** Ensure data is easily exportable and adheres to open standards.
 - **Robust Error Management:** Employs a structured application error hierarchy (`AppError` -> `DomainError`, `InfrastructureError`) for predictable error propagation and clear user feedback.

@@ -11,17 +11,6 @@ import '@material/web/select/outlined-select.js';
 import '@material/web/select/select-option.js';
 
 // Internal Imports
-import { InMemoryBookmarkRepository } from '../data/repositories/InMemoryBookmarkRepository.js';
-import { InMemoryTopicRepository } from '../data/repositories/InMemoryTopicRepository.js';
-import { BrowserThemeRepository } from '../data/repositories/BrowserThemeRepository.js';
-import { BrowserImageValidationService } from '../data/services/BrowserImageValidationService.js';
-import { FaviconDiscovery } from '../domain/usecases/FaviconDiscovery.js';
-import { AddBookmarkUseCase } from '../domain/usecases/AddBookmarkUseCase.js';
-import { DeleteBookmarkUseCase } from '../domain/usecases/DeleteBookmarkUseCase.js';
-import { UpdateBookmarkUseCase } from '../domain/usecases/UpdateBookmarkUseCase.js';
-import { GetBookmarksUseCase } from '../domain/usecases/GetBookmarksUseCase.js';
-import { GetThemeUseCase } from '../domain/usecases/GetThemeUseCase.js';
-import { SetThemeUseCase } from '../domain/usecases/SetThemeUseCase.js';
 import { ThemeController } from './controllers/ThemeController.js';
 import { 
   bookmarkRepositoryContext, 
@@ -44,39 +33,23 @@ import './components/AppSnackbar.js';
 export class BookmarksApp extends LitElement {
   static styles = [typescaleStyles, themeStyles, styles];
 
-  // Private state using # fields
-  /** @type {import('../domain/repositories/BookmarkRepository.js').BookmarkRepository} */
-  #bookmarkRepo;
-  /** @type {import('../domain/repositories/TopicRepository.js').TopicRepository} */
-  #topicRepo;
-  /** @type {import('../domain/repositories/ThemeRepository.js').ThemeRepository} */
-  #themeRepo;
-  /** @type {AddBookmarkUseCase} */
-  #addBookmarkUseCase;
-  /** @type {DeleteBookmarkUseCase} */
-  #deleteBookmarkUseCase;
-  /** @type {UpdateBookmarkUseCase} */
-  #updateBookmarkUseCase;
-  /** @type {GetBookmarksUseCase} */
-  #getBookmarksUseCase;
-  /** @type {GetThemeUseCase} */
-  #getThemeUseCase;
-  /** @type {SetThemeUseCase} */
-  #setThemeUseCase;
+  /** @type {import('../core/DependencyRegistry.js').DependencyRegistry} */
+  #dependencies;
+  
   /** @type {ThemeController} */
   #themeController;
   /** @type {ContextProvider} */
-  #bookmarkRepoProvider;
+  #_bookmarkRepoProvider;
   /** @type {ContextProvider} */
-  #topicRepoProvider;
+  #_topicRepoProvider;
   /** @type {ContextProvider} */
-  #addBookmarkProvider;
+  #_addBookmarkProvider;
   /** @type {ContextProvider} */
-  #deleteBookmarkProvider;
+  #_deleteBookmarkProvider;
   /** @type {ContextProvider} */
-  #updateBookmarkProvider;
+  #_updateBookmarkProvider;
   /** @type {ContextProvider} */
-  #getBookmarksProvider;
+  #_getBookmarksProvider;
   /** @type {Router} */
   #router;
 
@@ -91,62 +64,55 @@ export class BookmarksApp extends LitElement {
     { value: 'dark-high-contrast', label: 'Dark (High)' }
   ];
 
-  constructor() {
-    super();
-    // Initialize Repositories
-    this.#bookmarkRepo = new InMemoryBookmarkRepository();
-    this.#topicRepo = new InMemoryTopicRepository();
-    this.#themeRepo = new BrowserThemeRepository();
+  set dependencies(registry) {
+    this.#dependencies = registry;
+    this.#initialize();
+  }
 
-    // Initialize Services
-    const imageValidationService = new BrowserImageValidationService();
-    const faviconDiscovery = new FaviconDiscovery(imageValidationService);
+  get dependencies() {
+    return this.#dependencies;
+  }
 
-    // Initialize Use Cases
-    this.#addBookmarkUseCase = new AddBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo, faviconDiscovery);
-    this.#deleteBookmarkUseCase = new DeleteBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo);
-    this.#updateBookmarkUseCase = new UpdateBookmarkUseCase(this.#bookmarkRepo, this.#topicRepo, faviconDiscovery);
-    this.#getBookmarksUseCase = new GetBookmarksUseCase(this.#bookmarkRepo);
-    this.#getThemeUseCase = new GetThemeUseCase(this.#themeRepo);
-    this.#setThemeUseCase = new SetThemeUseCase(this.#themeRepo);
+  #initialize() {
+    if (!this.#dependencies) return;
 
     // Initialize Controllers
     this.#themeController = new ThemeController(this, {
-      getThemeUseCase: this.#getThemeUseCase,
-      setThemeUseCase: this.#setThemeUseCase,
-      themeRepository: this.#themeRepo,
+      getThemeUseCase: this.#dependencies.getThemeUseCase,
+      setThemeUseCase: this.#dependencies.setThemeUseCase,
+      themeRepository: this.#dependencies.themeRepository,
       themeStyles: [themeStyles, typescaleStyles.styleSheet]
     });
 
     // Provide Contexts
-    this.#bookmarkRepoProvider = new ContextProvider(this, {
+    this.#_bookmarkRepoProvider = new ContextProvider(this, {
       context: bookmarkRepositoryContext,
-      initialValue: this.#bookmarkRepo
+      initialValue: this.#dependencies.bookmarkRepository
     });
 
-    this.#topicRepoProvider = new ContextProvider(this, {
+    this.#_topicRepoProvider = new ContextProvider(this, {
       context: topicRepositoryContext,
-      initialValue: this.#topicRepo
+      initialValue: this.#dependencies.topicRepository
     });
 
-    this.#addBookmarkProvider = new ContextProvider(this, {
+    this.#_addBookmarkProvider = new ContextProvider(this, {
       context: addBookmarkContext,
-      initialValue: this.#addBookmarkUseCase
+      initialValue: this.#dependencies.addBookmarkUseCase
     });
 
-    this.#deleteBookmarkProvider = new ContextProvider(this, {
+    this.#_deleteBookmarkProvider = new ContextProvider(this, {
       context: deleteBookmarkContext,
-      initialValue: this.#deleteBookmarkUseCase
+      initialValue: this.#dependencies.deleteBookmarkUseCase
     });
 
-    this.#updateBookmarkProvider = new ContextProvider(this, {
+    this.#_updateBookmarkProvider = new ContextProvider(this, {
       context: updateBookmarkContext,
-      initialValue: this.#updateBookmarkUseCase
+      initialValue: this.#dependencies.updateBookmarkUseCase
     });
 
-    this.#getBookmarksProvider = new ContextProvider(this, {
+    this.#_getBookmarksProvider = new ContextProvider(this, {
       context: getBookmarksContext,
-      initialValue: this.#getBookmarksUseCase
+      initialValue: this.#dependencies.getBookmarksUseCase
     });
 
     // Setup Router
@@ -160,9 +126,13 @@ export class BookmarksApp extends LitElement {
         render: () => html`<add-bookmark-page .router=${this.#router}></add-bookmark-page>` 
       }
     ]);
+
+    this.requestUpdate();
   }
 
   render() {
+    if (!this.#dependencies) return html`<div>Loading...</div>`;
+
     return html`
       <div @show-snackbar=${this.#handleShowSnackbar}>
         <header>

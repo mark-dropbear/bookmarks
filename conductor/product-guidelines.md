@@ -13,5 +13,6 @@
 ## UX Principles
 - **Local-First Responsiveness:** All user actions (add, edit, delete, tag) should be reflected immediately in the UI, with background synchronization to IndexedDB.
 - **Search-Centric:** Provide a prominent search bar that allows for quick retrieval by title, URL, and tags.
+- **Progressive Enhancement:** Target [Web Platform Baseline](https://web.dev/baseline) (Widely Available) for the core experience while embracing newer web platform features as enhancements when they improve the UX for supported browsers.
 - **Data Transparency:** Make it easy for users to see their data status (e.g., "Saved Locally") and provide clear paths for RDF/JSON-LD export.
 - **Accessibility:** Adhere to WCAG 2.1 standards, ensuring high contrast and screen reader compatibility.

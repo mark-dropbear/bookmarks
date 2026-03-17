@@ -4,13 +4,13 @@
   "description": "A local-first bookmark manager application.",
   "type": "module",
   "exports": {
-    ".": "./src/presentation/app.js"
+    ".": "./src/main.js"
   },
   "scripts": {
     "start": "web-dev-server --open",
     "test": "wtr --node-resolve",
     "jspm:install": "jspm install",
-    "jspm:build": "jspm build --out importmap.js",
+    "jspm:build": "jspm install -o importmap.js",
     "lint": "eslint"
   },
   "dependencies": {

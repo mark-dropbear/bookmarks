@@ -5,8 +5,8 @@
 export class ThemeController {
   /** @type {string} */
   #currentTheme;
-  #getHost;
   #getThemeUseCase;
+
   #setThemeUseCase;
   #themeRepository;
   #themeStyles;

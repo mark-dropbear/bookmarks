@@ -11,7 +11,7 @@
 })
 ({
   "imports": {
-    "bookmarks": "./src/presentation/app.js"
+    "bookmarks": "./src/main.js"
   },
   "scopes": {
     "./": {

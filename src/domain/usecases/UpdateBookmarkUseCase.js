@@ -51,11 +51,11 @@ export class UpdateBookmarkUseCase {
           const topicEntityData = await this.topicRepository.getByName(topicData.name);
           topic = Topic.fromJSON(topicEntityData);
         } catch (_e) {
-          if (e instanceof NotFoundError) {
+          if (_e instanceof NotFoundError) {
             // Topic doesn't exist, create it
             topic = new Topic({ name: topicData.name });
           } else {
-            throw e;
+            throw _e;
           }
         }
         
@@ -101,10 +101,10 @@ export class UpdateBookmarkUseCase {
         const topicData = await this.topicRepository.getById(topicRef['@id']);
         topic = Topic.fromJSON(topicData);
       } catch (_e) {
-        if (e instanceof NotFoundError) {
+        if (_e instanceof NotFoundError) {
           topic = new Topic({ id: topicRef['@id'], name: topicRef.name });
         } else {
-          throw e;
+          throw _e;
         }
       }
       topic.addBookmark(id);
