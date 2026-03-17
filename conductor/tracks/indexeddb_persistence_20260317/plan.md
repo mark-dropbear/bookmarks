@@ -3,9 +3,9 @@
 ## Phase 1: Infrastructure & Database Setup
 - [x] Task: Install the `idb` library [cf6f1df]
     - [x] Run `npm install idb` (or update package.json/importmap)
-- [ ] Task: Create IndexedDB connection utility
-    - [ ] Implement `src/data/infrastructure/IndexedDBConnection.js` using `idb`
-    - [ ] Define the database name and initial version
+- [x] Task: Create IndexedDB connection utility [4a85579]
+    - [x] Implement `src/data/infrastructure/IndexedDBConnection.js` using `idb`
+    - [x] Define the database name and initial version
 - [ ] Task: Define Schema & Migrations
     - [ ] Configure `bookmarks` store with an `@id` key path and indexes for `url`
     - [ ] Configure `topics` store with an `@id` key path and indexes for `name`
