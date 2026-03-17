@@ -1,20 +1,6 @@
 import { ResourceId } from '../values/ResourceId.js';
 
 /**
- * @typedef {Object} BookmarkReference
- * @property {string} @id - The unique identifier of the bookmark.
- */
-
-/**
- * Data structure for creating a new Topic, following schema.org Thing.
- * @typedef {Object} TopicData
- * @property {string} [id] - The unique identifier (@id) for the topic.
- * @property {string} name - The name of the topic.
- * @property {string} [description] - A brief summary of the topic.
- * @property {BookmarkReference[]} [subjectOf] - Webpages that are about this topic.
- */
-
-/**
  * Represents a Topic (Thing) entity in the domain.
  * Uses private fields for encapsulation and toJSON for schema.org compatibility.
  */
@@ -26,7 +12,7 @@ export class Topic {
 
   /**
    * Creates an instance of a Topic.
-   * @param {TopicData} data - The initial data for the topic.
+   * @param {import('../types/index.js').TopicData} data - The initial data for the topic.
    */
   constructor({ id, name, description, subjectOf }) {
     this.#id = id || ResourceId.generate('topic').toString();
@@ -38,7 +24,7 @@ export class Topic {
   /**
    * Factory method to create a Topic from a plain JSON object.
    * Handles mapping schema.org fields if necessary.
-   * @param {Object} json 
+   * @param {import('../types/index.js').TopicData} json 
    * @returns {Topic}
    */
   static fromJSON(json) {
@@ -70,7 +56,7 @@ export class Topic {
 
   /**
    * Gets the list of bookmarks associated with this topic.
-   * @returns {BookmarkReference[]} 
+   * @returns {import('../types/index.js').BookmarkReference[]} 
    */
   subjectOf() { return [...this.#subjectOf]; }
 
@@ -94,7 +80,7 @@ export class Topic {
 
   /**
    * Serializes the entity to a schema.org compliant JSON-LD object.
-   * @returns {Object}
+   * @returns {import('../types/index.js').TopicData & { '@type': string }}
    */
   toJSON() {
     return {

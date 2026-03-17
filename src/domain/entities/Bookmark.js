@@ -2,23 +2,6 @@ import { ValidationError } from '../../core/errors/AppErrors.js';
 import { ResourceId } from '../values/ResourceId.js';
 
 /**
- * @typedef {Object} TopicReference
- * @property {string} @id - The unique identifier of the topic.
- * @property {string} [name] - The name of the topic.
- */
-
-/**
- * Data structure for creating a new Bookmark, following schema.org WebPage.
- * @typedef {Object} BookmarkData
- * @property {string} [id] - The unique identifier (@id) for the webpage.
- * @property {string} name - The title of the webpage.
- * @property {string} [description] - A brief summary of the webpage.
- * @property {string} url - The absolute URL of the webpage.
- * @property {string} [image] - A URL to an image representing the webpage (e.g., a favicon).
- * @property {TopicReference[]} [about] - Topics this webpage is about.
- */
-
-/**
  * Represents a Bookmark (WebPage) entity in the domain.
  * Uses private fields for encapsulation and toJSON for schema.org compatibility.
  */
@@ -32,7 +15,7 @@ export class Bookmark {
 
   /**
    * Creates an instance of a Bookmark.
-   * @param {BookmarkData} data - The initial data for the bookmark.
+   * @param {import('../types/index.js').BookmarkData} data - The initial data for the bookmark.
    * @throws {ValidationError} If the URL is missing or invalid.
    */
   constructor({ id, name, description, url, image, about }) {
@@ -57,7 +40,7 @@ export class Bookmark {
   /**
    * Factory method to create a Bookmark from a plain JSON object.
    * Handles mapping schema.org fields if necessary.
-   * @param {Object} json 
+   * @param {import('../types/index.js').BookmarkData} json 
    * @returns {Bookmark}
    */
   static fromJSON(json) {
@@ -103,13 +86,13 @@ export class Bookmark {
 
   /**
    * Gets the list of topics associated with the bookmark.
-   * @returns {TopicReference[]} 
+   * @returns {import('../types/index.js').TopicReference[]} 
    */
   about() { return [...this.#about]; }
 
   /**
    * Adds a topic reference to the bookmark.
-   * @param {TopicReference} topicRef 
+   * @param {import('../types/index.js').TopicReference} topicRef 
    */
   addTopic(topicRef) {
     if (!this.#about.some(t => t['@id'] === topicRef['@id'])) {
@@ -119,7 +102,7 @@ export class Bookmark {
 
   /**
    * Serializes the entity to a schema.org compliant JSON-LD object.
-   * @returns {Object}
+   * @returns {import('../types/index.js').BookmarkData & { '@type': string }}
    */
   toJSON() {
     return {
