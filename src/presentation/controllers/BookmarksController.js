@@ -35,10 +35,10 @@ export class BookmarksController {
     this.#task = new Task(host, {
       task: async ([useCase, query]) => {
         if (!useCase) {
-          // If the use case isn't available yet, return an empty array.
-          // The callback above will trigger a host update once the use case is available,
-          // which will trigger this task to run again with the use case.
-          return [];
+          // Return a pending promise if the use case isn't ready.
+          // This ensures the task stays in the 'pending' state instead of 
+          // resolving to an empty array prematurely.
+          return new Promise(() => {});
         }
         return await useCase.execute(query);
       },

@@ -33,25 +33,33 @@ import './components/AppSnackbar.js';
 export class BookmarksApp extends LitElement {
   static styles = [typescaleStyles, themeStyles, styles];
 
-  /** @type {import('../core/DependencyRegistry.js').DependencyRegistry} */
-  #dependencies;
-  
+  static properties = {
+    /** @type {import('../core/DependencyRegistry.js').DependencyRegistry} */
+    dependencies: { type: Object }
+  };
+
   /** @type {ThemeController} */
   #themeController;
-  /** @type {ContextProvider} */
-  #_bookmarkRepoProvider;
-  /** @type {ContextProvider} */
-  #_topicRepoProvider;
-  /** @type {ContextProvider} */
-  #_addBookmarkProvider;
-  /** @type {ContextProvider} */
-  #_deleteBookmarkProvider;
-  /** @type {ContextProvider} */
-  #_updateBookmarkProvider;
-  /** @type {ContextProvider} */
-  #_getBookmarksProvider;
+
+  // Initialize Providers in constructor/fields so they register as controllers immediately
+  #_bookmarkRepoProvider = new ContextProvider(this, { context: bookmarkRepositoryContext });
+  #_topicRepoProvider = new ContextProvider(this, { context: topicRepositoryContext });
+  #_addBookmarkProvider = new ContextProvider(this, { context: addBookmarkContext });
+  #_deleteBookmarkProvider = new ContextProvider(this, { context: deleteBookmarkContext });
+  #_updateBookmarkProvider = new ContextProvider(this, { context: updateBookmarkContext });
+  #_getBookmarksProvider = new ContextProvider(this, { context: getBookmarksContext });
+
   /** @type {Router} */
-  #router;
+  #router = new Router(this, [
+    { 
+      path: '/', 
+      render: () => html`<bookmark-dashboard></bookmark-dashboard>` 
+    },
+    { 
+      path: '/add', 
+      render: () => html`<add-bookmark-page .router=${this.#router}></add-bookmark-page>` 
+    }
+  ]);
 
   /** @type {Array<{value: string, label: string}>} */
   #themes = [
@@ -64,91 +72,54 @@ export class BookmarksApp extends LitElement {
     { value: 'dark-high-contrast', label: 'Dark (High)' }
   ];
 
-  set dependencies(registry) {
-    this.#dependencies = registry;
-    this.#initialize();
-  }
+  willUpdate(changedProperties) {
+    if (changedProperties.has('dependencies') && this.dependencies) {
+      const deps = this.dependencies;
 
-  get dependencies() {
-    return this.#dependencies;
-  }
+      // Sync provider values
+      this.#_bookmarkRepoProvider.setValue(deps.bookmarkRepository);
+      this.#_topicRepoProvider.setValue(deps.topicRepository);
+      this.#_addBookmarkProvider.setValue(deps.addBookmarkUseCase);
+      this.#_deleteBookmarkProvider.setValue(deps.deleteBookmarkUseCase);
+      this.#_updateBookmarkProvider.setValue(deps.updateBookmarkUseCase);
+      this.#_getBookmarksProvider.setValue(deps.getBookmarksUseCase);
 
-  #initialize() {
-    if (!this.#dependencies) return;
-
-    // Initialize Controllers
-    this.#themeController = new ThemeController(this, {
-      getThemeUseCase: this.#dependencies.getThemeUseCase,
-      setThemeUseCase: this.#dependencies.setThemeUseCase,
-      themeRepository: this.#dependencies.themeRepository,
-      themeStyles: [themeStyles, typescaleStyles.styleSheet]
-    });
-
-    // Provide Contexts
-    this.#_bookmarkRepoProvider = new ContextProvider(this, {
-      context: bookmarkRepositoryContext,
-      initialValue: this.#dependencies.bookmarkRepository
-    });
-
-    this.#_topicRepoProvider = new ContextProvider(this, {
-      context: topicRepositoryContext,
-      initialValue: this.#dependencies.topicRepository
-    });
-
-    this.#_addBookmarkProvider = new ContextProvider(this, {
-      context: addBookmarkContext,
-      initialValue: this.#dependencies.addBookmarkUseCase
-    });
-
-    this.#_deleteBookmarkProvider = new ContextProvider(this, {
-      context: deleteBookmarkContext,
-      initialValue: this.#dependencies.deleteBookmarkUseCase
-    });
-
-    this.#_updateBookmarkProvider = new ContextProvider(this, {
-      context: updateBookmarkContext,
-      initialValue: this.#dependencies.updateBookmarkUseCase
-    });
-
-    this.#_getBookmarksProvider = new ContextProvider(this, {
-      context: getBookmarksContext,
-      initialValue: this.#dependencies.getBookmarksUseCase
-    });
-
-    // Setup Router
-    this.#router = new Router(this, [
-      { 
-        path: '/', 
-        render: () => html`<bookmark-dashboard></bookmark-dashboard>` 
-      },
-      { 
-        path: '/add', 
-        render: () => html`<add-bookmark-page .router=${this.#router}></add-bookmark-page>` 
+      // Initialize ThemeController once dependencies are available
+      if (!this.#themeController) {
+        this.#themeController = new ThemeController(this, {
+          getThemeUseCase: deps.getThemeUseCase,
+          setThemeUseCase: deps.setThemeUseCase,
+          themeRepository: deps.themeRepository,
+          themeStyles: [themeStyles, typescaleStyles.styleSheet]
+        });
       }
-    ]);
-
-    this.requestUpdate();
+    }
   }
 
   render() {
-    if (!this.#dependencies) return html`<div>Loading...</div>`;
+    // If dependencies haven't arrived yet, show loading
+    if (!this.dependencies) {
+      return html`<div class="loading-overlay">Loading dependencies...</div>`;
+    }
 
     return html`
       <div @show-snackbar=${this.#handleShowSnackbar}>
         <header>
           <h1 class="md-typescale-headline-large">Bookmarks</h1>
           <div class="controls">
-            <md-outlined-select 
-              label="Theme"
-              @change=${(e) => this.#themeController.setTheme(e.target.value)} 
-              .value=${this.#themeController.theme}
-            >
-              ${this.#themes.map(t => html`
-                <md-select-option value=${t.value}>
-                  <div slot="headline">${t.label}</div>
-                </md-select-option>
-              `)}
-            </md-outlined-select>
+            ${this.#themeController ? html`
+              <md-outlined-select 
+                label="Theme"
+                @change=${(e) => this.#themeController.setTheme(e.target.value)} 
+                .value=${this.#themeController.theme}
+              >
+                ${this.#themes.map(t => html`
+                  <md-select-option value=${t.value}>
+                    <div slot="headline">${t.label}</div>
+                  </md-select-option>
+                `)}
+              </md-outlined-select>
+            ` : ''}
             <nav>
               <md-filled-button @click=${() => this.#router.goto('/')}>Dashboard</md-filled-button>
               <md-filled-button @click=${() => this.#router.goto('/add')}>Add New</md-filled-button>
