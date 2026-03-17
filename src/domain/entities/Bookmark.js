@@ -1,4 +1,5 @@
 import { ValidationError } from '../../core/errors/AppErrors.js';
+import { ResourceId } from '../values/ResourceId.js';
 
 /**
  * @typedef {Object} TopicReference
@@ -44,7 +45,7 @@ export class Bookmark {
       throw new ValidationError('Invalid URL', { details: { url } });
     }
     
-    this.#id = id || `webpage/${crypto.randomUUID()}`;
+    this.#id = id || ResourceId.generate('webpage').toString();
     this.#name = name || 'Untitled';
     this.#description = description || '';
     this.#url = url;

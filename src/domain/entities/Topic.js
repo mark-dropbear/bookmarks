@@ -1,3 +1,5 @@
+import { ResourceId } from '../values/ResourceId.js';
+
 /**
  * @typedef {Object} BookmarkReference
  * @property {string} @id - The unique identifier of the bookmark.
@@ -27,7 +29,7 @@ export class Topic {
    * @param {TopicData} data - The initial data for the topic.
    */
   constructor({ id, name, description, subjectOf }) {
-    this.#id = id || `topic/${crypto.randomUUID()}`;
+    this.#id = id || ResourceId.generate('topic').toString();
     this.#name = name || 'Untitled Topic';
     this.#description = description || '';
     this.#subjectOf = subjectOf || [];
