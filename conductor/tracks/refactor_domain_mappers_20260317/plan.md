@@ -29,15 +29,15 @@
     - [x] Update corresponding use case tests.
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Repositories & Use Cases' (Protocol in workflow.md) [162f491]
 
-## Phase 4: UI Refactoring
+## Phase 4: UI Refactoring [checkpoint: c11aad3]
 - [x] Task: Update UI Components and Controllers [56557ce]
     - [x] Update `BookmarkList`, `AddBookmarkForm`, `EditBookmarkDialog`, and `BookmarkDashboard` to consume and produce DTOs exclusively.
     - [x] Update `BookmarksController` to handle DTOs.
     - [x] Fix any failing UI tests.
-- [~] Task: Conductor - User Manual Verification 'Phase 4: UI Refactoring' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: UI Refactoring' (Protocol in workflow.md) [c11aad3]
 
 ## Phase 5: Final Verification & Quality Gate
-- [ ] Task: Execute Full Test Suite
+- [~] Task: Execute Full Test Suite
     - [ ] Run `npm test` and ensure all tests pass.
 - [ ] Task: Verify Code Quality
     - [ ] Run `npm run lint`.
