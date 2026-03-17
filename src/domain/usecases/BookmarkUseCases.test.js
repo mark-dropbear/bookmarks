@@ -85,5 +85,23 @@ describe('Bookmark Use Cases', () => {
       expect(search).to.have.lengthOf(1);
       expect(search[0].name).to.equal('Alpha');
     });
+
+    it('should search bookmarks by topic name', async () => {
+      const useCase = new GetBookmarksUseCase(bookmarkRepository, topicRepository);
+      
+      const b1 = new Bookmark({ id: 'b/1', name: 'T1', url: 'https://t1.com', topicIds: ['t/123'] });
+      const b2 = new Bookmark({ id: 'b/2', name: 'T2', url: 'https://t2.com', topicIds: ['t/456'] });
+      await bookmarkRepository.add(b1);
+      await bookmarkRepository.add(b2);
+
+      const t1 = new Topic({ id: 't/123', name: 'Awesome Topic', bookmarkIds: ['b/1'] });
+      const t2 = new Topic({ id: 't/456', name: 'Boring Topic', bookmarkIds: ['b/2'] });
+      await topicRepository.add(t1);
+      await topicRepository.add(t2);
+
+      const search = await useCase.execute('Awesome');
+      expect(search).to.have.lengthOf(1);
+      expect(search[0].name).to.equal('T1');
+    });
   });
 });
