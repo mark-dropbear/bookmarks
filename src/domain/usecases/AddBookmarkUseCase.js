@@ -1,6 +1,5 @@
 import { Bookmark } from '../entities/Bookmark.js';
 import { Topic } from '../entities/Topic.js';
-import { NotFoundError } from '../../core/errors/AppErrors.js';
 
 /**
  * Use case for adding a new bookmark and ensuring its topics are managed.
