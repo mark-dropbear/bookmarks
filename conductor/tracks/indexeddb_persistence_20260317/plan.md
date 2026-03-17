@@ -1,8 +1,8 @@
 # Implementation Plan: IndexedDB Persistence Layer
 
 ## Phase 1: Infrastructure & Database Setup
-- [ ] Task: Install the `idb` library
-    - [ ] Run `npm install idb` (or update package.json/importmap)
+- [x] Task: Install the `idb` library [cf6f1df]
+    - [x] Run `npm install idb` (or update package.json/importmap)
 - [ ] Task: Create IndexedDB connection utility
     - [ ] Implement `src/data/infrastructure/IndexedDBConnection.js` using `idb`
     - [ ] Define the database name and initial version
