@@ -6,3 +6,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 - [x] **Track: We will be implementing a new persistence layer using IndexedDB in the browser to complement our InMemory repositories which are useful for testing but obviously not suitable for production.**
 *Link: [./tracks/indexeddb_persistence_20260317/](./tracks/indexeddb_persistence_20260317/)*
+
+---
+
+- [ ] **Track: Refactor Domain Entities and Introduce Data Mapping Layer**
+*Link: [./tracks/refactor_domain_mappers_20260317/](./tracks/refactor_domain_mappers_20260317/)*
