@@ -11,7 +11,8 @@
 })
 ({
   "imports": {
-    "bookmarks": "./src/main.js"
+    "bookmarks": "./src/main.js",
+    "bookmarks/prod": "./src/main.prod.js"
   },
   "scopes": {
     "./": {
@@ -19,6 +20,7 @@
       "@lit/context": "https://ga.jspm.io/npm:@lit/context@1.1.6/development/index.js",
       "@lit/task": "https://ga.jspm.io/npm:@lit/task@1.0.3/development/index.js",
       "@material/web/": "https://ga.jspm.io/npm:@material/web@2.4.1/",
+      "idb": "https://ga.jspm.io/npm:idb@8.0.3/build/index.js",
       "lit": "https://ga.jspm.io/npm:lit@3.3.2/index.js"
     },
     "https://ga.jspm.io/npm:@lit/task@1.0.3/": {
