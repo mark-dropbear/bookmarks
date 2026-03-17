@@ -36,9 +36,9 @@
     - [x] Fix any failing UI tests.
 - [x] Task: Conductor - User Manual Verification 'Phase 4: UI Refactoring' (Protocol in workflow.md) [c11aad3]
 
-## Phase 5: Final Verification & Quality Gate
-- [~] Task: Execute Full Test Suite
-    - [ ] Run `npm test` and ensure all tests pass.
-- [ ] Task: Verify Code Quality
-    - [ ] Run `npm run lint`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 5: Final Verification & Quality Gate' (Protocol in workflow.md)
+## Phase 5: Final Verification & Quality Gate [checkpoint: 1add6a0]
+- [x] Task: Execute Full Test Suite [2554503]
+    - [x] Run `npm test` and ensure all tests pass.
+- [x] Task: Verify Code Quality [1bfa126]
+    - [x] Run `npm run lint`.
+- [x] Task: Conductor - User Manual Verification 'Phase 5: Final Verification & Quality Gate' (Protocol in workflow.md) [1add6a0]
