@@ -24,7 +24,7 @@ A privacy-focused, local-first bookmark manager that empowers users with full da
 - **Global Design Consistency:** Leverages modern web standards like `document.adoptedStyleSheets` to ensure a cohesive, themed experience across the entire document and all Shadow DOM components.
 
 ## Technical Goals
-- **Clean Architecture:** Maintain a modular, well-tested codebase with clear separation of concerns. Rigidly enforces boundaries between business logic (Use Cases), persistence (Repositories), and rendering (Controllers/Components).
+- **Clean Architecture:** Maintain a modular, well-tested codebase with clear separation of concerns. Rigidly enforces boundaries between business logic (Use Cases), persistence (Repositories), and rendering (Controllers/Components) using pure Domain Entities and strict Data Transfer Objects (DTOs).
 - **Minimal Dependencies:** Prioritize web standards and small, focused libraries like Lit and Material Web.
 - **Type Safety:** Leverage JSDoc comments for robust type hinting without a full TypeScript build step.
 - **Web Platform Compatibility:** Targets [Web Platform Baseline](https://web.dev/baseline) (Widely Available) for all critical functionality. Supports progressive enhancement using newer features where appropriate, provided the core experience remains functional.
