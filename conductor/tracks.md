@@ -9,5 +9,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Refactor Domain Entities and Introduce Data Mapping Layer**
+- [x] **Track: Refactor Domain Entities and Introduce Data Mapping Layer**
 *Link: [./tracks/refactor_domain_mappers_20260317/](./tracks/refactor_domain_mappers_20260317/)*
