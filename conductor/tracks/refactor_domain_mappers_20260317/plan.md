@@ -1,15 +1,15 @@
 # Implementation Plan: Refactor Domain Entities and Introduce Data Mapping Layer
 
-## Phase 1: Domain Entities & DTOs
+## Phase 1: Domain Entities & DTOs [checkpoint: 1749e58]
 - [x] Task: Refactor Domain Entities [469c497]
     - [x] Remove `toJSON`, `fromJSON`, and JSON-LD specific fields from `src/domain/entities/Bookmark.js`.
     - [x] Remove `toJSON`, `fromJSON`, and JSON-LD specific fields from `src/domain/entities/Topic.js`.
 - [x] Task: Define Data Transfer Objects (DTOs) [b10df6b]
     - [x] Create `src/domain/types/index.js` (or similar) to define `BookmarkDTO` and `TopicDTO` via JSDoc.
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Domain Entities & DTOs' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Domain Entities & DTOs' (Protocol in workflow.md) [1749e58]
 
 ## Phase 2: Mappers
-- [ ] Task: Implement Persistence Mappers
+- [~] Task: Implement Persistence Mappers
     - [ ] Create `src/core/mappers/BookmarkPersistenceMapper.js`.
     - [ ] Create `src/core/mappers/TopicPersistenceMapper.js`.
     - [ ] Write unit tests for Persistence Mappers.
